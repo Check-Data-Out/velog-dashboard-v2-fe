@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { NotoT, NotoL, NotoM, NotoR, NotoB, NotoEB, NotoSB } from './fonts';
+import { Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   },
 };
 
+const Noto = Noto_Sans_KR({
+  subsets: ['latin'],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -17,9 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        className={`${NotoT.className} ${NotoL.className} ${NotoM.className} ${NotoR.className} ${NotoB.className} ${NotoEB.className} ${NotoSB.className}`}
-      >
+      <body className={`${Noto.className} w-full h-screen bg-bg-1`}>
         {children}
       </body>
     </html>
