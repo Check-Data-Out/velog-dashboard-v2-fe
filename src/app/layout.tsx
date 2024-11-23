@@ -1,17 +1,6 @@
 import type { Metadata } from 'next';
+import { NotoT, NotoL, NotoM, NotoR, NotoB, NotoEB, NotoSB } from './fonts';
 import './globals.css';
-// import localFont from 'next/font/local';
-
-// const geistSans = localFont({
-//   src: './fonts/GeistVF.woff',
-//   variable: '--font-geist-sans',
-//   weight: '100 900',
-// });
-// const geistMono = localFont({
-//   src: './fonts/GeistMonoVF.woff',
-//   variable: '--font-geist-mono',
-//   weight: '100 900',
-// });
 
 export const metadata: Metadata = {
   title: 'Velog Dashboard',
@@ -28,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body
+        className={`${NotoT.className} ${NotoL.className} ${NotoM.className} ${NotoR.className} ${NotoB.className} ${NotoEB.className} ${NotoSB.className}`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
