@@ -13,6 +13,7 @@ export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   pluginJs.configs.recommended,
+  ...tseslint.configs.strict,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   pluginJest.configs['flat/recommended'],
