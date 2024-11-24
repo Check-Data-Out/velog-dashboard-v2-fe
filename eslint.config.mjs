@@ -23,6 +23,10 @@ export default [
   {
     rules: {
       'react/react-in-jsx-scope': 'off',
+      '@typescript-eslint/promise-function-async': 'warn',
+      '@typescript-eslint/explicit-function-return-type': 'warn',
+      '@typescript-eslint/consistent-type-assertions': 'warn',
+      '@typescript-eslint/naming-convention': 'warn',
     },
   },
 ];
