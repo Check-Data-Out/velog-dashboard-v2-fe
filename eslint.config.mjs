@@ -13,6 +13,7 @@ export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   pluginJs.configs.recommended,
+  ...tseslint.configs.strict,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   pluginJest.configs['flat/recommended'],
@@ -23,6 +24,10 @@ export default [
   {
     rules: {
       'react/react-in-jsx-scope': 'off',
+      '@typescript-eslint/promise-function-async': 'warn',
+      '@typescript-eslint/explicit-function-return-type': 'warn',
+      '@typescript-eslint/consistent-type-assertions': 'warn',
+      '@typescript-eslint/naming-convention': 'warn',
     },
   },
 ];
