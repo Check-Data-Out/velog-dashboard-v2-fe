@@ -1,5 +1,6 @@
-import type { Metadata } from 'next';
+import { ToastContainer } from 'react-toastify';
 import { Noto_Sans_KR } from 'next/font/google';
+import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   },
 };
 
-const Noto = Noto_Sans_KR({
+const NotoSansKr = Noto_Sans_KR({
   subsets: ['latin'],
 });
 
@@ -21,7 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${Noto.className} w-full h-screen bg-bg-1`}>
+      <body className={`${NotoSansKr.className} w-full h-screen bg-bg-1`}>
+        <ToastContainer autoClose={2000} />
         {children}
       </body>
     </html>
