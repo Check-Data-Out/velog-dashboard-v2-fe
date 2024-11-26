@@ -4,7 +4,7 @@
 
 ## 실행
 
-- `https://github.com/Check-Data-Out/velog-dashboard-v2-fe.git`
+- `git clone https://github.com/Check-Data-Out/velog-dashboard-v2-fe.git`
 - `cd velog-dashboard-v2-fe`
 - `pnpm install`
 - `pnpm dev`
@@ -17,4 +17,4 @@
 
 ## 테스팅
 
-- `pnpm test` (all without lint)
+- `pnpm test` (test all pages & components)
