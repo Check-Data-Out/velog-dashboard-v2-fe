@@ -12,7 +12,6 @@ const formStyle = {
   small: 'p-2 h-[38px] focus:border-border-3 rounded-[4px]',
 };
 
-// eslint-disable-next-line react/display-name
 export const Input = forwardRef(
   (
     { form = 'large', size, ...rest }: IProp,

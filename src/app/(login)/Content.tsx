@@ -58,7 +58,7 @@ export const Content = () => {
           placeholder="Refresh Token을 입력하세요"
           {...register('refresh_token', { required: true })}
         />
-        <Button size="large" form="big" type="submit" disabled={!isValid}>
+        <Button size="large" form="large" type="submit" disabled={!isValid}>
           로그인
         </Button>
       </form>
