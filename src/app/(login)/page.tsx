@@ -45,11 +45,13 @@ export default function Page() {
         <h1 className="font-medium text-[32px] text-text-1">Velog Dashboard</h1>
         <Input
           size="large"
+          type="password"
           placeholder="Access Token을 입력하세요"
           {...register('access_token', { required: true })}
         />
         <Input
           size="large"
+          type="password"
           placeholder="Refresh Token을 입력하세요"
           {...register('refresh_token', { required: true })}
         />
