@@ -2,7 +2,6 @@
 
 import { Button, Input } from '@/components';
 import { useForm } from 'react-hook-form';
-import cookie from 'js-cookie';
 import { useMutation } from '@tanstack/react-query';
 import { instance } from '../../api';
 import { useRouter } from 'next/navigation';
@@ -23,7 +22,13 @@ export const Content = () => {
   } = useForm<formVo>({ mode: 'onChange' });
 
   const { mutate } = useMutation({
-    mutationFn: async () => await instance('/login', { method: 'POST' }),
+    mutationFn: async (data: formVo) =>
+      await instance('/login', {
+        method: 'POST',
+        headers: {
+          cookie: `access_token=${data.access_token};refresh_token=${data.refresh_token}`,
+        },
+      }),
     onSuccess: () => replace('/main'),
     onError: (res: Response) => {
       toast.error(`${res.statusText} (${res.status})`);
@@ -31,9 +36,7 @@ export const Content = () => {
   });
 
   const onSubmit = (data: formVo) => {
-    cookie.set('access_token', data.access_token);
-    cookie.set('refresh_token', data.refresh_token);
-    mutate();
+    mutate(data);
   };
 
   return (
