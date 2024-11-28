@@ -2,13 +2,13 @@ import { HTMLProps } from 'react';
 import { sizeStyle } from './size';
 
 interface IProp extends Omit<HTMLProps<HTMLButtonElement>, 'size'> {
-  form?: 'big' | 'small';
+  form?: 'large' | 'small';
   size: 'large' | 'medium' | 'small';
   type?: 'submit' | 'reset' | 'button';
 }
 
 const formStyle = {
-  big: 'h-[55px] rounded-sm',
+  large: 'h-[55px] rounded-sm',
   small: 'pl-[20px] pr-[20px] w-fit h-8 rounded-[4px]',
 };
 
