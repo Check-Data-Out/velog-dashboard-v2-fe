@@ -12,7 +12,7 @@ const formStyle = {
   small: 'p-2 h-[38px] focus:border-border-3 rounded-[4px]',
 };
 
-export const Input = forwardRef(
+export const Input = forwardRef<HTMLInputElement, IProp>(
   (
     { form = 'large', size, ...rest }: IProp,
     ref?: ForwardedRef<HTMLInputElement> | undefined,
@@ -24,3 +24,5 @@ export const Input = forwardRef(
     />
   ),
 );
+
+Input.displayName = 'Input';
