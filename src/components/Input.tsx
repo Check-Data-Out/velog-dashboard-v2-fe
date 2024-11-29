@@ -19,7 +19,7 @@ export const Input = forwardRef<HTMLInputElement, IProp>(
   ) => (
     <input
       ref={ref}
-      className={`bg-bg-2 border-[1px] border-border-2 placeholder:text-text-3 text-text-1 text-[16px] font-light ${formStyle[form]} ${sizeStyle[size]} ${rest.className}`}
+      className={`bg-bg-sub border-[1px] border-border-sub placeholder:text-text-3 text-text-main text-[16px] font-light ${formStyle[form]} ${sizeStyle[size]} ${rest.className}`}
       {...rest}
     />
   ),

@@ -14,7 +14,7 @@ const formStyle = {
 
 export const Button = ({ form = 'small', size, children, ...rest }: IProp) => (
   <button
-    className={`bg-primary-1 hover:bg-primary-2 disabled:bg-border-2 disabled:cursor-not-allowed text-bg-1 font-bold ${sizeStyle[size]} ${formStyle[form]}`}
+    className={`bg-primary-main hover:bg-primary-sub disabled:bg-border-sub disabled:cursor-not-allowed text-bg-main font-bold ${sizeStyle[size]} ${formStyle[form]}`}
     {...rest}
   >
     {children}

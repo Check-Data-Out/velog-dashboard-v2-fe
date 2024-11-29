@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${NotoSansKr.className} w-full h-screen bg-bg-1`}>
+      <body className={`${NotoSansKr.className} w-full h-screen bg-bg-main`}>
         <QueryProvider>
           <ToastContainer autoClose={2000} />
           {children}

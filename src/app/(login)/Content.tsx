@@ -43,9 +43,11 @@ export const Content = () => {
     <div className="w-full h-full flex items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-fit h-fit flex flex-col gap-[30px] items-center p-[30px] bg-bg-2 rounded-[4px] shadow-[0_4px_16px_0_rgba(0,0,0,.04)]"
+        className="w-fit h-fit flex flex-col gap-[30px] items-center p-[30px] bg-bg-main rounded-[4px] shadow-[0_4px_16px_0_rgba(0,0,0,.04)]"
       >
-        <h1 className="font-medium text-[32px] text-text-1">Velog Dashboard</h1>
+        <h1 className="font-medium text-[32px] text-text-main">
+          Velog Dashboard
+        </h1>
         <Input
           size="large"
           type="password"

@@ -9,23 +9,23 @@ const config: Config = {
   theme: {
     colors: {
       bg: {
-        1: '#121212',
-        2: '#1E1E1E',
-        3: '#252525',
+        main: '#121212',
+        sub: '#1E1E1E',
+        alt: '#252525',
       },
       text: {
-        1: '#ECECEC',
-        2: '#D9D9D9',
-        3: '#ACACAC',
+        main: '#ECECEC',
+        sub: '#D9D9D9',
+        alt: '#ACACAC',
       },
       border: {
-        1: '#2A2A2A',
-        2: '#4D4D4D',
-        3: '#E0E0E0',
+        main: '#2A2A2A',
+        sub: '#4D4D4D',
+        alt: '#E0E0E0',
       },
       primary: {
-        1: '#96F2D7',
-        2: '#63E6BE',
+        main: '#96F2D7',
+        sub: '#63E6BE',
       },
     },
   },
