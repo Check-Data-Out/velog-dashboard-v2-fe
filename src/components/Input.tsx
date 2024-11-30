@@ -1,8 +1,12 @@
-import { HTMLProps } from 'react';
+import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
 import { sizeStyle } from './size';
 import { forwardRef, ForwardedRef } from 'react';
 
-interface IProp extends Omit<HTMLProps<HTMLInputElement>, 'size'> {
+interface IProp
+  extends Omit<
+    DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+    'size'
+  > {
   form?: 'large' | 'small';
   size: 'large' | 'medium' | 'small';
 }
