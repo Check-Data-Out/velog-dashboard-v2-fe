@@ -3,7 +3,7 @@
 import { Button, Input } from '@/components';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { instance } from '../../api';
+import { instance } from '@/api';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
