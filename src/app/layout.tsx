@@ -1,17 +1,9 @@
+import { ToastContainer } from 'react-toastify';
+import { Noto_Sans_KR } from 'next/font/google';
 import type { Metadata } from 'next';
 import './globals.css';
-// import localFont from 'next/font/local';
-
-// const geistSans = localFont({
-//   src: './fonts/GeistVF.woff',
-//   variable: '--font-geist-sans',
-//   weight: '100 900',
-// });
-// const geistMono = localFont({
-//   src: './fonts/GeistMonoVF.woff',
-//   variable: '--font-geist-mono',
-//   weight: '100 900',
-// });
+import { QueryProvider } from '@/utils/QueryProvider';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: 'Velog Dashboard',
@@ -21,6 +13,10 @@ export const metadata: Metadata = {
   },
 };
 
+const NotoSansKr = Noto_Sans_KR({
+  subsets: ['latin'],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className={`${NotoSansKr.className} w-full h-screen bg-bg-main`}>
+        <QueryProvider>
+          <ToastContainer autoClose={2000} />
+          {children}
+        </QueryProvider>
+      </body>
     </html>
   );
 }
