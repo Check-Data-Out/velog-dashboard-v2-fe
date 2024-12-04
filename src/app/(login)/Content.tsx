@@ -1,13 +1,13 @@
 'use client';
 
-import { Button, Input } from '@/components';
-import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { instance } from '@/api';
+import { Button, Input } from '@/components';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { instance } from '@/api';
 
-interface formVo {
+interface FormVo {
   access_token: string;
   refresh_token: string;
 }
@@ -19,10 +19,10 @@ export const Content = () => {
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm<formVo>({ mode: 'onChange' });
+  } = useForm<FormVo>({ mode: 'onChange' });
 
   const { mutate } = useMutation({
-    mutationFn: async (data: formVo) =>
+    mutationFn: async (data: FormVo) =>
       await instance('/login', {
         method: 'POST',
         headers: {
@@ -35,7 +35,7 @@ export const Content = () => {
     },
   });
 
-  const onSubmit = (data: formVo) => {
+  const onSubmit = (data: FormVo) => {
     mutate(data);
   };
 
@@ -43,24 +43,32 @@ export const Content = () => {
     <div className="w-full h-full flex items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-fit h-fit flex flex-col gap-[30px] items-center p-[30px] bg-bg-main rounded-[4px] shadow-[0_4px_16px_0_rgba(0,0,0,.04)]"
+        className="w-fit h-fit flex flex-col gap-[30px] items-center p-[30px] bg-bg-sub rounded-[4px] shadow-[0_4px_16px_0_rgba(0,0,0,.04)]"
       >
         <h1 className="font-medium text-[32px] text-text-main">
           Velog Dashboard
         </h1>
         <Input
+          id="access"
           size="large"
           type="password"
           placeholder="Access Token을 입력하세요"
           {...register('access_token', { required: true })}
         />
         <Input
+          id="refresh"
           size="large"
           type="password"
           placeholder="Refresh Token을 입력하세요"
           {...register('refresh_token', { required: true })}
         />
-        <Button size="large" form="large" type="submit" disabled={!isValid}>
+        <Button
+          size="large"
+          form="large"
+          type="submit"
+          disabled={!isValid}
+          id="login"
+        >
           로그인
         </Button>
       </form>
