@@ -2,7 +2,7 @@ import { ToastContainer } from 'react-toastify';
 import { Noto_Sans_KR } from 'next/font/google';
 import type { Metadata } from 'next';
 import './globals.css';
-import { QueryProvider } from '@/utils/QueryProvider';
+import { QueryProvider } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
