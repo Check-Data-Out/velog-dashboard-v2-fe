@@ -1,3 +1,4 @@
+
 import returnFetch, { FetchArgs } from 'return-fetch';
 import { ServerNotRespondingError } from '@/errors';
 
@@ -17,6 +18,7 @@ const abortPolyfill = (ms: number) => {
 };
 
 const fetch = returnFetch({
+
   baseUrl: BASE_URL,
   headers: { Accept: 'application/json' },
   interceptors: {

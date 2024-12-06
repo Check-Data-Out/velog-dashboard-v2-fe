@@ -76,7 +76,6 @@ describe('로그인 화면에서', () => {
 
     it('액세스 토큰이 비정상적이면 오류 토스트가 표기된다', async () => {
       renderPage();
-
       fetchMock.mockResolvedValueOnce({ ok: false, status: 404 } as Response);
 
       const { buttonEl, accessInputEl, refreshInputEl } = getElements();
