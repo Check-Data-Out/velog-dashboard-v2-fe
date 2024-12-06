@@ -1,14 +1,13 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import { ReactNode } from 'react';
 
 const client = new QueryClient({
   defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
+    queries: { retry: 1, refetchOnWindowFocus: false },
+    mutations: { onError: (err) => toast.error(`${err.message}`) },
   },
 });
 
