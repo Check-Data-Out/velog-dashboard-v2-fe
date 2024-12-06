@@ -36,7 +36,7 @@ export const Content = () => {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <main className="w-full h-full flex items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-fit h-fit flex flex-col gap-[30px] items-center p-[30px] bg-bg-sub rounded-[4px] shadow-[0_4px_16px_0_rgba(0,0,0,.04)]"
@@ -68,6 +68,6 @@ export const Content = () => {
           로그인
         </Button>
       </form>
-    </div>
+    </main>
   );
 };
