@@ -27,6 +27,7 @@ export default [
       '@typescript-eslint/promise-function-async': 'error',
       '@typescript-eslint/consistent-type-assertions': 'error',
       '@typescript-eslint/naming-convention': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
     },
     languageOptions: {
       parserOptions: {
