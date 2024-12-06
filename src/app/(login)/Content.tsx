@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Button, Input } from '@/components';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { NotFoundError } from '@/errors';
 import { instance } from '@/api';
 
 interface FormVo {
@@ -22,17 +22,13 @@ export const Content = () => {
   } = useForm<FormVo>({ mode: 'onChange' });
 
   const { mutate } = useMutation({
-    mutationFn: async (data: FormVo) =>
-      await instance('/login', {
-        method: 'POST',
-        headers: {
-          cookie: `access_token=${data.access_token};refresh_token=${data.refresh_token}`,
-        },
-      }),
+    mutationFn: async (body: FormVo) =>
+      await instance(
+        '/login',
+        { method: 'POST', body },
+        { '404': new NotFoundError('일치하는 계정을 찾을 수 없습니다') },
+      ),
     onSuccess: () => replace('/main'),
-    onError: (res: Response) => {
-      toast.error(`${res.statusText} (${res.status})`);
-    },
   });
 
   const onSubmit = (data: FormVo) => {
