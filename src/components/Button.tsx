@@ -1,10 +1,13 @@
-import { HTMLProps } from 'react';
+import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import { sizeStyle } from './size';
 
-interface IProp extends Omit<HTMLProps<HTMLButtonElement>, 'size'> {
+interface IProp
+  extends DetailedHTMLProps<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
   form?: 'large' | 'small';
   size: 'large' | 'medium' | 'small';
-  type?: 'submit' | 'reset' | 'button';
 }
 
 const formStyle = {
