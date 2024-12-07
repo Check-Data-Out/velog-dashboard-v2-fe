@@ -1,12 +1,15 @@
-
 import returnFetch, { FetchArgs } from 'return-fetch';
 import { ServerNotRespondingError } from '@/errors';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const ABORT_MS = 1000 * 5;
+const ABORT_MS = Number(process.env.NEXT_PUBLIC_ABORT_MS);
 
-if (!BASE_URL) {
-  throw new Error('BASE_URL가 ENV에서 설정되지 않았습니다.');
+if (isNaN(ABORT_MS)) {
+  throw new Error('ABORT_MS가 ENV에서 설정되지 않았습니다');
+}
+
+if (!BASE_URL || isNaN(ABORT_MS)) {
+  throw new Error('BASE_URL이 ENV에서 설정되지 않았습니다.');
 }
 
 type ErrorObject = Record<string, Error>;
@@ -18,7 +21,6 @@ const abortPolyfill = (ms: number) => {
 };
 
 const fetch = returnFetch({
-
   baseUrl: BASE_URL,
   headers: { Accept: 'application/json' },
   interceptors: {
