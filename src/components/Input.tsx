@@ -1,6 +1,10 @@
-import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
+import {
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+  forwardRef,
+  ForwardedRef,
+} from 'react';
 import { sizeStyle } from './size';
-import { forwardRef, ForwardedRef } from 'react';
 
 interface IProp
   extends Omit<

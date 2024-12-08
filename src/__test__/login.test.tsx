@@ -1,9 +1,9 @@
 import { userEvent } from '@testing-library/user-event';
 import { act, screen } from '@testing-library/react';
-import { renderWithQueryClient } from '@/utils';
 import { ToastContainer } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import fetchMock from 'jest-fetch-mock';
+import { renderWithQueryClient } from '@/utils';
 import { TimeoutError } from '@/errors';
 import { Login } from '@/app';
 

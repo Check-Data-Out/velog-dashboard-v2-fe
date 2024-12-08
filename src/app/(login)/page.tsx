@@ -1,5 +1,5 @@
-import { Content } from './Content';
 import { Metadata } from 'next';
+import { Content } from './Content';
 
 export const metadata: Metadata = {
   title: '로그인',

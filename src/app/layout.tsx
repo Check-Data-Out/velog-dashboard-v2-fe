@@ -1,9 +1,9 @@
 import { ToastContainer } from 'react-toastify';
 import { Noto_Sans_KR } from 'next/font/google';
-import type { Metadata } from 'next';
-import './globals.css';
-import { QueryProvider } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
+import type { Metadata } from 'next';
+import { QueryProvider } from '@/components';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Velog Dashboard',
