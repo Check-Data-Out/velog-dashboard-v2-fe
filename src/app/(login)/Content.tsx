@@ -1,9 +1,9 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { Button, Input } from '@/components';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { Button, Input } from '@/components';
 import { NotFoundError } from '@/errors';
 import { instance } from '@/api';
 
@@ -26,7 +26,12 @@ export const Content = () => {
       await instance(
         '/login',
         { method: 'POST', body },
-        { '404': new NotFoundError('일치하는 계정을 찾을 수 없습니다') },
+        {
+          '404': new NotFoundError(
+            '일치하는 계정을 찾을 수 없습니다',
+            'CannotFindAccount',
+          ),
+        },
       ),
     onSuccess: () => replace('/main'),
   });
