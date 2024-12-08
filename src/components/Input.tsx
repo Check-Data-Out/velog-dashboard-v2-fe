@@ -4,25 +4,25 @@ import {
   forwardRef,
   ForwardedRef,
 } from 'react';
-import { sizeStyle } from './size';
+import { sizeStyle, sizeStyleType } from './size';
 
 interface IProp
   extends Omit<
     DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
     'size'
   > {
-  form?: 'large' | 'small';
-  size: 'large' | 'medium' | 'small';
+  form?: keyof typeof formStyle;
+  size: sizeStyleType;
 }
 
 const formStyle = {
-  large: 'p-4 h-[48px] focus:border-primary-sub rounded-sm',
-  small: 'p-2 h-[38px] focus:border-border-alt rounded-[4px]',
+  LARGE: 'p-4 h-[48px] focus:border-primary-sub rounded-sm',
+  SMALL: 'p-2 h-[38px] focus:border-border-alt rounded-[4px]',
 };
 
 export const Input = forwardRef<HTMLInputElement, IProp>(
   (
-    { form = 'large', size, ...rest }: IProp,
+    { form = 'LARGE', size, ...rest }: IProp,
     ref?: ForwardedRef<HTMLInputElement> | undefined,
   ) => (
     <input

@@ -51,21 +51,21 @@ export const Content = () => {
         </h1>
         <Input
           id="access"
-          size="large"
+          size="LARGE"
           type="password"
           placeholder="Access Token을 입력하세요"
           {...register('access_token', { required: true })}
         />
         <Input
           id="refresh"
-          size="large"
+          size="LARGE"
           type="password"
           placeholder="Refresh Token을 입력하세요"
           {...register('refresh_token', { required: true })}
         />
         <Button
-          size="large"
-          form="large"
+          size="LARGE"
+          form="LARGE"
           type="submit"
           disabled={!isValid}
           id="login"
