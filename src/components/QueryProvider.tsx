@@ -12,7 +12,7 @@ const client = new QueryClient({
 });
 
 interface IProp {
-  children: React.ReactElement | React.ReactElement[] | ReactNode | ReactNode[];
+  children: ReactNode | ReactNode[];
 }
 
 export const QueryProvider = ({ children }: IProp) => {
