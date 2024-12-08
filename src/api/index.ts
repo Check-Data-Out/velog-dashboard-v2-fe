@@ -56,7 +56,9 @@ export const instance = async (
       throw new ServerNotRespondingError();
     else {
       if (!error || !(error && error[`${(err as Response).status}`]))
-        throw new Error(`서버에서 Z 오류가 발생했습니다. (${err.name})`);
+        throw new Error(
+          `서버에서 예기치 않은 오류가 발생했습니다. (${err.name})`,
+        );
       throw error[`${(err as Response).status}`];
     }
   }
