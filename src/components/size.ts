@@ -1,5 +1,7 @@
 export const sizeStyle = {
-  large: 'w-[400px]',
-  medium: 'w-[200px]',
-  small: 'w-[100px]',
+  LARGE: 'w-[400px]',
+  MEDIUM: 'w-[200px]',
+  SMALL: 'w-[100px]',
 };
+
+export type sizeStyleType = keyof typeof sizeStyle;
