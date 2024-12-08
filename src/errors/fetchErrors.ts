@@ -1,20 +1,19 @@
-export class ServerNotRespondingError extends Error {
+import { CustomError } from './instance';
+
+export class TimeoutError extends CustomError {
   constructor() {
-    super('잠시 후 다시 시도해 주세요');
-    this.name = 'ServerNotRespondingError';
+    super('Request Timed Out', 'RequestTimedOut');
   }
 }
 
-export class NotFoundError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'NotFoundError';
+export class ServerNotRespondingError extends CustomError {
+  constructor() {
+    super('잠시 후 다시 시도해 주세요', 'ServerNotResponding');
   }
 }
 
-export class TimeoutError extends Error {
-  constructor() {
-    super('Request Timed Out');
-    this.name = 'TimeoutError';
+export class NotFoundError extends CustomError {
+  constructor(message: string, code: string) {
+    super(message, code, 400);
   }
 }
