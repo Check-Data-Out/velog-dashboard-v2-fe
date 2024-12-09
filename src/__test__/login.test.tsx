@@ -1,10 +1,11 @@
-import { act, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import Page from '@/app/(login)/page';
-import fetchMock from 'jest-fetch-mock';
-import { renderWithQueryClient } from '@/utils/test-util';
+import { act, screen } from '@testing-library/react';
 import { ToastContainer } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import fetchMock from 'jest-fetch-mock';
+import { renderWithQueryClient } from '@/utils';
+import { TimeoutError } from '@/errors';
+import { Login } from '@/app';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
@@ -26,7 +27,7 @@ const renderPage = () => {
   renderWithQueryClient(
     <>
       <ToastContainer autoClose={2000} />
-      <Page />
+      <Login />
     </>,
   );
 };
@@ -58,25 +59,10 @@ describe('로그인 화면에서', () => {
   });
 
   describe('API 요청에서', () => {
-    // it('서버가 응답하지 않으면 오류 토스트가 표기된다', async () => {
-    //   renderPage();
-
-    //   fetchMock.mockAbortOnce();
-
-    //   const { buttonEl, accessInputEl, refreshInputEl } = getElements();
-
-    //   await userEvent.type(accessInputEl, 'invalid_access');
-    //   await userEvent.type(refreshInputEl, 'invalid_refresh');
-    //   await act(async () => buttonEl.click());
-
-    //   const toastEl = screen.getByText('유효하지 않은 토큰 (404)');
-    //   expect(toastEl).toBeInTheDocument();
-    // });
-
-    it('액세스 토큰이 비정상적이면 오류 토스트가 표기된다', async () => {
+    it('서버가 응답하지 않으면 응답 없음 토스트가 표시된다', async () => {
       renderPage();
 
-      fetchMock.mockRejectOnce(new Error());
+      fetchMock.mockRejectedValueOnce(new TimeoutError());
 
       const { buttonEl, accessInputEl, refreshInputEl } = getElements();
 
@@ -84,11 +70,25 @@ describe('로그인 화면에서', () => {
       await userEvent.type(refreshInputEl, 'invalid_refresh');
       await act(async () => buttonEl.click());
 
-      const toastEl = screen.getByText('유효하지 않은 토큰 (404)');
-      expect(toastEl).toBeInTheDocument();
+      const toastEl = screen.getByText('잠시 후 다시 시도해 주세요');
+      expect(toastEl).not.toBeUndefined();
     });
 
-    it('액세스 토큰이 정상적이면 페이지를 대시보드로 이동시킨다', async () => {
+    it('액세스 토큰이 비정상적이면 오류 토스트가 표기된다', async () => {
+      renderPage();
+      fetchMock.mockResolvedValueOnce({ ok: false, status: 404 } as Response);
+
+      const { buttonEl, accessInputEl, refreshInputEl } = getElements();
+
+      await userEvent.type(accessInputEl, 'invalid_access');
+      await userEvent.type(refreshInputEl, 'invalid_refresh');
+      await act(async () => buttonEl.click());
+
+      const toastEl = screen.getByText('일치하는 계정을 찾을 수 없습니다');
+      expect(toastEl).not.toBeUndefined();
+    });
+
+    it('요청이 성공하면 페이지를 대시보드로 이동시킨다', async () => {
       renderPage();
 
       const replace = jest.fn();
@@ -97,7 +97,6 @@ describe('로그인 화면에서', () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        json: () => ({}),
       } as Response);
 
       const { buttonEl, accessInputEl, refreshInputEl } = getElements();
