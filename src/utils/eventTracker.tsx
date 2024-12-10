@@ -13,7 +13,10 @@ type VisitDataType = {
 
 export const trackUserEvent = (message: string) => {
   const { pathname } = window.location;
-  instance('/track/user', { body: { path: pathname, message } });
+  instance('/track/user', {
+    body: { path: pathname, message },
+    method: 'POST',
+  });
 };
 
 export const TrackVisitEvent = () => {
