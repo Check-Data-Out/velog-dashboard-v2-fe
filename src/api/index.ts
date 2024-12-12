@@ -1,4 +1,5 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
+
 import { ServerNotRespondingError } from '@/errors';
 import * as sentry from '@sentry/nextjs';
 
@@ -62,7 +63,7 @@ export const instance = async (
       sentry.captureException(new ServerNotRespondingError());
       throw new ServerNotRespondingError();
     } else {
-      if (!error || !(error && error[`${(err as Response).status}`])) {
+      if (!error?.[`${(err as Response).status}`]) {
         const serverError = new Error(
           `서버에서 예기치 않은 오류가 발생했습니다. (${err.name})`,
         );
