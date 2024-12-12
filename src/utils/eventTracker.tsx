@@ -1,8 +1,9 @@
 'use client';
 
-import { instance } from '@/api';
-import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+
+import { instance } from '@/api';
 
 type VisitDataType = {
   loadDate: null | string;
@@ -39,7 +40,10 @@ export const TrackVisitEvent = () => {
         new Date(data.current.loadDate as string).getTime()
       ).toString(),
     };
-    navigator.sendBeacon(`${process.env.NEXT_PUBLIC_BASE_URL}/track/visit`);
+    navigator.sendBeacon(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/track/visit`,
+      data.current.toString(),
+    );
   };
 
   useEffect(() => {
