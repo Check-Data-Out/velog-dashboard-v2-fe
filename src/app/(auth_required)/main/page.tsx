@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Content } from './Content';
 
 export const metadata: Metadata = {
   title: '대시보드',
@@ -7,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <Content />;
+  return <main className=""></main>;
 }
