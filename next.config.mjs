@@ -2,12 +2,15 @@ import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  experimental: { forceSwcTransforms: true },
 
-  webpack: (config) => {
+  webpack: (config, options) => {
     config.module.rules.push({
       test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
+      use: [
+        options.defaultLoaders.babel,
+        { loader: '@svgr/webpack', options: { babel: false } },
+      ],
     });
     return config;
   },

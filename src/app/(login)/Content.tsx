@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
-import { instance } from '@/api';
-import { Button, Input } from '@/components';
-import { NotFoundError } from '@/errors';
 import { useMutation } from '@tanstack/react-query';
+import { instance } from '@/api';
+import { Button, Input } from '@/components/common';
+import { NotFoundError } from '@/errors';
 
 interface FormVo {
   access_token: string;
