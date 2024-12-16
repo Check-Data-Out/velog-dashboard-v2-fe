@@ -1,5 +1,7 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
+
 import { ServerNotRespondingError } from '@/errors';
+import * as sentry from '@sentry/nextjs';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const ABORT_MS = Number(process.env.NEXT_PUBLIC_ABORT_MS);
@@ -22,7 +24,7 @@ const abortPolyfill = (ms: number) => {
 
 const fetch = returnFetch({
   baseUrl: BASE_URL,
-  headers: { Accept: 'application/json' },
+  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   interceptors: {
     response: async (response) => {
       if (!response.ok) {
@@ -52,11 +54,24 @@ export const instance = async (
 
     return data as Awaited<ReturnType<typeof fetch>>;
   } catch (err: any) {
-    if ((err as Error).name === 'TimeoutError')
+    const context = err as Response;
+    sentry.setContext('Request', {
+      path: context.url,
+      status: context.status,
+    });
+    if ((err as Error).name === 'TimeoutError') {
+      sentry.captureException(new ServerNotRespondingError());
       throw new ServerNotRespondingError();
-    else {
-      if (!error || !(error && error[`${(err as Response).status}`]))
-        throw new Error(`서버에서 오류가 발생했습니다. (${err.name})`);
+    } else {
+      if (!error?.[`${(err as Response).status}`]) {
+        const serverError = new Error(
+          `서버에서 예기치 않은 오류가 발생했습니다. (${err.name})`,
+        );
+        sentry.captureException(serverError);
+        throw serverError;
+      }
+
+      sentry.captureException(error[`${(err as Response).status}`]);
       throw error[`${(err as Response).status}`];
     }
   }
