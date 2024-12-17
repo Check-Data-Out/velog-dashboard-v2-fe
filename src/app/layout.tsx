@@ -34,6 +34,12 @@ export default function RootLayout({
             {children}
           </QueryProvider>
         </sentry.ErrorBoundary>
+        <sentry.ErrorBoundary>
+          <QueryProvider>
+            <ToastContainer autoClose={2000} />
+            {children}
+          </QueryProvider>
+        </sentry.ErrorBoundary>
       </body>
     </html>
   );
