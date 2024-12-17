@@ -1,7 +1,7 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
+import * as sentry from '@sentry/nextjs';
 
 import { ServerNotRespondingError } from '@/errors';
-import * as sentry from '@sentry/nextjs';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const ABORT_MS = Number(process.env.NEXT_PUBLIC_ABORT_MS);

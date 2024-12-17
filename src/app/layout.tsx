@@ -1,10 +1,12 @@
-import { ToastContainer } from 'react-toastify';
-import { Noto_Sans_KR } from 'next/font/google';
 import 'react-toastify/dist/ReactToastify.css';
+import './globals.css';
+
+import { Noto_Sans_KR } from 'next/font/google';
+import { ToastContainer } from 'react-toastify';
 import * as sentry from '@sentry/nextjs';
 import type { Metadata } from 'next';
+import { ReactNode } from 'react';
 import { QueryProvider } from '@/components';
-import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Velog Dashboard',
@@ -21,11 +23,17 @@ const NotoSansKr = Noto_Sans_KR({
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="ko">
       <body className={`${NotoSansKr.className} w-full h-screen bg-bg-main`}>
+        <sentry.ErrorBoundary>
+          <QueryProvider>
+            <ToastContainer autoClose={2000} />
+            {children}
+          </QueryProvider>
+        </sentry.ErrorBoundary>
         <sentry.ErrorBoundary>
           <QueryProvider>
             <ToastContainer autoClose={2000} />
