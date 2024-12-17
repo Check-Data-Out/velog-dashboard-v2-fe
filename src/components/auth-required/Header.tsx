@@ -1,0 +1,63 @@
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+import { colors, screens } from '@/constants';
+import { useResponsive } from '@/hooks';
+import { Icon, nameType } from '@/components';
+
+const layouts: Array<{ icon: nameType; title: string; path: string }> = [
+  { icon: 'Analytics', title: '내 통계', path: '/main' },
+  { icon: 'LeaderBoards', title: '리더보드', path: '/leaderboards' },
+  { icon: 'Compare', title: '통계 비교', path: '/compare' },
+];
+
+const defaultStyle =
+  'w-[180px] h-[65px] transition-all duration-300 shrink-0 max-mbi:w-[65px] ';
+const navigateStyle = 'gap-5 flex items-center justify-center cursor-pointer ';
+
+export const Header = () => {
+  const width = useResponsive();
+  const path = usePathname();
+  const textStyle = (currentPath: string) =>
+    `${currentPath === path ? 'text-text-main' : 'text-text-alt'} text-[20px] shrink-0 transition-all duration-300 max-tbl:text-[18px] max-mbi:hidden `;
+
+  return (
+    <nav className="w-full max-mbi:flex max-mbi:justify-center">
+      <div className="flex w-fit relative">
+        <div
+          style={{
+            transform: `translateX(${layouts.findIndex((i) => i.path === path) * (width < screens.mbi ? 65 : 180)}px)`,
+          }}
+          className={`${defaultStyle} h-[2px_!important] bg-text-main absolute bottom-0 left-0`}
+        />
+        {layouts.map((i) => (
+          <Link
+            href={i.path}
+            key={i.title}
+            className={`${defaultStyle} ${navigateStyle} ${i.path === path && 'font-semibold'}`}
+          >
+            <Icon
+              size={25}
+              color={colors.text[i.path === path ? 'main' : 'alt']}
+              name={i.icon}
+            />
+            <span className={textStyle(i.path)}>{i.title}</span>
+          </Link>
+        ))}
+        <div className={defaultStyle + navigateStyle}>
+          <Image
+            width={35}
+            height={35}
+            className="rounded-full"
+            src="/profile.jpg"
+            alt=""
+          />
+          <span className={textStyle('username')}>스탠다드</span>
+        </div>
+      </div>
+    </nav>
+  );
+};
