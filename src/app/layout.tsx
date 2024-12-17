@@ -3,16 +3,16 @@ import './globals.css';
 
 import { Noto_Sans_KR } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
-
 import * as sentry from '@sentry/nextjs';
-
 import type { Metadata } from 'next';
+import { ReactNode } from 'react';
 import { QueryProvider } from '@/components';
+
 export const metadata: Metadata = {
   title: 'Velog Dashboard',
   description: 'Velog 통계를 확인할 수 있는 Velog Dashboard',
   icons: {
-    icon: '/favicon.jpg',
+    icon: '/favicon.png',
   },
 };
 
@@ -23,7 +23,7 @@ const NotoSansKr = Noto_Sans_KR({
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="ko">

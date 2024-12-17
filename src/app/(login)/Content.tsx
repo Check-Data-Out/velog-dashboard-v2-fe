@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { useMutation } from '@tanstack/react-query';
 import { instance } from '@/api';
-import { Button, Input } from '@/components/common';
+import { Input, Button } from '@/components';
 import { NotFoundError } from '@/errors';
 
 interface FormVo {
