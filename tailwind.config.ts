@@ -1,9 +1,9 @@
 import type { Config } from 'tailwindcss';
-import { colors, sizes, screens as customScreen } from './src/constants';
+import { COLORS, SIZES, SCREENS as CUSTOMSCREENS } from './src/constants';
 
-const screens: Record<string, string> = {};
+const SCREENS: Record<string, string> = {};
 
-Object.entries(customScreen).forEach((i) => (screens[i[0]] = i[1] + 'px'));
+Object.entries(CUSTOMSCREENS).forEach((i) => (SCREENS[i[0]] = i[1] + 'px'));
 
 const config: Config = {
   content: [
@@ -11,9 +11,9 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: { colors, screens: screens },
+  theme: { COLORS, screens: SCREENS },
   plugins: [],
-  safelist: Object.values(sizes),
+  safelist: Object.values(SIZES),
 };
 
 export default config;

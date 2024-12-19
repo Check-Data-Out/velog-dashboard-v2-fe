@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { colors, screens } from '@/constants';
+import { COLORS, SCREENS } from '@/constants';
 import { useResponsive } from '@/hooks';
 import { Icon, nameType } from '@/components';
 
@@ -15,21 +15,21 @@ const layouts: Array<{ icon: nameType; title: string; path: string }> = [
 ];
 
 const defaultStyle =
-  'w-[180px] h-[65px] transition-all duration-300 shrink-0 max-mbi:w-[65px] ';
+  'w-[180px] h-[65px] transition-all duration-300 shrink-0 max-MBI:w-[65px] ';
 const navigateStyle = 'gap-5 flex items-center justify-center cursor-pointer ';
 
 export const Header = () => {
   const width = useResponsive();
   const path = usePathname();
   const textStyle = (currentPath: string) =>
-    `${currentPath === path ? 'text-text-main' : 'text-text-alt'} text-[20px] shrink-0 transition-all duration-300 max-tbl:text-[18px] max-mbi:hidden `;
+    `${currentPath === path ? 'text-text-main' : 'text-text-alt'} text-[20px] shrink-0 transition-all duration-300 max-TBL:text-[18px] max-MBI:hidden `;
 
   return (
-    <nav className="w-full max-mbi:flex max-mbi:justify-center">
+    <nav className="w-full max-MBI:flex max-MBI:justify-center">
       <div className="flex w-fit relative">
         <div
           style={{
-            transform: `translateX(${layouts.findIndex((i) => i.path === path) * (width < screens.mbi ? 65 : 180)}px)`,
+            transform: `translateX(${layouts.findIndex((i) => i.path === path) * (width < SCREENS.MBI ? 65 : 180)}px)`,
           }}
           className={`${defaultStyle} h-[2px_!important] bg-text-main absolute bottom-0 left-0`}
         />
@@ -41,7 +41,7 @@ export const Header = () => {
           >
             <Icon
               size={25}
-              color={colors.text[i.path === path ? 'main' : 'alt']}
+              color={COLORS.text[i.path === path ? 'main' : 'alt']}
               name={i.icon}
             />
             <span className={textStyle(i.path)}>{i.title}</span>

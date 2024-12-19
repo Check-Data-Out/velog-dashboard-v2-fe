@@ -1,24 +1,24 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 
-import { sizes, sizeType } from '@/constants/sizes';
+import { SIZES, sizeType } from '@/constants/sizes';
 
 interface IProp
   extends DetailedHTMLProps<
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  form?: keyof typeof forms;
+  form?: keyof typeof FORMS;
   size: sizeType;
 }
 
-const forms = {
+const FORMS = {
   LARGE: 'h-[55px] rounded-sm',
   SMALL: 'pl-[20px] pr-[20px] w-fit h-8 rounded-[4px]',
 };
 
 export const Button = ({ form = 'SMALL', size, children, ...rest }: IProp) => (
   <button
-    className={`bg-primary-main hover:bg-primary-sub disabled:bg-border-sub disabled:cursor-not-allowed text-bg-main font-bold ${forms[form]} ${sizes[size]}`}
+    className={`bg-primary-main hover:bg-primary-sub disabled:bg-border-sub disabled:cursor-not-allowed text-bg-main font-bold ${FORMS[form]} ${SIZES[size]}`}
     {...rest}
   >
     {children}

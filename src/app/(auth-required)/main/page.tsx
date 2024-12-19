@@ -57,7 +57,7 @@ const datas = [
 
 export default function Page() {
   return (
-    <div className="flex w-full h-full gap-[30px] overflow-hidden max-mbi:flex-col max-tbl:gap-[20px]">
+    <div className="flex w-full h-full gap-[30px] overflow-hidden max-MBI:flex-col max-TBL:gap-[20px]">
       <Summary
         total_likes={12345}
         total_posts={12}
@@ -65,7 +65,7 @@ export default function Page() {
         views={123}
         likes={321}
       />
-      <div className="w-full h-full flex flex-col gap-[30px] overflow-y-auto max-tbl:gap-[20px]">
+      <div className="w-full h-full flex flex-col gap-[30px] overflow-y-auto max-TBL:gap-[20px]">
         {datas?.map((i) => <Section key={i.id} {...i} />)}
       </div>
     </div>

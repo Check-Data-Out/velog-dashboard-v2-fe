@@ -1,4 +1,4 @@
-export const colors = {
+export const COLORS = {
   bg: {
     main: '#121212',
     sub: '#1E1E1E',
@@ -24,4 +24,4 @@ export const colors = {
   },
 };
 
-export type colorType = Record<keyof typeof colors, 'main' | 'sub' | 'alt'>;
+export type colorType = Record<keyof typeof COLORS, 'main' | 'sub' | 'alt'>;

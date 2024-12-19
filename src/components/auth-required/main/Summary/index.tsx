@@ -24,7 +24,7 @@ export const Summary = ({
 
   return (
     <>
-      <aside className="flex flex-col h-full gap-[30px] max-tbl:gap-[20px] max-mbi:hidden">
+      <aside className="flex flex-col h-full gap-[30px] max-TBL:gap-[20px] max-MBI:hidden">
         <SidebarContent
           title="전체 조회수"
           content={total_views}
@@ -39,7 +39,7 @@ export const Summary = ({
         <SidebarContent title="총 게시글 수" content={total_posts} />
       </aside>
       <section
-        className={`mbi:hidden flex flex-col w-full bg-bg-sub rounded-[4px] cursor-pointer`}
+        className={`MBI:hidden flex flex-col w-full bg-bg-sub rounded-[4px] cursor-pointer`}
         onClick={() => setOpen((prev) => !prev)}
       >
         <div className="text-text-alt flex items-center justify-center text-[15px] w-full h-[52px] gap-[10px] font-medium shrink-0">

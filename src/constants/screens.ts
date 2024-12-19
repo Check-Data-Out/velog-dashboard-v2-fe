@@ -1,5 +1,5 @@
-export const screens = {
-  dsk: 1512,
-  tbl: 1194,
-  mbi: 834,
+export const SCREENS = {
+  DSK: 1512,
+  TBL: 1194,
+  MBI: 834,
 };
