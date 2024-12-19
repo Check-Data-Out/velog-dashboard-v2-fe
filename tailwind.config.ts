@@ -11,7 +11,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: { COLORS, screens: SCREENS },
+  theme: { colors: COLORS, screens: SCREENS },
   plugins: [],
   safelist: Object.values(SIZES),
 };
