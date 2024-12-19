@@ -23,7 +23,7 @@ const abortPolyfill = (ms: number) => {
 };
 
 const fetch = returnFetch({
-  baseUrl: BASE_URL,
+  baseUrl: BASE_URL + '/api',
   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   interceptors: {
     response: async (response) => {
