@@ -1,7 +1,7 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
+import * as sentry from '@sentry/nextjs';
 
 import { ServerNotRespondingError } from '@/errors';
-import * as sentry from '@sentry/nextjs';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const ABORT_MS = Number(process.env.NEXT_PUBLIC_ABORT_MS);
@@ -23,7 +23,7 @@ const abortPolyfill = (ms: number) => {
 };
 
 const fetch = returnFetch({
-  baseUrl: BASE_URL,
+  baseUrl: BASE_URL + '/api',
   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   interceptors: {
     response: async (response) => {

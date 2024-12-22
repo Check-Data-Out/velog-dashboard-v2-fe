@@ -2,8 +2,19 @@ import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-};
+  experimental: { forceSwcTransforms: true },
 
+  webpack: (config, options) => {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      use: [
+        options.defaultLoaders.babel,
+        { loader: '@svgr/webpack', options: { babel: false } },
+      ],
+    });
+    return config;
+  },
+};
 export default withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options

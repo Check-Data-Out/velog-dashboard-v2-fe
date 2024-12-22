@@ -1,21 +1,21 @@
 import {
   DetailedHTMLProps,
-  InputHTMLAttributes,
-  forwardRef,
   ForwardedRef,
+  forwardRef,
+  InputHTMLAttributes,
 } from 'react';
-import { sizeStyle, sizeStyleType } from './size';
+import { SIZES, sizeType } from '@/constants';
 
 interface IProp
   extends Omit<
     DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
     'size'
   > {
-  form?: keyof typeof formStyle;
-  size: sizeStyleType;
+  form?: keyof typeof FORMS;
+  size: sizeType;
 }
 
-const formStyle = {
+const FORMS = {
   LARGE: 'p-4 h-[48px] focus:border-primary-sub rounded-sm',
   SMALL: 'p-2 h-[38px] focus:border-border-alt rounded-[4px]',
 };
@@ -26,9 +26,9 @@ export const Input = forwardRef<HTMLInputElement, IProp>(
     ref?: ForwardedRef<HTMLInputElement> | undefined,
   ) => (
     <input
-      ref={ref}
-      className={`bg-bg-sub border-[1px] border-border-sub placeholder:text-text-alt text-text-main text-[16px] font-light ${formStyle[form]} ${sizeStyle[size]} ${rest.className}`}
       {...rest}
+      ref={ref}
+      className={`bg-bg-sub border-[1px] border-border-sub placeholder:text-text-alt text-text-main text-[16px] font-light ${FORMS[form]} ${SIZES[size]} ${rest.className}`}
     />
   ),
 );
