@@ -1,16 +1,16 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { instance } from '@/apis';
+import { instance } from '@/apis/instance.request';
 
 type VisitDataType = {
   loadDate?: string;
   unloadDate?: string;
 };
 
-type messages = '01' | '02' | '03' | '04' | '99';
+type MessageType = '01' | '02' | '03' | '04' | '99';
 
-export const trackUserEvent = (event_type: messages) => {
+export const trackUserEvent = (event_type: MessageType) => {
   const { pathname: path } = window.location;
   instance('/event', { body: { path, event_type }, method: 'POST' });
 };

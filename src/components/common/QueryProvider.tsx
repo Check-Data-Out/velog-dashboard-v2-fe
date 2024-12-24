@@ -1,8 +1,8 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { toast } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
+import { ReactNode } from 'react';
 
 const client = new QueryClient({
   defaultOptions: {

@@ -1,14 +1,14 @@
 import { JSXElementConstructor, SVGProps } from 'react';
 import * as Icons from './icons';
 
-export type nameType = keyof typeof Icons;
+export type NameType = keyof typeof Icons;
 type iconType = Record<
-  nameType,
+  NameType,
   JSXElementConstructor<SVGProps<SVGSVGElement>>
 >;
 
 interface IProp extends SVGProps<SVGSVGElement> {
-  name: nameType;
+  name: NameType;
   size?: number;
   color?: string;
   rotate?: keyof typeof rotates;
