@@ -1,6 +1,6 @@
 import { NotFoundError } from '@/errors';
 import { LoginVo } from '@/types';
-import { instance } from '.';
+import { instance } from './instance.request';
 
 export const login = async (body: LoginVo) =>
   await instance(
