@@ -51,7 +51,7 @@ export const Graph = () => {
   const isMBI = width < SCREENS.MBI;
 
   return (
-    <div className="w-full bg-bg-sub pb-7 max-MBI:pb-14 flex flex-col items-center px-8 gap-[30px]">
+    <div className="w-full bg-BG-SUB pb-7 max-MBI:pb-14 flex flex-col items-center px-8 gap-[30px]">
       <div className="flex items-center gap-5 max-MBI:gap-[10px] max-MBI:flex-col">
         <div className="flex items-center gap-[inherit]">
           <Input

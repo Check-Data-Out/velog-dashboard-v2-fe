@@ -17,7 +17,7 @@ export const SidebarContent = ({
   prefix = '개',
 }: IProp) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-[10px] bg-bg-sub w-[375px] p-4 rounded-[4px] h-full max-TBL:w-[280px]">
+    <div className="flex flex-col items-center justify-center gap-[10px] bg-BG-SUB w-[375px] p-4 rounded-[4px] h-full max-TBL:w-[280px]">
       <span className="text-TEXT-ALT font-medium text-[20px] max-TBL:text-[18px] transition-all">
         {title}
       </span>
