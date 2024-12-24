@@ -18,9 +18,9 @@ export const BarContent = ({
 }: IProp) => {
   return (
     <div className="w-full flex justify-between items-center">
-      <span className="text-[15px] font-medium text-text-alt">{title}</span>
+      <span className="text-[15px] font-medium text-TEXT-ALT">{title}</span>
       <span
-        className={`flex items-center font-bold text-text-main text-[25px] ${increasement ? afterContent : ''}`}
+        className={`flex items-center font-bold text-TEXT-MAIN text-[25px] ${increasement ? afterContent : ''}`}
         data-increasement={parseNumber(increasement ? increasement : 0)}
       >
         {parseNumber(content) + prefix}
