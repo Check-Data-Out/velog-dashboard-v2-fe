@@ -13,12 +13,12 @@ interface IProp
 
 const FORMS = {
   LARGE: 'h-[55px] rounded-sm',
-  SMALL: 'pl-[20px] pr-[20px] w-fit h-8 rounded-[4px]',
+  SMALL: 'pl-[20px] pr-[20px] w-[fit-content_!important] h-8 rounded-[4px]',
 };
 
 export const Button = ({ form = 'SMALL', size, children, ...rest }: IProp) => (
   <button
-    className={`bg-primary-main hover:bg-primary-sub disabled:bg-border-sub disabled:cursor-not-allowed text-bg-main font-bold ${FORMS[form]} ${SIZES[size]}`}
+    className={`bg-primary-main hover:bg-primary-sub disabled:bg-border-sub disabled:cursor-not-allowed text-bg-main shrink-0 text-[16px] max-TBL:text-[14px] font-bold ${FORMS[form]} ${SIZES[size]}`}
     {...rest}
   >
     {children}
