@@ -60,14 +60,14 @@ export default function Page() {
     <div className="flex w-full h-full gap-[30px] overflow-hidden max-MBI:flex-col max-TBL:gap-[20px]">
       <Summary views={12345} likes={54321} posts={12} />
       <div className="w-full h-full flex flex-col gap-[30px] max-TBL:gap-[20px]">
-        <div className="flex flex-col items-center p-[25px] bg-bg-sub gap-5 rounded-[4px]">
-          <span className="text-text-alt font-semibold text-[18px] max-MBI:text-[16px] MBI:hidden">
+        <div className="flex flex-col items-center p-[25px] bg-BG-SUB gap-5 rounded-[4px]">
+          <span className="text-TEXT-ALT font-semibold text-[18px] max-MBI:text-[16px] MBI:hidden">
             마지막 업데이트 : 2024-12-20, 20:13:34
           </span>
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center gap-5">
               <Button size="SMALL">새로고침</Button>
-              <span className="text-text-alt font-semibold text-[18px] max-TBL:text-[16px] max-MBI:hidden">
+              <span className="text-TEXT-ALT font-semibold text-[18px] max-TBL:text-[16px] max-MBI:hidden">
                 마지막 업데이트 : 2024-12-20, 20:13:34
               </span>
             </div>

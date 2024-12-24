@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
-
 import { SIZES, SizeType } from '@/constants';
 
 interface IProp
@@ -19,7 +18,7 @@ const FORMS = {
 export const Button = ({ form = 'SMALL', size, children, ...rest }: IProp) => (
   <button
     {...rest}
-    className={`bg-primary-main hover:bg-primary-sub disabled:bg-border-sub disabled:cursor-not-allowed text-bg-main shrink-0 text-[16px] max-TBL:text-[14px] font-bold ${FORMS[form]} ${SIZES[size]} ${rest.className}`}
+    className={`bg-PRIMARY-MAIN hover:bg-PRIMARY-SUB disabled:bg-BORDER-SUB disabled:cursor-not-allowed text-bg-main shrink-0 text-[16px] max-TBL:text-[14px] font-bold ${FORMS[form]} ${SIZES[size]} ${rest.className}`}
   >
     {children}
   </button>

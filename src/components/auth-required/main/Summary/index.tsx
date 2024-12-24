@@ -31,10 +31,10 @@ export const Summary = ({ posts, views, likes }: IProp) => {
         <SidebarContent title="총 게시글 수" content={posts} />
       </aside>
       <section
-        className={`MBI:hidden flex flex-col w-full bg-bg-sub rounded-[4px] cursor-pointer`}
+        className={`MBI:hidden flex flex-col w-full bg-BG-SUB rounded-[4px] cursor-pointer`}
         onClick={() => setOpen((prev) => !prev)}
       >
-        <div className="text-text-alt flex items-center justify-center text-[15px] w-full h-[52px] gap-[10px] font-medium shrink-0">
+        <div className="text-TEXT-ALT flex items-center justify-center text-[15px] w-full h-[52px] gap-[10px] font-medium shrink-0">
           <span>요약 정보 {open ? '펼치기' : '접기'}</span>
           <Icon name="Arrow" size={17} rotate={open ? 'up' : 'down'} />
         </div>

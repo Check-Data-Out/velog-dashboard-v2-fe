@@ -8,7 +8,7 @@ interface IProp {
 }
 
 const afterContent =
-  'before:text-primary-sub before:content-[attr(data-increasement)_"↑"] before:mr-2 before:text-[18px]';
+  'before:text-PRIMARY-SUB before:content-[attr(data-increasement)_"↑"] before:mr-2 before:text-[18px]';
 
 export const BarContent = ({
   title,

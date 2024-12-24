@@ -40,8 +40,8 @@ const data = {
       label: 'Views',
       data: [1032, 941, 513, 752, 469, 310],
       fill: true,
-      backgroundColor: COLORS.text.main,
-      borderColor: COLORS.primary.main,
+      backgroundColor: COLORS.TEXT.MAIN,
+      borderColor: COLORS.PRIMARY.MAIN,
     },
   ],
 };
@@ -60,7 +60,7 @@ export const Graph = () => {
             placeholder="시작 날짜"
             type="date"
           />
-          <span className="font-bold text-[20px] text-text-main">~</span>
+          <span className="font-bold text-[20px] text-TEXT-MAIN">~</span>
           <Input
             size={isMBI ? 'SMALL' : 'MEDIUM'}
             form="SMALL"
@@ -86,13 +86,13 @@ export const Graph = () => {
             x: {
               axis: 'x',
               grid: {
-                color: COLORS.border.sub,
+                color: COLORS.BORDER.SUB,
               },
             },
             y: {
               axis: 'y',
               grid: {
-                color: COLORS.border.sub,
+                color: COLORS.BORDER.SUB,
               },
             },
           },

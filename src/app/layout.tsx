@@ -20,7 +20,7 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">
-      <body className={`${NotoSansKr.className} w-full h-screen bg-bg-main`}>
+      <body className={`${NotoSansKr.className} w-full h-screen bg-BG-MAIN`}>
         <sentry.ErrorBoundary>
           <QueryProvider>
             <ToastContainer autoClose={2000} />

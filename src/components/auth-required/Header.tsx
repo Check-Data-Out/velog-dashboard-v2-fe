@@ -6,9 +6,9 @@ import { usePathname } from 'next/navigation';
 
 import { COLORS, SCREENS } from '@/constants';
 import { useResponsive } from '@/hooks';
-import { Icon, nameType } from '@/components';
+import { Icon, NameType } from '@/components';
 
-const layouts: Array<{ icon: nameType; title: string; path: string }> = [
+const layouts: Array<{ icon: NameType; title: string; path: string }> = [
   { icon: 'Analytics', title: '내 통계', path: '/main' },
   { icon: 'LeaderBoards', title: '리더보드', path: '/leaderboards' },
   { icon: 'Compare', title: '통계 비교', path: '/compare' },
@@ -22,7 +22,7 @@ export const Header = () => {
   const width = useResponsive();
   const path = usePathname();
   const textStyle = (currentPath: string) =>
-    `${currentPath === path ? 'text-text-main' : 'text-text-alt'} text-[20px] shrink-0 transition-all duration-300 max-TBL:text-[18px] max-MBI:hidden `;
+    `${currentPath === path ? 'text-TEXT-MAIN' : 'text-TEXT-ALT'} text-[20px] shrink-0 transition-all duration-300 max-TBL:text-[18px] max-MBI:hidden `;
 
   return (
     <nav className="w-full max-MBI:flex max-MBI:justify-center">
@@ -31,7 +31,7 @@ export const Header = () => {
           style={{
             transform: `translateX(${layouts.findIndex((i) => i.path === path) * (width < SCREENS.MBI ? 65 : 180)}px)`,
           }}
-          className={`${defaultStyle} h-[2px_!important] bg-text-main absolute bottom-0 left-0`}
+          className={`${defaultStyle} h-[2px_!important] bg-TEXT-MAIN absolute bottom-0 left-0`}
         />
         {layouts.map((i) => (
           <Link
@@ -41,7 +41,7 @@ export const Header = () => {
           >
             <Icon
               size={25}
-              color={COLORS.text[i.path === path ? 'main' : 'alt']}
+              color={COLORS.TEXT[i.path === path ? 'MAIN' : 'ALT']}
               name={i.icon}
             />
             <span className={textStyle(i.path)}>{i.title}</span>
