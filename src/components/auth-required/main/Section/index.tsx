@@ -20,7 +20,7 @@ export const Section = (p: IProp) => {
   return (
     <section className="flex flex-col w-full h-fit rounded-[4px] relative">
       <div
-        className={`p-[25px] min-h-[87.5px] cursor-pointer bg-bg-sub max-xl:flex-col flex  justify-between items-center gap-4 max-MBI:flex-col max-MBI:pb-[35px]`}
+        className={`p-[25px] min-h-[87.5px] cursor-pointer bg-bg-sub max-xl:flex-col flex justify-between items-center gap-4 max-MBI:flex-col max-MBI:pb-[35px]`}
         onClick={() => setOpen((prev) => !prev)}
       >
         <span
