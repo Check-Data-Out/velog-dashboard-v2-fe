@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Section, Summary } from '@/components';
+import { Button, Dropdown, Section, Summary } from '@/components';
 
 export const metadata: Metadata = {
   title: '대시보드',
@@ -58,15 +58,29 @@ const datas = [
 export default function Page() {
   return (
     <div className="flex w-full h-full gap-[30px] overflow-hidden max-MBI:flex-col max-TBL:gap-[20px]">
-      <Summary
-        total_likes={12345}
-        total_posts={12}
-        total_views={54321}
-        views={123}
-        likes={321}
-      />
-      <div className="w-full h-full flex flex-col gap-[30px] overflow-y-auto max-TBL:gap-[20px]">
-        {datas?.map((i) => <Section key={i.id} {...i} />)}
+      <Summary views={12345} likes={54321} posts={12} />
+      <div className="w-full h-full flex flex-col gap-[30px] max-TBL:gap-[20px]">
+        <div className="flex flex-col items-center p-[25px] bg-bg-sub gap-5 rounded-[4px]">
+          <span className="text-text-alt font-semibold text-[18px] max-MBI:text-[16px] MBI:hidden">
+            마지막 업데이트 : 2024-12-20, 20:13:34
+          </span>
+          <div className="w-full flex items-center justify-between">
+            <div className="flex items-center gap-5">
+              <Button size="SMALL">새로고침</Button>
+              <span className="text-text-alt font-semibold text-[18px] max-TBL:text-[16px] max-MBI:hidden">
+                마지막 업데이트 : 2024-12-20, 20:13:34
+              </span>
+            </div>
+            <div className="flex items-center gap-5">
+              <Dropdown options={['오름차순', '내림차순']} />
+              <Dropdown options={['시간순', '조회순', '좋아요순', '댓글순']} />
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full h-full flex flex-col gap-[30px] overflow-y-auto max-TBL:gap-[20px]">
+          {datas?.map((i) => <Section key={i.id} {...i} />)}
+        </div>
       </div>
     </div>
   );
