@@ -4,7 +4,7 @@ import {
   forwardRef,
   InputHTMLAttributes,
 } from 'react';
-import { SIZES, sizeType } from '@/constants';
+import { SIZES, SizeType } from '@/constants';
 
 interface IProp
   extends Omit<
@@ -12,7 +12,7 @@ interface IProp
     'size'
   > {
   form?: keyof typeof FORMS;
-  size: sizeType;
+  size: SizeType;
 }
 
 const FORMS = {

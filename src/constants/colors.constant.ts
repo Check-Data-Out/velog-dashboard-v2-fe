@@ -24,4 +24,4 @@ export const COLORS = {
   },
 };
 
-export type colorType = Record<keyof typeof COLORS, 'main' | 'sub' | 'alt'>;
+export type ColorType = Record<keyof typeof COLORS, 'main' | 'sub' | 'alt'>;

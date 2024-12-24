@@ -1,4 +1,4 @@
-import { CustomError } from './instance';
+import { CustomError } from './instance.error';
 
 export class TimeoutError extends CustomError {
   constructor() {

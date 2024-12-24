@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { instance } from '@/api';
+import { instance } from '@/apis';
 
 type VisitDataType = {
   loadDate?: string;

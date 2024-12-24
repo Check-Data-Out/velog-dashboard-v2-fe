@@ -1,3 +1,3 @@
-export * from './sizes';
-export * from './colors';
-export * from './screens';
+export * from './sizes.constant';
+export * from './colors.constant';
+export * from './screens.constant';

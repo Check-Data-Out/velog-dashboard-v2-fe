@@ -4,4 +4,4 @@ export const SIZES = {
   SMALL: 'w-[100px]',
 };
 
-export type sizeType = keyof typeof SIZES;
+export type SizeType = keyof typeof SIZES;
