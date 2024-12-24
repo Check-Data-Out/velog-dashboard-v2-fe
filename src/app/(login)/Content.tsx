@@ -8,6 +8,8 @@ import { Input, Button } from '@/components';
 import { LoginVo } from '@/types';
 import { login } from '@/apis';
 
+const responsiveStyle =
+  "max-MBI:before:inline-block max-MBI:before:bg-[url('/favicon.png')] max-MBI:before:[background-size:_100%_100%] max-MBI:before:w-[64px] max-MBI:before:h-[64px]";
 export const Content = () => {
   const { replace } = useRouter();
 
@@ -32,7 +34,9 @@ export const Content = () => {
           <Image width={96} height={96} src="/favicon.png" alt="로고 이미지" />
         </div>
         <div className="w-[500px] h-full flex flex-col gap-[30px] items-center justify-center max-MBI:w-full">
-          <h1 className="font-medium text-[32px] text-TEXT-MAIN max-MBI:text-[22px] max-MBI:font-normal flex items-center gap-5 before:inline-block before:bg-[url('/favicon.png')] before:[background-size:_100%_100%] before:w-[64px] before:h-[64px]">
+          <h1
+            className={`font-medium text-[32px] text-TEXT-MAIN max-MBI:text-[22px] max-MBI:font-normal flex items-center gap-5 ${responsiveStyle}`}
+          >
             Velog Dashboard
           </h1>
           <Input
