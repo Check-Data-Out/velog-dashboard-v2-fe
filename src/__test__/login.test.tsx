@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import fetchMock from 'jest-fetch-mock';
 import { renderWithQueryClient } from '@/utils/componentUtil';
 import { TimeoutError } from '@/errors';
-import { default as Login } from '@/app/(login)/page';
+import { default as Login } from '@/app/(with-tracker)/(login)/page';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),

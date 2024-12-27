@@ -27,10 +27,7 @@ export const TrackVisitEvent = () => {
       ...data.current,
       unloadDate: date,
     };
-    navigator.sendBeacon(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/stay`,
-      data.current.toString(),
-    );
+    instance('/stay', { body: data.current, method: 'POST', keepalive: true });
   };
 
   useEffect(() => {
