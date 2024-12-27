@@ -12,7 +12,16 @@ import pluginImport from 'eslint-plugin-import';
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
-  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        React: true,
+        NodeJS: true,
+      },
+    },
+  },
   ...tseslint.strict,
   ...tseslint.recommended,
   pluginJs.configs.recommended,
