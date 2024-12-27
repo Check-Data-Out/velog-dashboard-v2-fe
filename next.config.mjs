@@ -14,6 +14,10 @@ const nextConfig = {
     });
     return config;
   },
+
+  images: {
+    domains: ['velog.velcdn.com'],
+  },
 };
 export default withSentryConfig(nextConfig, {
   // For all available options, see:
