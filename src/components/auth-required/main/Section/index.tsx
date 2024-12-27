@@ -1,42 +1,35 @@
 'use client';
 
 import { useState } from 'react';
-import { Icon } from '@/components';
 import { parseNumber } from '@/utils/numberUtil';
 import { COLORS } from '@/constants';
+import { Icon } from '@/components';
+import { PostType } from '@/types';
 import { Graph } from './Graph';
 
-interface IProp {
-  views: number;
-  date: string;
-  title: string;
-  likes: number;
-  id: string;
-}
-
-export const Section = (p: IProp) => {
+export const Section = (p: PostType) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="flex flex-col w-full h-fit rounded-[4px] relative">
+    <section className="flex flex-col w-full h-fit relative">
       <div
-        className={`p-[25px] min-h-[87.5px] cursor-pointer bg-BG-SUB max-xl:flex-col flex justify-between items-center gap-4 max-MBI:flex-col max-MBI:pb-[35px]`}
+        className={`p-[25px] h-fit cursor-pointer bg-BG-SUB flex justify-between items-center gap-4 ${!open ? 'rounded-[4px] max-MBI:pb-[35px_!important]' : 'rounded-t-[4px]'} max-xl:flex-col max-MBI:flex-col max-MBI:p-[20px]`}
         onClick={() => setOpen((prev) => !prev)}
       >
         <span
-          className={`text-[25px] font-normal text-TEXT-MAIN after:text-TEXT-ALT after:text-[20px] items-center flex gap-3 after:font-medium MBI:after:content-[attr(data-date)] max-TBL:text-[21px] max-TBL:after:text-[18px]`}
-          data-date={p.date.split('T')[0]}
+          className={`text-T3 text-TEXT-MAIN text-center items-center gap-3 after:text-TEXT-ALT after:text-ST4 MBI:after:content-[attr(data-date)] MBI:flex max-TBL:after:text-ST5 max-TBL:text-T4 max-MBI:text-ST4`}
+          data-date={p.createdAt.split('T')[0]}
         >
-          {p.title.length > 19 ? p.title.slice(0, 19).trim() + '..' : p.title}
+          {p.title.length > 30 ? p.title.slice(0, 29).trim() + '..' : p.title}
         </span>
-        <div className="flex items-center text-[20px] font-medium justify-between text-TEXT-ALT gap-1 max-TBL:text-[15px] max-MBI:w-full">
-          <span className="MBI:hidden">{p.date.split('T')[0]}</span>
-          <div className="flex items-center gap-[6px]">
+        <div className="flex items-center text-ST4 justify-between text-TEXT-ALT gap-1 max-TBL:text-ST5 ">
+          <span className="MBI:hidden">{p.createdAt.split('T')[0]}</span>
+          <div className="flex flex-wrap items-center gap-[6px]">
             <span className='after:content-["/"] after:ml-2'>
-              {parseNumber(p.views * 100)}
-            </span>
-            <span className="flex items-center after:ml-2 before:text-PRIMARY-SUB before:content-['↑'] before:mr-1 after:content-['/']">
               {parseNumber(p.views)}
+            </span>
+            <span className="flex items-center before:text-PRIMARY-SUB before:content-['↑'] before:mr-1 after:ml-2 after:content-['/']">
+              {parseNumber(p.views * 100)}
             </span>
             <Icon
               name="Like"
@@ -55,7 +48,7 @@ export const Section = (p: IProp) => {
           name="Arrow"
           size={17}
           rotate={open ? 'up' : 'down'}
-          className="MBI:hidden absolute bottom-3"
+          className="MBI:hidden absolute bottom-[5px]"
         />
       </div>
       {open && <Graph />}

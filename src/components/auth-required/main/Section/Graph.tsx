@@ -51,23 +51,27 @@ export const Graph = () => {
   const isMBI = width < SCREENS.MBI;
 
   return (
-    <div className="w-full bg-BG-SUB pb-7 max-MBI:pb-14 flex flex-col items-center px-8 gap-[30px]">
-      <div className="flex items-center gap-5 max-MBI:gap-[10px] max-MBI:flex-col">
-        <div className="flex items-center gap-[inherit]">
+    <div className="w-full bg-BG-SUB flex flex-col items-center px-[25px] pb-[30px] gap-[30px] max-MBI:px-5 max-MBI:pb-10">
+      <div className="flex items-center gap-5 justify-center flex-wrap max-MBI:flex-col max-TBL:gap-[10px]">
+        <div className="flex items-center gap-[inherit] flex-wrap justify-center">
           <Input
             size={isMBI ? 'SMALL' : 'MEDIUM'}
             form="SMALL"
             placeholder="시작 날짜"
             type="date"
           />
-          <span className="font-bold text-[20px] text-TEXT-MAIN">~</span>
+          <span className="text-ST4 max-TBL:text-T5 text-TEXT-MAIN">~</span>
           <Input
             size={isMBI ? 'SMALL' : 'MEDIUM'}
             form="SMALL"
             placeholder="종료 날짜"
             type="date"
           />
-          <Dropdown options={['조회수', '좋아요', '댓글']} />
+          <Dropdown
+            onChange={() => {}}
+            defaultValue={'조회수'}
+            options={['조회수', '좋아요', '댓글']}
+          />
         </div>
 
         <Button size="SMALL">조회</Button>
