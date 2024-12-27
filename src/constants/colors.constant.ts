@@ -22,6 +22,7 @@ export const COLORS = {
     MAIN: '#FFC9C9',
     SUB: '#FFA8A8',
   },
+  TRANSPARENT: '#00000000',
 };
 
 export type ColorType = Record<keyof typeof COLORS, 'MAIN' | 'SUB' | 'ALT'>;
