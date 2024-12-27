@@ -1,7 +1,6 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
 import * as sentry from '@sentry/nextjs';
 import { ServerNotRespondingError } from '@/errors';
-export * from './login.request';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const ABORT_MS = Number(process.env.NEXT_PUBLIC_ABORT_MS);
@@ -16,6 +15,13 @@ if (!BASE_URL) {
 
 type ErrorObject = Record<string, Error>;
 
+type SuccessType<T> = {
+  success: true;
+  message: string;
+  data: T;
+  error: null;
+};
+
 const abortPolyfill = (ms: number) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), ms);
@@ -24,7 +30,14 @@ const abortPolyfill = (ms: number) => {
 
 const fetch = returnFetch({
   baseUrl: BASE_URL,
-  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    access_token:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYzc1MDcyNDAtMDkzYi0xMWVhLTlhYWUtYTU4YTg2YmIwNTIwIiwiaWF0IjoxNzM1MDM4MTQ5LCJleHAiOjE3MzUxMjQ1NDksImlzcyI6InZlbG9nLmlvIiwic3ViIjoiYWNjZXNzX3Rva2VuIn0.ycWoz-tJC21GlWoNpmle2lE68cplIyBYtMd7lN7sGrY',
+    refresh_token:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYzc1MDcyNDAtMDkzYi0xMWVhLTlhYWUtYTU4YTg2YmIwNTIwIiwidG9rZW5fSWQiOiI4ZmJlNGQ1ZC0zZjk1LTQ3MzUtYjgyNC1lOTZiMGFkNDFhMDQiLCJpYXQiOjE3MzQ5MzkzMDUsImV4cCI6MTczNzUzMTMwNSwiaXNzIjoidmVsb2cuaW8iLCJzdWIiOiJyZWZyZXNoX3Rva2VuIn0.Vfxgz0agilzDIWnYDYryXPz4bj_CLH1UAVUtTPdgey4',
+  },
   interceptors: {
     response: async (response) => {
       if (!response.ok) {
@@ -38,11 +51,11 @@ const fetch = returnFetch({
   },
 });
 
-export const instance = async (
+export const instance = async <I, R>(
   input: URL | RequestInfo,
-  init?: Omit<NonNullable<FetchArgs[1]>, 'body'> & { body: object },
+  init?: Omit<NonNullable<FetchArgs[1]>, 'body'> & { body: I | object },
   error?: ErrorObject,
-) => {
+): Promise<R> => {
   try {
     const data = await fetch('/api' + input, {
       ...init,
@@ -52,7 +65,7 @@ export const instance = async (
         : abortPolyfill(ABORT_MS),
     });
 
-    return data as Awaited<ReturnType<typeof fetch>>;
+    return (data.body as unknown as SuccessType<R>).data;
   } catch (err: any) {
     const context = err as Response;
     sentry.setContext('Request', {
