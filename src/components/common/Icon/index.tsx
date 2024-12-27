@@ -1,13 +1,12 @@
-import { JSXElementConstructor, SVGProps } from 'react';
 import * as Icons from './icons';
 
 export type NameType = keyof typeof Icons;
 type iconType = Record<
   NameType,
-  JSXElementConstructor<SVGProps<SVGSVGElement>>
+  React.JSXElementConstructor<React.SVGProps<SVGSVGElement>>
 >;
 
-interface IProp extends SVGProps<SVGSVGElement> {
+interface IProp extends React.SVGProps<SVGSVGElement> {
   name: NameType;
   size?: number;
   color?: string;
@@ -23,7 +22,7 @@ const rotates = {
 
 export const Icon = ({
   name,
-  size,
+  size = 30,
   color = '#ACACAC',
   rotate = 'up',
   ...rest
@@ -34,9 +33,9 @@ export const Icon = ({
     <Comp
       {...rest}
       style={{ color }}
-      width={size ? size : 'auto'}
-      height={size ? size : 'auto'}
-      className={`${rotates[rotate]} transition-all duration-300 shrink-0 ${rest.className}`}
+      width={size}
+      height={size}
+      className={`transition-all duration-300 shrink-0 ${rotates[rotate]} ${rest.className}`}
     />
   );
 };

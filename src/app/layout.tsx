@@ -1,6 +1,6 @@
 import { Noto_Sans_KR } from 'next/font/google';
-import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import * as sentry from '@sentry/nextjs';
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
@@ -20,7 +20,7 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">
-      <body className={`${NotoSansKr.className} w-full h-screen bg-BG-MAIN`}>
+      <body className={`${NotoSansKr.className} w-full bg-BG-MAIN`}>
         <sentry.ErrorBoundary>
           <QueryProvider>
             <ToastContainer autoClose={2000} />

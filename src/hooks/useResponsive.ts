@@ -5,19 +5,18 @@ export const useResponsive = (): number => {
   const [width, setWidth] = useState<number>(1024);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setWidth(window.innerWidth);
-      const handleResize = () => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          setWidth(window.innerWidth);
-        }, 80);
-      };
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    } else {
+    if (typeof window === 'undefined') {
       return () => window.removeEventListener('resize', () => null);
     }
+    setWidth(window.innerWidth);
+    const handleResize = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        setWidth(window.innerWidth);
+      }, 80);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return width;

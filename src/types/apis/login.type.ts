@@ -1,4 +1,4 @@
-export interface LoginVo {
+export type LoginVo = {
   accessToken: string;
   refreshToken: string;
-}
+};
