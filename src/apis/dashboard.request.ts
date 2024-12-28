@@ -16,5 +16,3 @@ export const postList = async (sort: SortType, cursor?: number) =>
 
 export const postSummary = async () =>
   await instance<null, PostSummaryDto>(PATHS.SUMMARY);
-
-export const me = async () => await instance<null, any>(PATHS.ME);
