@@ -29,7 +29,7 @@ export const Section = (p: PostType) => {
               {parseNumber(p.views)}
             </span>
             <span className="flex items-center before:text-PRIMARY-SUB before:content-['↑'] before:mr-1 after:ml-2 after:content-['/']">
-              {parseNumber(p.views - p.yesterdayLikes)}
+              {parseNumber(p.views - p.yesterdayViews)}
             </span>
             <Icon
               name="Like"
