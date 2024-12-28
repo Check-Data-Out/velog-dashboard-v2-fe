@@ -32,9 +32,15 @@ export const TrackVisitEvent = () => {
   useEffect(() => {
     // 페이지 로드 시 시간 기록
     data.current.loadDate = new Date().toISOString();
-    window.addEventListener('unload', setUnloadData);
+    if (process.env.NODE_ENV === 'production') {
+      window.addEventListener('unload', setUnloadData);
+    }
 
-    return () => window.removeEventListener('unload', setUnloadData);
+    return () => {
+      if (process.env.NODE_ENV === 'production') {
+        window.removeEventListener('unload', setUnloadData);
+      }
+    };
   }, []);
 
   return <span className="hidden">eventTracker</span>;
