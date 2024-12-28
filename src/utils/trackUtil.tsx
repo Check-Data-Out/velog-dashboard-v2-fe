@@ -22,10 +22,9 @@ export const TrackVisitEvent = () => {
   });
 
   const setUnloadData = () => {
-    const date = new Date().toISOString();
     data.current = {
       ...data.current,
-      unloadDate: date,
+      unloadDate: new Date().toISOString(),
     };
     instance('/stay', { body: data.current, method: 'POST', keepalive: true });
   };
