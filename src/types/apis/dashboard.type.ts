@@ -2,6 +2,7 @@ export type PostType = {
   id: string;
   title: string;
   createdAt: string;
+  releasedAt: string;
   views: number;
   likes: number;
 };

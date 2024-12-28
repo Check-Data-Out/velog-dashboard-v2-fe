@@ -18,12 +18,12 @@ export const Section = (p: PostType) => {
       >
         <span
           className={`text-T3 text-TEXT-MAIN text-center items-center gap-3 after:text-TEXT-ALT after:text-ST4 MBI:after:content-[attr(data-date)] MBI:flex max-TBL:after:text-ST5 max-TBL:text-T4 max-MBI:text-ST4`}
-          data-date={p.createdAt.split('T')[0]}
+          data-date={p.releasedAt.split('T')[0]}
         >
           {p.title.length > 30 ? p.title.slice(0, 29).trim() + '..' : p.title}
         </span>
         <div className="flex items-center text-ST4 justify-between text-TEXT-ALT gap-1 max-TBL:text-ST5 ">
-          <span className="MBI:hidden">{p.createdAt.split('T')[0]}</span>
+          <span className="MBI:hidden">{p.releasedAt.split('T')[0]}</span>
           <div className="flex flex-wrap items-center gap-[6px]">
             <span className='after:content-["/"] after:ml-2'>
               {parseNumber(p.views)}

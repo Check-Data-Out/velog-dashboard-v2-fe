@@ -33,10 +33,10 @@ const fetch = returnFetch({
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    access_token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYzc1MDcyNDAtMDkzYi0xMWVhLTlhYWUtYTU4YTg2YmIwNTIwIiwiaWF0IjoxNzM1MDM4MTQ5LCJleHAiOjE3MzUxMjQ1NDksImlzcyI6InZlbG9nLmlvIiwic3ViIjoiYWNjZXNzX3Rva2VuIn0.ycWoz-tJC21GlWoNpmle2lE68cplIyBYtMd7lN7sGrY',
-    refresh_token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYzc1MDcyNDAtMDkzYi0xMWVhLTlhYWUtYTU4YTg2YmIwNTIwIiwidG9rZW5fSWQiOiI4ZmJlNGQ1ZC0zZjk1LTQ3MzUtYjgyNC1lOTZiMGFkNDFhMDQiLCJpYXQiOjE3MzQ5MzkzMDUsImV4cCI6MTczNzUzMTMwNSwiaXNzIjoidmVsb2cuaW8iLCJzdWIiOiJyZWZyZXNoX3Rva2VuIn0.Vfxgz0agilzDIWnYDYryXPz4bj_CLH1UAVUtTPdgey4',
+    // access_token:
+    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYzc1MDcyNDAtMDkzYi0xMWVhLTlhYWUtYTU4YTg2YmIwNTIwIiwiaWF0IjoxNzM1MDM4MTQ5LCJleHAiOjE3MzUxMjQ1NDksImlzcyI6InZlbG9nLmlvIiwic3ViIjoiYWNjZXNzX3Rva2VuIn0.ycWoz-tJC21GlWoNpmle2lE68cplIyBYtMd7lN7sGrY',
+    // refresh_token:
+    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYzc1MDcyNDAtMDkzYi0xMWVhLTlhYWUtYTU4YTg2YmIwNTIwIiwidG9rZW5fSWQiOiI4ZmJlNGQ1ZC0zZjk1LTQ3MzUtYjgyNC1lOTZiMGFkNDFhMDQiLCJpYXQiOjE3MzQ5MzkzMDUsImV4cCI6MTczNzUzMTMwNSwiaXNzIjoidmVsb2cuaW8iLCJzdWIiOiJyZWZyZXNoX3Rva2VuIn0.Vfxgz0agilzDIWnYDYryXPz4bj_CLH1UAVUtTPdgey4',
   },
   interceptors: {
     response: async (response) => {
@@ -63,6 +63,7 @@ export const instance = async <I, R>(
       signal: AbortSignal.timeout
         ? AbortSignal.timeout(ABORT_MS)
         : abortPolyfill(ABORT_MS),
+      credentials: 'include',
     });
 
     return (data.body as unknown as SuccessType<R>).data;
