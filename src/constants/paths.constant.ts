@@ -3,4 +3,6 @@ export const PATHS = {
   EVENT: '/event',
   STAY: '/stay',
   POSTS: '/posts',
+  SUMMARY: '/posts-stats',
+  ME: '/me',
 };

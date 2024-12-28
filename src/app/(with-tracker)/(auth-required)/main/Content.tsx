@@ -1,6 +1,6 @@
 'use client';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import {
@@ -11,7 +11,7 @@ import {
   Check,
   OptionType,
 } from '@/components';
-import { postList } from '@/apis';
+import { postList, postSummary } from '@/apis';
 import { PATHS } from '@/constants';
 import { useSearchParam } from '@/hooks/useSearchParam';
 
@@ -23,20 +23,10 @@ const sorts: Array<OptionType> = [
 ];
 
 export const Content = () => {
+  const { searchParams, setSearchParams } = useSearchParam();
   const { ref, inView } = useInView();
 
-  useEffect(() => {
-    if (
-      data &&
-      data.pages[data.pages?.length - 1].nextCursor !== null &&
-      inView
-    ) {
-      fetchNextPage();
-    }
-  }, [inView]);
-  const { searchParams, setSearchParams } = useSearchParam();
-
-  const { data, fetchNextPage } = useInfiniteQuery({
+  const { data: posts, fetchNextPage } = useInfiniteQuery({
     queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]], // Query Key
     queryFn: async ({ pageParam }) =>
       await postList(
@@ -48,20 +38,37 @@ export const Content = () => {
     initialPageParam: undefined,
   });
 
+  const { data: summaries } = useQuery({
+    queryKey: [PATHS.POSTS],
+    queryFn: async () => postSummary(),
+  });
+
+  useEffect(() => {
+    if (
+      posts &&
+      posts.pages[posts.pages?.length - 1].nextCursor !== null &&
+      inView
+    ) {
+      fetchNextPage();
+    }
+  }, [inView]);
+
   return (
     <div className="flex w-full h-full gap-[30px] max-MBI:flex-col max-TBL:gap-[20px] overflow-hidden">
-      <Summary views={12345} likes={54321} posts={12} />
+      {summaries && <Summary {...summaries} />}
 
       <div className="w-full flex flex-col gap-[30px] overflow-auto max-TBL:gap-[20px]">
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">
           <span className="text-TEXT-ALT text-ST5 MBI:hidden">
-            마지막 업데이트 : 2024-12-20, 20:13:34
+            마지막 업데이트 : {summaries?.stats.lastUpdatedDate}
           </span>
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3">
-              <Button size="SMALL">새로고침</Button>
+              <Button size="SMALL" disabled>
+                새로고침
+              </Button>
               <span className="text-TEXT-ALT text-ST4 max-TBL:text-ST5 max-MBI:hidden">
-                마지막 업데이트 : 2024-12-20, 20:13:34
+                마지막 업데이트 : {summaries?.stats.lastUpdatedDate}
               </span>
             </div>
             <div className="flex items-center gap-3">
@@ -87,7 +94,7 @@ export const Content = () => {
           </div>
         </div>
         <div className="w-full h-full flex flex-col gap-[30px] relative max-TBL:gap-[20px] overflow-auto">
-          {data?.pages.map((n) =>
+          {posts?.pages.map((n) =>
             n.posts.map((i, j) =>
               j !== n?.posts.length - 1 ? (
                 <Section key={i.id} {...i} />

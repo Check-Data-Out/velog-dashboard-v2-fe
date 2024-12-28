@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 import { Metadata } from 'next';
 import { PATHS } from '@/constants';
-import { postList } from '@/apis';
+import { postList, postSummary } from '@/apis';
 import { Content } from './Content';
 
 export const metadata: Metadata = {
@@ -27,6 +27,11 @@ export default async function Page({
         sort: searchParams.sort || '',
       }),
     initialPageParam: undefined,
+  });
+
+  await client.prefetchQuery({
+    queryKey: [PATHS.SUMMARY],
+    queryFn: async () => postSummary(),
   });
 
   return (

@@ -4,9 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { COLORS, SCREENS } from '@/constants';
+import { useQuery } from '@tanstack/react-query';
+import { COLORS, PATHS, SCREENS } from '@/constants';
 import { Icon, NameType } from '@/components';
 import { useResponsive } from '@/hooks';
+import { me } from '@/apis';
 
 const layouts: Array<{ icon: NameType; title: string; path: string }> = [
   { icon: 'Analytics', title: '내 통계', path: '/main' },
@@ -25,6 +27,11 @@ export const Header = () => {
   const path = usePathname();
   const textStyle = (currentPath: string) =>
     `${currentPath === path ? 'text-TEXT-MAIN' : 'text-TEXT-ALT'} text-ST4 shrink-0 transition-all duration-300 max-MBI:hidden `;
+
+  const { data: profiles } = useQuery({
+    queryKey: [PATHS.ME],
+    queryFn: async () => me(),
+  });
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) =>
@@ -69,10 +76,12 @@ export const Header = () => {
               width={35}
               height={35}
               className="rounded-full"
-              src="/profile.jpg"
+              src={profiles?.user?.profile.thumbnail || '/profile.jpg'}
               alt=""
             />
-            <span className={textStyle('username')}>six-standard</span>
+            <span className={textStyle('username')}>
+              {profiles?.user?.username || 'NULL'}
+            </span>
           </div>
           {open && (
             <div className="flex flex-col items-center max-MBI:items-end absolute self-center top-[50px] max-MBI:right-[6px]">

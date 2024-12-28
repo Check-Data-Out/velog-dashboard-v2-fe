@@ -22,8 +22,8 @@ export const SidebarContent = ({
         {title}
       </span>
       <span
-        className={`flex items-center text-TEXT-MAIN text-T1 transition-all max-TBL:text-T2 ${increasement ? afterContent : ''}`}
-        data-increasement={parseNumber(increasement ? increasement : 0)}
+        className={`flex items-center text-TEXT-MAIN text-T1 transition-all max-TBL:text-T2 ${increasement && increasement !== 0 ? afterContent : ''}`}
+        data-increasement={parseNumber(increasement as number)}
       >
         {parseNumber(content) + prefix}
       </span>

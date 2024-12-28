@@ -22,14 +22,14 @@ export const Section = (p: PostType) => {
         >
           {p.title.length > 30 ? p.title.slice(0, 29).trim() + '..' : p.title}
         </span>
-        <div className="flex items-center text-ST4 justify-between text-TEXT-ALT gap-1 max-TBL:text-ST5 ">
+        <div className="flex items-center text-ST4 justify-between text-TEXT-ALT gap-1 max-TBL:text-ST5 max-MBI:w-full">
           <span className="MBI:hidden">{p.releasedAt.split('T')[0]}</span>
           <div className="flex flex-wrap items-center gap-[6px]">
             <span className='after:content-["/"] after:ml-2'>
               {parseNumber(p.views)}
             </span>
             <span className="flex items-center before:text-PRIMARY-SUB before:content-['↑'] before:mr-1 after:ml-2 after:content-['/']">
-              {parseNumber(p.views * 100)}
+              {parseNumber(p.views - p.yesterdayLikes)}
             </span>
             <Icon
               name="Like"

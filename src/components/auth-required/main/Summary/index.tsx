@@ -2,16 +2,11 @@
 
 import { useState } from 'react';
 import { Icon } from '@/components';
+import { PostSummaryDto } from '@/types';
 import { SidebarContent } from './SidebarContent';
 import { BarContent } from './BarContent';
 
-interface IProp {
-  views: number;
-  likes: number;
-  posts: number;
-}
-
-export const Summary = ({ posts, views, likes }: IProp) => {
+export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -19,16 +14,16 @@ export const Summary = ({ posts, views, likes }: IProp) => {
       <aside className="flex flex-col h-full gap-[30px] max-TBL:gap-[20px] max-MBI:hidden">
         <SidebarContent
           title="전체 조회수"
-          content={views}
+          content={stats.totalViews}
           prefix="회"
-          increasement={views}
+          increasement={stats.totalViews - stats.yesterdayViews}
         />
         <SidebarContent
           title="전체 좋아요 수"
-          content={likes}
-          increasement={likes}
+          content={stats.totalLikes}
+          increasement={stats.totalLikes - stats.yesterdayLikes}
         />
-        <SidebarContent title="총 게시글 수" content={posts} />
+        <SidebarContent title="총 게시글 수" content={totalPostCount} />
       </aside>
       <section
         className={`flex flex-col w-full px-5 bg-BG-SUB rounded-[4px] cursor-pointer MBI:hidden`}
@@ -42,16 +37,16 @@ export const Summary = ({ posts, views, likes }: IProp) => {
           <div className="w-full h-fit flex flex-col pb-5 shrink-0 gap-[10px]">
             <BarContent
               title="전체 조회수"
-              content={views}
+              content={stats.totalViews}
               prefix="회"
-              increasement={views}
+              increasement={stats.totalViews - stats.yesterdayViews}
             />
             <BarContent
               title="전체 좋아요 수"
-              content={likes}
-              increasement={likes}
+              content={stats.totalLikes}
+              increasement={stats.totalLikes - stats.yesterdayLikes}
             />
-            <BarContent title="총 게시글 수" content={posts} />
+            <BarContent title="총 게시글 수" content={totalPostCount} />
           </div>
         )}
       </section>
