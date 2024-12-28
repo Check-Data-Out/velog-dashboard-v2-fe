@@ -1,6 +1,7 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { toast } from 'react-toastify';
 
 let localQueryClient: QueryClient | undefined;
@@ -29,5 +30,10 @@ interface IProp {
 export const QueryProvider = ({ children }: IProp) => {
   const client = getQueryClient();
 
-  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={client}>
+      <ReactQueryDevtools />
+      {children}
+    </QueryClientProvider>
+  );
 };
