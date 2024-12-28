@@ -5,4 +5,5 @@ export const PATHS = {
   POSTS: '/posts',
   SUMMARY: '/posts-stats',
   ME: '/me',
+  LOGOUT: '/logout',
 };
