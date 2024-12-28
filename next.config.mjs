@@ -16,7 +16,9 @@ const nextConfig = {
   },
 
   images: {
-    domains: ['velog.velcdn.com'],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'velog.velcdn.com', pathname: '**' },
+    ],
   },
 };
 export default withSentryConfig(nextConfig, {
