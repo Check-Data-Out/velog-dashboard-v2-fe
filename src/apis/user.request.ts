@@ -1,7 +1,7 @@
 import { NotFoundError } from '@/errors';
 import { PATHS } from '@/constants';
-import { LoginVo } from '@/types';
-import { instance } from './instance.request';
+import { LoginVo, UserDto } from '@/types';
+import { InitType, instance } from './instance.request';
 
 export const login = async (body: LoginVo) =>
   await instance(
@@ -15,7 +15,8 @@ export const login = async (body: LoginVo) =>
     },
   );
 
-export const me = async () => await instance<null, any>(PATHS.ME);
+export const me = async (props: InitType<UserDto>) =>
+  await instance<null, UserDto>(PATHS.ME, props);
 
 export const logout = async () =>
   await instance(PATHS.LOGOUT, { method: 'POST', body: undefined });

@@ -1,2 +1,2 @@
-export type * from './login.type';
 export * from './dashboard.type';
+export * from './user.type';

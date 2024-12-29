@@ -36,7 +36,7 @@ export const Header = () => {
 
   const { data: profiles } = useQuery({
     queryKey: [PATHS.ME],
-    queryFn: async () => me(),
+    queryFn: async () => me({}),
   });
 
   useEffect(() => {

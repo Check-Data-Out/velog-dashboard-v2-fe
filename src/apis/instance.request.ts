@@ -1,5 +1,6 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
 import * as sentry from '@sentry/nextjs';
+import router from 'next/navigation';
 import { ServerNotRespondingError } from '@/errors';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -20,6 +21,10 @@ type SuccessType<T> = {
   message: string;
   data: T;
   error: null;
+};
+
+export type InitType<I> = Omit<NonNullable<FetchArgs[1]>, 'body'> & {
+  body?: I | object;
 };
 
 const abortPolyfill = (ms: number) => {
@@ -49,7 +54,7 @@ const fetch = returnFetch({
 
 export const instance = async <I, R>(
   input: URL | RequestInfo,
-  init?: Omit<NonNullable<FetchArgs[1]>, 'body'> & { body: I | object },
+  init?: InitType<I>,
   error?: ErrorObject,
 ): Promise<R> => {
   try {
@@ -65,6 +70,14 @@ export const instance = async <I, R>(
     return (data.body as unknown as SuccessType<R>).data;
   } catch (err: any) {
     const context = err as Response;
+    if (
+      location &&
+      !context.ok &&
+      (context.status === 401 || context.status === 403)
+    ) {
+      location.replace('/');
+    }
+
     sentry.setContext('Request', {
       path: context.url,
       status: context.status,
