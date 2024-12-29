@@ -15,13 +15,8 @@ export default async function Layout({ children }: { children: ReactElement }) {
 
   await client.prefetchQuery({
     queryKey: [PATHS.ME],
-    queryFn: async () => {
-      const data = await me(
-        getCookieForAuth(cookies, ['access_token', 'refresh_token']),
-      );
-      console.log(data);
-      return data;
-    },
+    queryFn: async () =>
+      await me(getCookieForAuth(cookies, ['access_token', 'refresh_token'])),
   });
 
   return (
