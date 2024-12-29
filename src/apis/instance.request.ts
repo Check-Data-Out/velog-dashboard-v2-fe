@@ -1,6 +1,5 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
 import * as sentry from '@sentry/nextjs';
-import router from 'next/navigation';
 import { ServerNotRespondingError } from '@/errors';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
