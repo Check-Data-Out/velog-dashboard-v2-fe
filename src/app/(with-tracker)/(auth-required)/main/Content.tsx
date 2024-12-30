@@ -19,7 +19,6 @@ const sorts: Array<OptionType> = [
   ['작성일순', ''],
   ['조회순', 'daily_view_count'],
   ['좋아요순', 'daily_like_count'],
-  ['제목순', 'title'],
 ];
 
 export const Content = () => {
