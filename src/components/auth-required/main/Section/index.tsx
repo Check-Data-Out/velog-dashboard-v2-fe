@@ -51,7 +51,7 @@ export const Section = (p: PostType) => {
           className="MBI:hidden absolute bottom-[5px]"
         />
       </div>
-      {open && <Graph />}
+      {open && <Graph id={p.id} />}
     </section>
   );
 };

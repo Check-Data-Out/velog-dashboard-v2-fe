@@ -1,4 +1,4 @@
-import { PostListDto, PostSummaryDto } from '@/types';
+import { PostDetailDto, PostListDto, PostSummaryDto } from '@/types';
 import { PATHS } from '@/constants';
 import { InitType, instance } from './instance.request';
 
@@ -21,3 +21,8 @@ export const postList = async (
 
 export const postSummary = async (props: InitType<PostSummaryDto>) =>
   await instance<null, PostSummaryDto>(PATHS.SUMMARY, props);
+
+export const postDetail = async (path: string, start: string, end: string) =>
+  await instance<null, PostDetailDto>(
+    `${PATHS.DETAIL}/${path}?start=${start}&end=${end}`,
+  );

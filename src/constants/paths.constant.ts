@@ -6,4 +6,5 @@ export const PATHS = {
   SUMMARY: '/posts-stats',
   ME: '/me',
   LOGOUT: '/logout',
+  DETAIL: '/post',
 };

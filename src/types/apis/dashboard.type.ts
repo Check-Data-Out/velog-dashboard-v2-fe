@@ -25,3 +25,13 @@ export type PostSummaryDto = {
     lastUpdatedDate: string;
   };
 };
+
+export type PostDetailValue = {
+  date: string;
+  daily_view_count: number;
+  daily_like_count: number;
+};
+
+export type PostDetailDto = {
+  post: PostDetailValue[];
+};
