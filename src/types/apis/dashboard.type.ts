@@ -11,7 +11,6 @@ export type PostType = {
 
 export type PostListDto = {
   nextCursor: number | null;
-  totalCounts: number;
   posts: PostType[];
 };
 
