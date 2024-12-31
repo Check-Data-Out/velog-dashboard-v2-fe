@@ -10,7 +10,7 @@ export type PostType = {
 };
 
 export type PostListDto = {
-  nextCursor: number | null;
+  nextCursor: string;
   posts: PostType[];
 };
 
