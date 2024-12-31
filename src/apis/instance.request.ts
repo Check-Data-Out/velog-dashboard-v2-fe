@@ -1,6 +1,5 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
 import * as sentry from '@sentry/nextjs';
-
 import { ServerNotRespondingError } from '@/errors';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -16,6 +15,17 @@ if (!BASE_URL) {
 
 type ErrorObject = Record<string, Error>;
 
+type SuccessType<T> = {
+  success: true;
+  message: string;
+  data: T;
+  error: null;
+};
+
+export type InitType<I> = Omit<NonNullable<FetchArgs[1]>, 'body'> & {
+  body?: I | object;
+};
+
 const abortPolyfill = (ms: number) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), ms);
@@ -23,8 +33,11 @@ const abortPolyfill = (ms: number) => {
 };
 
 const fetch = returnFetch({
-  baseUrl: BASE_URL + '/api',
-  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+  baseUrl: BASE_URL,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
   interceptors: {
     response: async (response) => {
       if (!response.ok) {
@@ -38,23 +51,32 @@ const fetch = returnFetch({
   },
 });
 
-export const instance = async (
+export const instance = async <I, R>(
   input: URL | RequestInfo,
-  init?: Omit<NonNullable<FetchArgs[1]>, 'body'> & { body: object },
+  init?: InitType<I>,
   error?: ErrorObject,
-) => {
+): Promise<R> => {
   try {
-    const data = await fetch(input, {
+    const data = await fetch('/api' + input, {
       ...init,
       body: init?.body ? JSON.stringify(init.body) : undefined,
       signal: AbortSignal.timeout
         ? AbortSignal.timeout(ABORT_MS)
         : abortPolyfill(ABORT_MS),
+      credentials: 'include',
     });
 
-    return data as Awaited<ReturnType<typeof fetch>>;
+    return (data.body as unknown as SuccessType<R>).data;
   } catch (err: any) {
     const context = err as Response;
+    if (
+      location &&
+      !context.ok &&
+      (context.status === 401 || context.status === 403)
+    ) {
+      location.replace('/');
+    }
+
     sentry.setContext('Request', {
       path: context.url,
       status: context.status,

@@ -7,6 +7,7 @@
 - `git clone https://github.com/Check-Data-Out/velog-dashboard-v2-fe.git`
 - `cd velog-dashboard-v2-fe`
 - `pnpm install`
+- `NODE_ENV=development pnpm install`
 - `pnpm dev`
 
 ## 린팅

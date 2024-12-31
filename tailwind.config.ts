@@ -1,5 +1,10 @@
 import type { Config } from 'tailwindcss';
-import { COLORS, SIZES, SCREENS as CUSTOMSCREENS } from './src/constants';
+import {
+  COLORS,
+  SIZES,
+  SCREENS as CUSTOMSCREENS,
+  FONTS,
+} from './src/constants';
 
 const SCREENS: Record<string, string> = {};
 
@@ -11,7 +16,11 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: { colors: COLORS, screens: SCREENS },
+  theme: {
+    colors: COLORS,
+    screens: SCREENS,
+    fontSize: FONTS,
+  },
   plugins: [],
   safelist: Object.values(SIZES),
 };

@@ -1,23 +1,15 @@
-import {
-  DetailedHTMLProps,
-  ForwardedRef,
-  forwardRef,
-  InputHTMLAttributes,
-} from 'react';
-import { SIZES, sizeType } from '@/constants';
+import { ForwardedRef, forwardRef } from 'react';
+import { SIZES, SizeType } from '@/constants';
 
 interface IProp
-  extends Omit<
-    DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
-    'size'
-  > {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   form?: keyof typeof FORMS;
-  size: sizeType;
+  size: SizeType;
 }
 
 const FORMS = {
-  LARGE: 'p-4 h-[48px] focus:border-primary-sub rounded-sm',
-  SMALL: 'p-2 h-[38px] focus:border-border-alt rounded-[4px]',
+  LARGE: 'p-4 h-fit rounded-sm focus:border-PRIMARY-SUB max-TBL:p-[14px]',
+  SMALL: 'p-2 h-[36px] rounded-[4px] focus:border-BORDER-ALT',
 };
 
 export const Input = forwardRef<HTMLInputElement, IProp>(
@@ -28,7 +20,8 @@ export const Input = forwardRef<HTMLInputElement, IProp>(
     <input
       {...rest}
       ref={ref}
-      className={`bg-bg-sub border-[1px] border-border-sub placeholder:text-text-alt text-text-main text-[16px] font-light ${FORMS[form]} ${SIZES[size]} ${rest.className}`}
+      data-placeholder={rest?.placeholder}
+      className={`bg-BG-SUB border-BORDER-SUB text-I2 shrink-0 text-TEXT-MAIN border-[1px] ${FORMS[form]} ${SIZES[size]} ${rest.className} disabled:cursor-pointer placeholder:text-TEXT-ALT max-TBL:text-I4`}
     />
   ),
 );

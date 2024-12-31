@@ -8,7 +8,7 @@ interface IProp {
 }
 
 const afterContent =
-  'after:text-primary-sub after:content-[attr(data-increasement)_"↑"] after:ml-2 after:text-[25px] max-TBL:after:text-[20px] transition-all';
+  'after:text-PRIMARY-SUB after:content-[attr(data-increasement)_"↑"] after:ml-2 after:text-ST3 max-TBL:after:text-ST4 transition-all';
 
 export const SidebarContent = ({
   title,
@@ -17,13 +17,13 @@ export const SidebarContent = ({
   prefix = '개',
 }: IProp) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-[10px] bg-bg-sub w-[375px] p-4 rounded-[4px] h-full max-TBL:w-[280px]">
-      <span className="text-text-alt font-medium text-[20px] max-TBL:text-[18px] transition-all">
+    <div className="flex flex-col items-center justify-center gap-[10px] bg-BG-SUB w-[375px] p-4 rounded-[4px] h-full max-TBL:w-[280px]">
+      <span className="text-TEXT-ALT text-T4 transition-all max-TBL:text-T5">
         {title}
       </span>
       <span
-        className={`flex items-center text-text-main font-bold text-[35px] transition-all ${increasement ? afterContent : ''} max-TBL:text-[30px] max-MBI:text-[25px]`}
-        data-increasement={parseNumber(increasement ? increasement : 0)}
+        className={`flex items-center text-TEXT-MAIN text-T1 transition-all max-TBL:text-T2 ${increasement && increasement !== 0 ? afterContent : ''}`}
+        data-increasement={parseNumber(increasement as number)}
       >
         {parseNumber(content) + prefix}
       </span>

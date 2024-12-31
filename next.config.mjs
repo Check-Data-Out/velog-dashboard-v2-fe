@@ -14,6 +14,13 @@ const nextConfig = {
     });
     return config;
   },
+
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'velog.velcdn.com', pathname: '**' },
+      { protocol: 'https', hostname: 'images.velog.io', pathname: '**' },
+    ],
+  },
 };
 export default withSentryConfig(nextConfig, {
   // For all available options, see:

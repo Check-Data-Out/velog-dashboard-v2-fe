@@ -1,16 +1,16 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { instance } from '@/api';
+import { instance } from '@/apis/instance.request';
 
 type VisitDataType = {
   loadDate?: string;
   unloadDate?: string;
 };
 
-type messages = '01' | '02' | '03' | '04' | '99';
+type MessageType = '01' | '02' | '03' | '04' | '99';
 
-export const trackUserEvent = (event_type: messages) => {
+export const trackUserEvent = (event_type: MessageType) => {
   const { pathname: path } = window.location;
   instance('/event', { body: { path, event_type }, method: 'POST' });
 };
@@ -22,23 +22,25 @@ export const TrackVisitEvent = () => {
   });
 
   const setUnloadData = () => {
-    const date = new Date().toISOString();
     data.current = {
       ...data.current,
-      unloadDate: date,
+      unloadDate: new Date().toISOString(),
     };
-    navigator.sendBeacon(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/stay`,
-      data.current.toString(),
-    );
+    instance('/stay', { body: data.current, method: 'POST', keepalive: true });
   };
 
   useEffect(() => {
     // 페이지 로드 시 시간 기록
     data.current.loadDate = new Date().toISOString();
-    window.addEventListener('unload', setUnloadData);
+    if (process.env.NODE_ENV === 'production') {
+      window.addEventListener('unload', setUnloadData);
+    }
 
-    return () => window.removeEventListener('unload', setUnloadData);
+    return () => {
+      if (process.env.NODE_ENV === 'production') {
+        window.removeEventListener('unload', setUnloadData);
+      }
+    };
   }, []);
 
   return <span className="hidden">eventTracker</span>;

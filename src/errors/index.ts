@@ -1,1 +1,1 @@
-export * from './fetchErrors';
+export * from './fetch.error';
