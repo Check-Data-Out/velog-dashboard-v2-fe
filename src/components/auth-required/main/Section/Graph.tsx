@@ -60,7 +60,7 @@ export const Graph = ({ id }: IProp) => {
   const [type, setType] = useState({
     start: '',
     end: '',
-    type: 'view',
+    type: 'View',
   });
 
   const { data: datas } = useQuery({
@@ -72,7 +72,7 @@ export const Graph = ({ id }: IProp) => {
         {
           label: type.type,
           data: post.map(
-            (i) => i[`daily_${type.type}_count` as keyof PostDetailValue],
+            (i) => i[`daily${type.type}Count` as keyof PostDetailValue],
           ),
           ...datasets,
         },
@@ -108,8 +108,8 @@ export const Graph = ({ id }: IProp) => {
           onChange={(e) => setType({ ...type, type: e as string })}
           defaultValue={'조회수'}
           options={[
-            ['조회수', 'view'],
-            ['좋아요', 'like'],
+            ['조회수', 'View'],
+            ['좋아요', 'Like'],
           ]}
         />
       </div>

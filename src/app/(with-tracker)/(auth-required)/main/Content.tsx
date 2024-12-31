@@ -17,8 +17,8 @@ import { useSearchParam } from '@/hooks/useSearchParam';
 
 const sorts: Array<OptionType> = [
   ['작성일순', ''],
-  ['조회순', 'daily_view_count'],
-  ['좋아요순', 'daily_like_count'],
+  ['조회순', 'dailyViewCount'],
+  ['좋아요순', 'dailyLikeCount'],
 ];
 
 export const Content = () => {
@@ -33,7 +33,7 @@ export const Content = () => {
         { asc: searchParams.asc === 'true', sort: searchParams.sort || '' },
         pageParam,
       ),
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => Number(lastPage.nextCursor.split(',')[1]),
     getPreviousPageParam: () => 0,
     initialPageParam: undefined,
   });

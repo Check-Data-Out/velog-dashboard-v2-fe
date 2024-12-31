@@ -27,8 +27,8 @@ export type PostSummaryDto = {
 
 export type PostDetailValue = {
   date: string;
-  daily_view_count: number;
-  daily_like_count: number;
+  dailyViewCount: number;
+  dailyLikeCount: number;
 };
 
 export type PostDetailDto = {
