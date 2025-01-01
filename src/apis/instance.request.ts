@@ -67,7 +67,7 @@ export const instance = async <I, R>(
     });
 
     return (data.body as unknown as SuccessType<R>).data;
-  } catch (err: any) {
+  } catch (err: unknown) {
     const context = err as Response;
     if (
       location &&
@@ -87,7 +87,7 @@ export const instance = async <I, R>(
     } else {
       if (!error?.[`${(err as Response).status}`]) {
         const serverError = new Error(
-          `서버에서 예기치 않은 오류가 발생했습니다. (${err.name})`,
+          `서버에서 예기치 않은 오류가 발생했습니다. (${(err as Error).name})`,
         );
         sentry.captureException(serverError);
         throw serverError;
