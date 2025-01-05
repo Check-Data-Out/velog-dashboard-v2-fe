@@ -24,6 +24,14 @@ jobs:
           npm install -g pnpm
           pnpm install --frozen-lockfile
 
+      - name: Create .env file
+        run: |
+          echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env
+          echo "NEXT_PUBLIC_ABORT_MS=${{ secrets.NEXT_PUBLIC_ABORT_MS }}" >> .env
+          echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
+          echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
+          cp .env .env.production
+
       - name: Build Next.js application
         run: |
           pnpm run build
