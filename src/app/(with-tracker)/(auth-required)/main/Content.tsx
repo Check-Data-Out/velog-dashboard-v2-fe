@@ -27,15 +27,15 @@ export const Content = () => {
 
   const { data: posts, fetchNextPage } = useInfiniteQuery({
     queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]], // Query Key
-    queryFn: async ({ pageParam }) =>
+    queryFn: async ({ pageParam = '' }) =>
       await postList(
         {},
         { asc: searchParams.asc === 'true', sort: searchParams.sort || '' },
         pageParam,
       ),
-    getNextPageParam: (lastPage) => Number(lastPage.nextCursor.split(',')[1]),
-    getPreviousPageParam: () => 0,
-    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getPreviousPageParam: () => '',
+    initialPageParam: '',
   });
 
   const { data: summaries } = useQuery({
