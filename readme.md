@@ -19,3 +19,6 @@
 ## 테스팅
 
 - `pnpm test` (test all pages & components)
+
+docker tag velog-dashboard-v2-fe:latest nuung/velog-dashboard-v2-fe:latest
+docker push nuung/velog-dashboard-v2-fe:latest
