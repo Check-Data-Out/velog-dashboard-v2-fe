@@ -1,8 +1,9 @@
 import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   experimental: { forceSwcTransforms: true },
+  output: 'standalone',
 
   webpack: (config, options) => {
     config.module.rules.push({

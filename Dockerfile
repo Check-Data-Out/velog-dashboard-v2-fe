@@ -2,18 +2,19 @@ FROM node:23-alpine
 
 WORKDIR /usr/src/app
 
-RUN npm install -g pm2
+RUN npm install -g pnpm pm2
 
-# 빌드된 Output 복사
+# 기존 빌드된 파일들과 필요한 설정 파일들 복사
+COPY next.config.mjs ecosystem.config.js ./
 COPY .next ./.next
 COPY public ./public
-COPY package.json next.config.mjs ./
-COPY ecosystem.config.js ./
+COPY .env ./.env
+COPY .env.production ./.env.production
 
 # 프로덕션 의존성만 설치
-RUN npm install --only=prod
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --no-frozen-lockfile --prod
 
 EXPOSE 3000
 
-# PM2로 Next.js 실행
 CMD ["pm2-runtime", "start", "ecosystem.config.js"]

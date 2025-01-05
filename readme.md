@@ -24,7 +24,7 @@
 
 ```shell
 # 1. 만약 코드 수정했고, 빌드를 로컬에서 했다면, 또는 Dockerfile 을 수정했다면
-docker build .
+docker build -t velog-dashboard-v2-fe:latest .
 
 # 2. (docker hub)repo 에 push 하기전 tag 세팅
 docker tag velog-dashboard-v2-fe:latest nuung/velog-dashboard-v2-fe:latest
