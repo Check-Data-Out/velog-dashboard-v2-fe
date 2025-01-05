@@ -19,7 +19,7 @@ export const Content = () => {
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm<LoginVo>({ mode: 'onChange' });
+  } = useForm<LoginVo>({ mode: 'all' });
 
   const { mutate } = useMutation({
     mutationFn: login,
