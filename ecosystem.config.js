@@ -3,8 +3,8 @@ module.exports = {
   apps: [
     {
       name: 'velog-dashboard-v2-fe',
-      script: 'node_modules/next/dist/bin/next',
-      args: 'start',
+      script: 'node',
+      args: '.next/standalone/server.js',
       instances: 1,
       autorestart: true,
       watch: false,
