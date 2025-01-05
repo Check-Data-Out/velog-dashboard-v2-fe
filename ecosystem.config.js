@@ -4,7 +4,7 @@ module.exports = {
     {
       name: 'velog-dashboard-v2-fe',
       script: 'node',
-      args: '.next/standalone/server.js',
+      args: './server.js',
       instances: 1,
       autorestart: true,
       watch: false,
