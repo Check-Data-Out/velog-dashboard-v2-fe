@@ -1,8 +1,3 @@
-# CUSTOM
-.env.*
-!.env.sample
-
-
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,visualstudiocode,nextjs,react,git,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,visualstudiocode,nextjs,react,git,node
 
@@ -79,9 +74,6 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
-.env*.local
-
 # vercel
 .vercel
 
@@ -89,11 +81,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-### Node ###
-# Logs
-logs/*
-*.log
-lerna-debug.log*
+# envs
+.env*
+!.env.sample
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
