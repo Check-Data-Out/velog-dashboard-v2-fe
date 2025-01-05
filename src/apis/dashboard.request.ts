@@ -10,7 +10,7 @@ type SortType = {
 export const postList = async (
   props: InitType<PostListDto>,
   sort: SortType,
-  cursor?: number | string,
+  cursor?: string,
 ) =>
   await instance<null, PostListDto>(
     cursor
