@@ -13,13 +13,16 @@ if (!BASE_URL) {
   throw new Error('BASE_URL이 ENV에서 설정되지 않았습니다.');
 }
 
-type ErrorObject = Record<string, Error>;
+type ErrorType = {
+  code: string;
+  statusCode: number;
+};
 
 type SuccessType<T> = {
   success: true;
   message: string;
   data: T;
-  error: null;
+  error: null | ErrorType;
 };
 
 export type InitType<I> = Omit<NonNullable<FetchArgs[1]>, 'body'> & {
@@ -54,7 +57,7 @@ const fetch = returnFetch({
 export const instance = async <I, R>(
   input: URL | RequestInfo,
   init?: InitType<I>,
-  error?: ErrorObject,
+  error?: Record<string, Error>,
 ): Promise<R> => {
   try {
     const data = await fetch('/api' + input, {
