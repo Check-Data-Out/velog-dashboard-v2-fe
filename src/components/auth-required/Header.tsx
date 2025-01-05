@@ -82,11 +82,11 @@ export const Header = () => {
               width={35}
               height={35}
               className="rounded-full"
-              src={profiles?.user?.profile.thumbnail || '/profile.jpg'}
+              src={profiles?.profile.thumbnail || '/profile.jpg'}
               alt=""
             />
             <span className={textStyle('username')}>
-              {profiles?.user?.username || 'NULL'}
+              {profiles?.username || 'NULL'}
             </span>
           </div>
           {open && (

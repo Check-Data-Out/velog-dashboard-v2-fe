@@ -4,12 +4,10 @@ export type LoginVo = {
 };
 
 export type UserDto = {
-  user: {
-    id: string;
-    username: string;
-    email: string;
-    profile: {
-      thumbnail: string;
-    };
+  id: string;
+  username: string;
+  email: string;
+  profile: {
+    thumbnail: string;
   };
 };
