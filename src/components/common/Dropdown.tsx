@@ -19,7 +19,7 @@ export const Dropdown = ({
   ...rest
 }: IProp) => {
   return (
-    <div className="w-[100px] rounded-[4px] overflow-hidden border-BORDER-SUB bg-BG-SUB border-[1px] shrink-0 relative">
+    <div className="w-[100px] h-fit rounded-[4px] overflow-hidden border-BORDER-SUB bg-BG-SUB border-[1px] shrink-0 relative">
       <select
         {...rest}
         onChange={(e) => {
