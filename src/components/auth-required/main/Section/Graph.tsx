@@ -126,6 +126,7 @@ export const Graph = ({ id }: IProp) => {
           options={{
             responsive: true,
             animation: false,
+            interaction: { intersect: false },
             plugins: {
               legend: {
                 display: false,
