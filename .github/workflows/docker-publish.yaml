@@ -30,6 +30,7 @@ jobs:
           echo "NEXT_PUBLIC_ABORT_MS=${{ secrets.NEXT_PUBLIC_ABORT_MS }}" >> .env
           echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
+          echo "NEXT_PUBLIC_EVENT_LOG=true" >> .env
           cp .env .env.production
 
       - name: Build Next.js application
