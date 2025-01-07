@@ -3,17 +3,17 @@
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { Input, Button } from '@/components';
 import { LoginVo } from '@/types';
 import { login } from '@/apis';
+import { trackUserEvent } from '@/utils/trackUtil';
 
 const responsiveStyle =
   "flex items-center gap-5 max-MBI:before:inline-block max-MBI:before:bg-[url('/favicon.png')] max-MBI:before:[background-size:_100%_100%] max-MBI:before:w-16 max-MBI:before:h-16";
 
 export const Content = () => {
   const { replace } = useRouter();
-  const client = useQueryClient();
 
   const {
     register,
@@ -23,8 +23,8 @@ export const Content = () => {
 
   const { mutate } = useMutation({
     mutationFn: login,
-    onSuccess: (res) => {
-      client.setQueryData(['profile'], res);
+    onSuccess: () => {
+      trackUserEvent('LOGIN');
       replace('/main?asc=false&sort=');
     },
   });

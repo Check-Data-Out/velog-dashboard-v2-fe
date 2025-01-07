@@ -8,15 +8,15 @@ type VisitDataType = {
   unloadDate?: string;
 };
 
-enum MessageType {
-  '01-01' = 'ENTER',
-  '01-02' = 'LOGIN',
-  '01-03' = 'NAVIGATE',
-  '02-01' = 'SECTION_INTERACT',
-  '02-02' = 'SORT_INTERACT_MAIN',
-  '02-03' = 'REFRESH_INTERACT',
-  '03-01' = 'SORT_INTERACT_BOARD',
-}
+export const MessageEnum = {
+  LOGIN: '01-01',
+  NAVIGATE: '01-02',
+  LOGOUT: '01-03',
+  SECTION_INTERACT_MAIN: '02-01',
+  SORT_INTERACT_MAIN: '02-02',
+  REFRESH_INTERACT_MAIN: '02-03',
+  SORT_INTERACT_BOARD: '03-01',
+} as const;
 
 const EVENT_LOG = process.env.NEXT_PUBLIC_EVENT_LOG;
 
@@ -24,10 +24,9 @@ if (EVENT_LOG === undefined) {
   throw new Error('EVENT_LOG가 ENV에서 설정되지 않았습니다.');
 }
 
-export const trackUserEvent = (event_type: MessageType) => {
-  const { pathname: path } = window.location;
+export const trackUserEvent = (event_type: keyof typeof MessageEnum) => {
   if (EVENT_LOG === 'true') {
-    instance('/event', { body: { path, event_type }, method: 'POST' });
+    instance('/event', { body: { eventType: event_type }, method: 'POST' });
   }
 };
 

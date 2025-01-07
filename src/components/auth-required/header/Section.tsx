@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon, NameType } from '@/components';
 import { COLORS } from '@/constants';
+import { trackUserEvent } from '@/utils/trackUtil';
 
 export const defaultStyle =
   'w-[180px] h-[65px] px-9 transition-all duration-300 shrink-0 max-MBI:w-[65px] max-MBI:px-0 ';
@@ -43,7 +44,11 @@ export const Section = <T extends clickType>({
 
   if (clickType === 'link') {
     return (
-      <Link href={action} className={defaultStyle + navigateStyle}>
+      <Link
+        href={action}
+        className={defaultStyle + navigateStyle}
+        onClick={() => trackUserEvent('NAVIGATE')}
+      >
         <Icon
           size={25}
           color={COLORS.TEXT[action === currentPath ? 'MAIN' : 'ALT']}

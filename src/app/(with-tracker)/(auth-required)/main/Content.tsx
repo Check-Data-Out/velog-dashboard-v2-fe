@@ -14,6 +14,7 @@ import {
 import { postList, postSummary } from '@/apis';
 import { PATHS } from '@/constants';
 import { useSearchParam } from '@/hooks/useSearchParam';
+import { trackUserEvent } from '@/utils/trackUtil';
 
 const sorts: Array<OptionType> = [
   ['작성일순', ''],
@@ -64,7 +65,11 @@ export const Content = () => {
           </span>
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3">
-              <Button size="SMALL" disabled>
+              <Button
+                size="SMALL"
+                disabled
+                onClick={() => trackUserEvent('REFRESH_INTERACT_MAIN')}
+              >
                 새로고침
               </Button>
               <span className="text-TEXT-ALT text-ST4 max-TBL:text-ST5 max-MBI:hidden">
@@ -73,11 +78,12 @@ export const Content = () => {
             </div>
             <div className="flex items-center gap-3">
               <Check
-                onChange={() =>
+                onChange={() => {
+                  trackUserEvent('SORT_INTERACT_MAIN');
                   setSearchParams({
                     asc: `${!(searchParams.asc === 'true')}`,
-                  })
-                }
+                  });
+                }}
                 checked={searchParams.asc === 'true'}
                 label="오름차순"
               />
@@ -87,6 +93,7 @@ export const Content = () => {
                 }
                 options={sorts}
                 onChange={(data) => {
+                  trackUserEvent('SORT_INTERACT_MAIN');
                   setSearchParams({ sort: encodeURI(data as string) });
                 }}
               />

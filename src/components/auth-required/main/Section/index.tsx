@@ -5,6 +5,7 @@ import { parseNumber } from '@/utils/numberUtil';
 import { COLORS } from '@/constants';
 import { Icon } from '@/components';
 import { PostType } from '@/types';
+import { trackUserEvent } from '@/utils/trackUtil';
 import { Graph } from './Graph';
 
 export const Section = (p: PostType) => {
@@ -14,7 +15,10 @@ export const Section = (p: PostType) => {
     <section className="flex flex-col w-full h-fit relative">
       <div
         className={`p-[25px] h-fit cursor-pointer bg-BG-SUB flex justify-between items-center gap-4 ${!open ? 'rounded-[4px] max-MBI:pb-[35px_!important]' : 'rounded-t-[4px]'} max-xl:flex-col max-MBI:flex-col max-MBI:p-[20px]`}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => {
+          trackUserEvent('SECTION_INTERACT_MAIN');
+          setOpen((prev) => !prev);
+        }}
       >
         <span
           className={`text-T3 text-TEXT-MAIN text-center items-center gap-3 after:text-TEXT-ALT after:text-ST4 MBI:after:content-[attr(data-date)] MBI:flex max-TBL:after:text-ST5 max-TBL:text-T4 max-MBI:text-ST4`}

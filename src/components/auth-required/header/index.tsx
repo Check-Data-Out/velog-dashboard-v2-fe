@@ -8,6 +8,7 @@ import { PATHS, SCREENS } from '@/constants';
 import { NameType } from '@/components';
 import { useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
+import { trackUserEvent } from '@/utils/trackUtil';
 import { defaultStyle, Section, textStyle } from './Section';
 
 const layouts: Array<{ icon: NameType; title: string; path: string }> = [
@@ -98,7 +99,10 @@ export const Header = () => {
               <div className="cursor-pointer h-fit flex-col rounded-[4px] bg-BG-SUB hover:bg-BG-ALT shadow-BORDER-MAIN shadow-md">
                 <button
                   className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto"
-                  onClick={() => out()}
+                  onClick={() => {
+                    out();
+                    trackUserEvent('LOGOUT');
+                  }}
                 >
                   로그아웃
                 </button>

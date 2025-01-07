@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Icon } from '@/components';
 import { PostSummaryDto } from '@/types';
+import { trackUserEvent } from '@/utils/trackUtil';
 import { SidebarContent } from './SidebarContent';
 import { BarContent } from './BarContent';
 
@@ -27,7 +28,10 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
       </aside>
       <section
         className={`flex flex-col w-full px-5 bg-BG-SUB rounded-[4px] cursor-pointer MBI:hidden`}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => {
+          trackUserEvent('SECTION_INTERACT_MAIN');
+          setOpen((prev) => !prev);
+        }}
       >
         <div className="text-TEXT-ALT flex items-center justify-center text-ST5 w-full h-[52px] gap-[10px] shrink-0">
           <span>요약 정보 {open ? '펼치기' : '접기'}</span>
