@@ -21,7 +21,7 @@ export default async function Layout({ children }: { children: ReactElement }) {
 
   return (
     <main className="items-center w-full h-full flex flex-col p-[50px_70px_70px_70px] transition-all max-TBL:p-[20px_30px_30px_30px] max-MBI:p-[10px_25px_25px_25px]">
-      <div className="w-full max-w-[1728px] h-full overflow-hidden flex flex-col gap-[30px] max-TBL:gap-[20px]">
+      <div className="w-full max-w-[1740px] h-full overflow-hidden flex flex-col gap-[30px] max-TBL:gap-[20px]">
         <HydrationBoundary state={dehydrate(client)}>
           <Header />
         </HydrationBoundary>
