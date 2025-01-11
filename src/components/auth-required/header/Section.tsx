@@ -47,6 +47,7 @@ export const Section = <T extends clickType>({
       <Link
         href={action}
         className={defaultStyle + navigateStyle}
+        id="navigation"
         onClick={() => trackUserEvent('NAVIGATE')}
       >
         <Icon

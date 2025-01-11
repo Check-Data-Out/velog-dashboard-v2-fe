@@ -89,7 +89,7 @@ export const Header = () => {
               src={profiles?.profile.thumbnail || '/profile.jpg'}
               alt=""
             />
-            <span className={textStyle + 'text-TEXT-ALT'}>
+            <span className={textStyle + 'text-TEXT-ALT'} id="profile">
               {profiles?.username || 'NULL'}
             </span>
           </Section>

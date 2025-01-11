@@ -38,6 +38,8 @@ export default [
         'error',
         { groups: ['builtin', 'external', 'internal'] },
       ],
+      'testing-library/no-container': 'warn',
+      'testing-library/no-node-access': 'warn',
       'react/react-in-jsx-scope': 'off',
       '@typescript-eslint/promise-function-async': 'error',
       '@typescript-eslint/consistent-type-assertions': 'error',

@@ -1,17 +1,18 @@
 import { ReactElement } from 'react';
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { cookies } from 'next/headers';
 import { Header } from '@/components';
 import { PATHS } from '@/constants';
 import { getCookieForAuth } from '@/utils/cookieUtil';
 import { me } from '@/apis';
+import { getQueryClient } from '@/utils/queryUtil';
 
-export default async function Layout({ children }: { children: ReactElement }) {
-  const client = new QueryClient();
+interface IProp {
+  children: ReactElement;
+}
+
+export default async function Layout({ children }: IProp) {
+  const client = getQueryClient();
 
   await client.prefetchQuery({
     queryKey: [PATHS.ME],

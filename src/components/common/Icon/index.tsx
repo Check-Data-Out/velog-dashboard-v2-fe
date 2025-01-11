@@ -1,4 +1,5 @@
 import * as Icons from './icons';
+export { default as SvgrMock } from './SvgrMock';
 
 export type NameType = keyof typeof Icons;
 type iconType = Record<
@@ -29,6 +30,9 @@ export const Icon = ({
 }: IProp) => {
   const Comp = (Icons as iconType)[name];
 
+  if ((Comp as any).src) {
+    return <svg></svg>;
+  }
   return (
     <Comp
       {...rest}

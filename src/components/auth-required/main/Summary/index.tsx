@@ -12,19 +12,28 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
 
   return (
     <>
-      <aside className="flex flex-col h-full gap-[30px] max-TBL:gap-[20px] max-MBI:hidden">
+      <aside
+        className="flex flex-col h-full gap-[30px] max-TBL:gap-[20px] max-MBI:hidden"
+        id="forTest"
+      >
         <SidebarContent
           title="전체 조회수"
-          content={stats.totalViews}
+          content={stats?.totalViews}
           prefix="회"
-          increasement={stats.totalViews - stats.yesterdayViews}
+          increasement={stats?.totalViews - stats?.yesterdayViews}
+          id="totalViews"
         />
         <SidebarContent
           title="전체 좋아요 수"
-          content={stats.totalLikes}
-          increasement={stats.totalLikes - stats.yesterdayLikes}
+          content={stats?.totalLikes}
+          increasement={stats?.totalLikes - stats?.yesterdayLikes}
+          id="totalLikes"
         />
-        <SidebarContent title="총 게시글 수" content={totalPostCount} />
+        <SidebarContent
+          title="총 게시글 수"
+          content={totalPostCount}
+          id="totalPosts"
+        />
       </aside>
       <section
         className={`flex flex-col w-full px-5 bg-BG-SUB rounded-[4px] cursor-pointer MBI:hidden`}
@@ -41,16 +50,22 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
           <div className="w-full h-fit flex flex-col pb-5 shrink-0 gap-[10px]">
             <BarContent
               title="전체 조회수"
-              content={stats.totalViews}
+              content={stats?.totalViews}
               prefix="회"
-              increasement={stats.totalViews - stats.yesterdayViews}
+              increasement={stats?.totalViews - stats?.yesterdayViews}
+              id="totalViews"
             />
             <BarContent
               title="전체 좋아요 수"
-              content={stats.totalLikes}
-              increasement={stats.totalLikes - stats.yesterdayLikes}
+              content={stats?.totalLikes}
+              increasement={stats?.totalLikes - stats?.yesterdayLikes}
+              id="totalLikes"
             />
-            <BarContent title="총 게시글 수" content={totalPostCount} />
+            <BarContent
+              title="총 게시글 수"
+              content={totalPostCount}
+              id="totalPosts"
+            />
           </div>
         )}
       </section>

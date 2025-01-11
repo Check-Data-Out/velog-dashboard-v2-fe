@@ -1,5 +1,6 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
-import * as sentry from '@sentry/nextjs';
+
+import { captureException, setContext } from '@sentry/nextjs';
 import { ServerNotRespondingError } from '@/errors';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -77,26 +78,26 @@ export const instance = async <I, R>(
       !context.ok &&
       (context.status === 401 || context.status === 403)
     ) {
-      location.replace('/');
+      window.location.replace('/');
     }
 
-    sentry.setContext('Request', {
+    setContext('Request', {
       path: context.url,
       status: context.status,
     });
     if ((err as Error).name === 'TimeoutError') {
-      sentry.captureException(new ServerNotRespondingError());
+      captureException(new ServerNotRespondingError());
       throw new ServerNotRespondingError();
     } else {
       if (!error?.[`${(err as Response).status}`]) {
         const serverError = new Error(
           `서버에서 예기치 않은 오류가 발생했습니다. (${(err as Error).name})`,
         );
-        sentry.captureException(serverError);
+        captureException(serverError);
         throw serverError;
       }
 
-      sentry.captureException(error[`${(err as Response).status}`]);
+      captureException(error[`${(err as Response).status}`]);
       throw error[`${(err as Response).status}`];
     }
   }

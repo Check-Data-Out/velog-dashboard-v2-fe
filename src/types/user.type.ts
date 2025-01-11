@@ -8,6 +8,6 @@ export type UserDto = {
   username: string;
   email: string;
   profile: {
-    thumbnail: string;
+    thumbnail?: string;
   };
 };
