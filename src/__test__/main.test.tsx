@@ -17,7 +17,7 @@ jest.mock(`react-intersection-observer`, () => ({
   useInView: () => ({ ref: () => {}, inView: true }),
 }));
 
-const withFetch = (withOriginalFetch?: any) => {
+const withFetch = (withOriginalFetch?: typeof global.fetch) => {
   if (withOriginalFetch) {
     global.fetch = withOriginalFetch;
     return;
@@ -48,7 +48,7 @@ describe('메인(대시보드) 페이지에서', () => {
       const location = new URL('http://localhost:3000');
       (location as unknown as Location).replace = replace;
 
-      delete (window as any).location;
+      delete (window as unknown as Partial<Window>).location;
       window.location = location as unknown as Location;
 
       await waitFor(() => expect(replace).toHaveBeenCalledWith('/'));

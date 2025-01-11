@@ -30,7 +30,7 @@ export const Icon = ({
 }: IProp) => {
   const Comp = (Icons as iconType)[name];
 
-  if ((Comp as any).src) {
+  if ((Comp as unknown as { src: string })?.src) {
     return <svg></svg>;
   }
   return (
