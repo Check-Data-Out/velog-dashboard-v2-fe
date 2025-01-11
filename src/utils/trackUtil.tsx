@@ -9,13 +9,13 @@ type VisitDataType = {
 };
 
 export const MessageEnum = {
-  LOGIN: '11',
-  NAVIGATE: '12',
-  LOGOUT: '13',
-  SECTION_INTERACT_MAIN: '21',
-  SORT_INTERACT_MAIN: '22',
-  REFRESH_INTERACT_MAIN: '23',
-  SORT_INTERACT_BOARD: '31',
+  LOGIN: 11,
+  NAVIGATE: 12,
+  LOGOUT: 13,
+  SECTION_INTERACT_MAIN: 21,
+  SORT_INTERACT_MAIN: 22,
+  REFRESH_INTERACT_MAIN: 23,
+  SORT_INTERACT_BOARD: 31,
 } as const;
 
 const EVENT_LOG = process.env.NEXT_PUBLIC_EVENT_LOG;
@@ -26,7 +26,10 @@ if (EVENT_LOG === undefined) {
 
 export const trackUserEvent = (event_type: keyof typeof MessageEnum) => {
   if (EVENT_LOG === 'true') {
-    instance('/event', { body: { eventType: event_type }, method: 'POST' });
+    instance('/event', {
+      body: { eventType: MessageEnum[event_type] },
+      method: 'POST',
+    });
   }
 };
 
