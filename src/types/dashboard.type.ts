@@ -5,6 +5,7 @@ export type PostType = {
   releasedAt: string;
   views: number;
   likes: number;
+  slug: string;
   yesterdayViews: number;
   yesterdayLikes: number;
 };

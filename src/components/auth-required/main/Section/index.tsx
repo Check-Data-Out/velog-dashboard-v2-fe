@@ -1,15 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { parseNumber } from '@/utils/numberUtil';
-import { COLORS } from '@/constants';
+import { COLORS, PATHS } from '@/constants';
 import { Icon } from '@/components';
-import { PostType } from '@/types';
+import { PostType, UserDto } from '@/types';
 import { trackUserEvent } from '@/utils/trackUtil';
 import { Graph } from './Graph';
 
 export const Section = (p: PostType) => {
   const [open, setOpen] = useState(false);
+
+  const client = useQueryClient();
+
+  const { username } = client.getQueryData([PATHS.ME]) as UserDto;
 
   return (
     <section className="flex flex-col w-full h-fit relative">
@@ -20,12 +25,32 @@ export const Section = (p: PostType) => {
           setOpen((prev) => !prev);
         }}
       >
-        <span
-          className={`text-T3 text-TEXT-MAIN text-center items-center gap-3 after:text-TEXT-ALT after:text-ST4 MBI:after:content-[attr(data-date)] MBI:flex max-TBL:after:text-ST5 max-TBL:text-T4 max-MBI:text-ST4`}
-          data-date={p.releasedAt.split('T')[0]}
-        >
-          {p.title.length > 30 ? p.title.slice(0, 29).trim() + '..' : p.title}
-        </span>
+        <div className="flex gap-2 items-center">
+          <div
+            className="flex items-center gap-1"
+            title="해당 글로 바로가기"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(
+                `${process.env.NEXT_PUBLIC_VELOG_URL}/@${username}/${p.slug}`,
+              );
+            }}
+          >
+            <Icon name="Shortcut" color="#ECECEC" size={20} />
+            <span
+              className={`text-T3 text-TEXT-MAIN hover:underline max-TBL:after:text-ST5 max-TBL:text-T4 max-MBI:text-ST4`}
+            >
+              {p.title.length > 30
+                ? p.title.slice(0, 29).trim() + '..'
+                : p.title}
+            </span>
+          </div>
+
+          <span className="text-TEXT-ALT text-ST4 MBI:content-[attr(data-date)] max-MBI:hidden">
+            {p.releasedAt.split('T')[0]}
+          </span>
+        </div>
+
         <div className="flex items-center text-ST4 justify-between text-TEXT-ALT gap-1 max-TBL:text-ST5 max-MBI:w-full">
           <span className="MBI:hidden">{p.releasedAt.split('T')[0]}</span>
           <div className="flex flex-wrap items-center gap-[6px]">
@@ -55,7 +80,7 @@ export const Section = (p: PostType) => {
           className="MBI:hidden absolute bottom-[5px]"
         />
       </div>
-      {open && <Graph id={p.id} />}
+      {open && <Graph id={p.id} releasedAt={p.releasedAt} />}
     </section>
   );
 };

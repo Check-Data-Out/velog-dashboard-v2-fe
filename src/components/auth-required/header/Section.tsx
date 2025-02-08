@@ -52,7 +52,13 @@ export const Section = <T extends clickType>({
       >
         <Icon
           size={25}
-          color={COLORS.TEXT[action === currentPath ? 'MAIN' : 'ALT']}
+          color={
+            COLORS.TEXT[
+              typeof action === 'string' && action.includes(currentPath)
+                ? 'MAIN'
+                : 'ALT'
+            ]
+          }
           name={icon}
         />
         <span
