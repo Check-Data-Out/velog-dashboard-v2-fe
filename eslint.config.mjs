@@ -38,11 +38,12 @@ export default [
         'error',
         { groups: ['builtin', 'external', 'internal'] },
       ],
+      'testing-library/no-container': 'warn',
+      'testing-library/no-node-access': 'warn',
       'react/react-in-jsx-scope': 'off',
       '@typescript-eslint/promise-function-async': 'error',
       '@typescript-eslint/consistent-type-assertions': 'error',
       '@typescript-eslint/naming-convention': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
       'no-restricted-imports': ['error', { patterns: ['..*'] }],
     },
     languageOptions: {

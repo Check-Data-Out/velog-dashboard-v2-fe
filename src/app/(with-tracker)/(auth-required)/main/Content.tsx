@@ -14,6 +14,7 @@ import {
 import { postList, postSummary } from '@/apis';
 import { PATHS } from '@/constants';
 import { useSearchParam } from '@/hooks/useSearchParam';
+import { trackUserEvent } from '@/utils/trackUtil';
 
 const sorts: Array<OptionType> = [
   ['작성일순', ''],
@@ -40,7 +41,7 @@ export const Content = () => {
 
   const { data: summaries } = useQuery({
     queryKey: [PATHS.SUMMARY],
-    queryFn: async () => postSummary({}),
+    queryFn: async () => await postSummary({}),
   });
 
   useEffect(() => {
@@ -60,24 +61,30 @@ export const Content = () => {
       <div className="w-full flex flex-col gap-[30px] overflow-auto max-TBL:gap-[20px]">
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">
           <span className="text-TEXT-ALT text-ST5 MBI:hidden">
-            마지막 업데이트 : {summaries?.stats.lastUpdatedDate}
+            마지막 업데이트 : {summaries?.stats?.lastUpdatedDate || 'NULL'}
           </span>
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3">
-              <Button size="SMALL" disabled>
+              <Button
+                size="SMALL"
+                disabled
+                onClick={() => trackUserEvent('REFRESH_INTERACT_MAIN')}
+              >
                 새로고침
               </Button>
               <span className="text-TEXT-ALT text-ST4 max-TBL:text-ST5 max-MBI:hidden">
-                마지막 업데이트 : {summaries?.stats.lastUpdatedDate}
+                마지막 업데이트 :{' '}
+                {summaries?.stats?.lastUpdatedDate || '업데이트 중..'}
               </span>
             </div>
             <div className="flex items-center gap-3">
               <Check
-                onChange={() =>
+                onChange={() => {
+                  trackUserEvent('SORT_INTERACT_MAIN');
                   setSearchParams({
                     asc: `${!(searchParams.asc === 'true')}`,
-                  })
-                }
+                  });
+                }}
                 checked={searchParams.asc === 'true'}
                 label="오름차순"
               />
@@ -87,6 +94,7 @@ export const Content = () => {
                 }
                 options={sorts}
                 onChange={(data) => {
+                  trackUserEvent('SORT_INTERACT_MAIN');
                   setSearchParams({ sort: encodeURI(data as string) });
                 }}
               />
@@ -94,7 +102,7 @@ export const Content = () => {
           </div>
         </div>
         <div className="w-full h-full flex flex-col gap-[30px] relative max-TBL:gap-[20px] overflow-auto">
-          {posts?.pages.map((n) =>
+          {posts?.pages?.map((n) =>
             n.posts.map((i, j) =>
               j !== n?.posts.length - 1 ? (
                 <Section key={i.id} {...i} />

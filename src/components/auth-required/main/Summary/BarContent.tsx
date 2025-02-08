@@ -5,6 +5,7 @@ interface IProp {
   content: number;
   increasement?: number;
   prefix?: string;
+  id?: string;
 }
 
 const afterContent =
@@ -15,6 +16,7 @@ export const BarContent = ({
   content,
   increasement,
   prefix = '개',
+  id,
 }: IProp) => {
   return (
     <div className="w-full flex justify-between items-center">
@@ -22,6 +24,7 @@ export const BarContent = ({
       <span
         className={`flex items-center text-TEXT-MAIN text-T4 ${increasement ? afterContent : ''}`}
         data-increasement={parseNumber(increasement ? increasement : 0)}
+        id={id}
       >
         {parseNumber(content) + prefix}
       </span>

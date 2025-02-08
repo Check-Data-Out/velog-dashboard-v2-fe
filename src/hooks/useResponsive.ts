@@ -13,7 +13,7 @@ export const useResponsive = (): number => {
       clearTimeout(timer);
       timer = setTimeout(() => {
         setWidth(window.innerWidth);
-      }, 80);
+      }, 10);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);

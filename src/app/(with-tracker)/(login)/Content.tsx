@@ -3,17 +3,17 @@
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { Input, Button } from '@/components';
 import { LoginVo } from '@/types';
-import { login } from '@/apis';
+import { login, sampleLogin } from '@/apis';
+import { trackUserEvent } from '@/utils/trackUtil';
 
 const responsiveStyle =
   "flex items-center gap-5 max-MBI:before:inline-block max-MBI:before:bg-[url('/favicon.png')] max-MBI:before:[background-size:_100%_100%] max-MBI:before:w-16 max-MBI:before:h-16";
 
 export const Content = () => {
   const { replace } = useRouter();
-  const client = useQueryClient();
 
   const {
     register,
@@ -21,12 +21,19 @@ export const Content = () => {
     formState: { isValid },
   } = useForm<LoginVo>({ mode: 'all' });
 
+  const onSuccess = () => {
+    trackUserEvent('LOGIN');
+    replace('/main?asc=false&sort=');
+  };
+
   const { mutate } = useMutation({
     mutationFn: login,
-    onSuccess: (res) => {
-      client.setQueryData(['profile'], res);
-      replace('/main?asc=false&sort=');
-    },
+    onSuccess,
+  });
+
+  const { mutate: sampleMutate } = useMutation({
+    mutationFn: sampleLogin,
+    onSuccess,
   });
 
   return (
@@ -70,6 +77,12 @@ export const Content = () => {
           >
             로그인
           </Button>
+          <span
+            className="text-TEXT-ALT text-I2 max-MBI:text-ST5 after:cursor-pointer after:hover:underline after:ml-2 after:content-['체험_계정으로_로그인'] after:text-PRIMARY-MAIN after:inline-block"
+            onClick={() => sampleMutate()}
+          >
+            서비스를 체험해보고 싶다면?
+          </span>
         </div>
       </form>
     </main>

@@ -20,3 +20,6 @@ export const me = async (props: InitType<UserDto>) =>
 
 export const logout = async () =>
   await instance(PATHS.LOGOUT, { method: 'POST', body: undefined });
+
+export const sampleLogin = async () =>
+  await instance(PATHS.SAMPLELOGIN, { method: 'POST' });

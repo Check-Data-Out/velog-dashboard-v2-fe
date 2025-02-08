@@ -1,13 +1,10 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { PATHS } from '@/constants';
 import { postList, postSummary } from '@/apis';
 import { getCookieForAuth } from '@/utils/cookieUtil';
+import { getQueryClient } from '@/utils/queryUtil';
 import { Content } from './Content';
 
 export const metadata: Metadata = {
@@ -15,12 +12,16 @@ export const metadata: Metadata = {
   description: '각종 Velog 통계를 볼 수 있는 대시보드',
 };
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Record<string, string>;
-}) {
-  const client = new QueryClient();
+interface IProp {
+  searchParams: {
+    asc: 'true' | 'false';
+    sort: '' | 'dailyViewCount' | 'dailyLikeCount';
+  };
+}
+
+export default async function Page({ searchParams }: IProp) {
+  const client = getQueryClient();
+
   await client.prefetchInfiniteQuery({
     queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]],
     queryFn: async () =>

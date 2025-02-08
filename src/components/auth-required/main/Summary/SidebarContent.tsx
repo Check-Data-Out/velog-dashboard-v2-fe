@@ -5,6 +5,7 @@ interface IProp {
   content: number;
   increasement?: number;
   prefix?: string;
+  id?: string;
 }
 
 const afterContent =
@@ -15,6 +16,7 @@ export const SidebarContent = ({
   content,
   increasement,
   prefix = '개',
+  id,
 }: IProp) => {
   return (
     <div className="flex flex-col items-center justify-center gap-[10px] bg-BG-SUB w-[375px] p-4 rounded-[4px] h-full max-TBL:w-[280px]">
@@ -24,6 +26,7 @@ export const SidebarContent = ({
       <span
         className={`flex items-center text-TEXT-MAIN text-T1 transition-all max-TBL:text-T2 ${increasement && increasement !== 0 ? afterContent : ''}`}
         data-increasement={parseNumber(increasement as number)}
+        id={id}
       >
         {parseNumber(content) + prefix}
       </span>

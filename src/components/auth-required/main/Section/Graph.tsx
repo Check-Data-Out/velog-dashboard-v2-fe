@@ -42,9 +42,10 @@ const defaultData = {
 
 interface IProp {
   id: string;
+  releasedAt: string;
 }
 
-export const Graph = ({ id }: IProp) => {
+export const Graph = ({ id, releasedAt }: IProp) => {
   const width = useResponsive();
   const client = useQueryClient();
   const maxDate = useMemo(
@@ -88,6 +89,7 @@ export const Graph = ({ id }: IProp) => {
           size={isMBI ? 'SMALL' : 'MEDIUM'}
           form="SMALL"
           value={type.start}
+          min={releasedAt.split('T')[0]}
           max={maxDate}
           onChange={(e) => setType({ ...type, start: e.target.value })}
           placeholder="시작 날짜"
@@ -98,7 +100,7 @@ export const Graph = ({ id }: IProp) => {
           size={isMBI ? 'SMALL' : 'MEDIUM'}
           form="SMALL"
           value={type.end}
-          min={type.start}
+          min={type.start ? type.start : releasedAt.split('T')[0]}
           max={maxDate}
           onChange={(e) => setType({ ...type, end: e.target.value })}
           placeholder="종료 날짜"
@@ -125,7 +127,9 @@ export const Graph = ({ id }: IProp) => {
           data={datas || defaultData}
           options={{
             responsive: true,
+            maintainAspectRatio: false,
             animation: false,
+            interaction: { mode: 'nearest', intersect: false },
             plugins: {
               legend: {
                 display: false,
