@@ -18,11 +18,7 @@ export const MessageEnum = {
   SORT_INTERACT_BOARD: 31,
 } as const;
 
-const EVENT_LOG = process.env.NEXT_PUBLIC_EVENT_LOG;
-
-if (EVENT_LOG === undefined) {
-  throw new Error('EVENT_LOG가 ENV에서 설정되지 않았습니다.');
-}
+const EVENT_LOG = process.env.NEXT_PUBLIC_EVENT_LOG || 'false';
 
 export const trackUserEvent = (event_type: keyof typeof MessageEnum) => {
   if (EVENT_LOG === 'true') {
