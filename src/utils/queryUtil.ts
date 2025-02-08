@@ -2,6 +2,8 @@ import { QueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 let localQueryClient: QueryClient | undefined;
+const STALE_TIME = 1000 * 60 * 3;
+const GC_TIME = 1000 * 60 * 30;
 
 const createQueryClient = () =>
   new QueryClient({
@@ -9,7 +11,8 @@ const createQueryClient = () =>
       queries: {
         retry: 1,
         refetchOnWindowFocus: false,
-        staleTime: 1000 * 10 * 5,
+        staleTime: STALE_TIME,
+        gcTime: GC_TIME,
       },
       mutations: { onError: (err) => toast.error(`${err.message}`) },
     },
