@@ -11,9 +11,18 @@ import { logout, me } from '@/apis';
 import { trackUserEvent } from '@/utils/trackUtil';
 import { defaultStyle, Section, textStyle } from './Section';
 
+const PARAMS = {
+  MAIN: '?asc=false&sort=',
+  LEADERBOARDS: '?type=views',
+};
+
 const layouts: Array<{ icon: NameType; title: string; path: string }> = [
-  { icon: 'Analytics', title: '내 통계', path: '/main?asc=false&sort=' },
-  { icon: 'LeaderBoards', title: '리더보드', path: '/leaderboards?type=views' },
+  { icon: 'Analytics', title: '내 통계', path: `/main${PARAMS.MAIN}` },
+  {
+    icon: 'LeaderBoards',
+    title: '리더보드',
+    path: `/leaderboards${PARAMS.LEADERBOARDS}`,
+  },
   { icon: 'Compare', title: '통계 비교', path: '/compare' },
 ];
 

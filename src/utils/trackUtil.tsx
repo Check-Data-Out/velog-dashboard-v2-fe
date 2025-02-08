@@ -19,6 +19,7 @@ export const MessageEnum = {
 } as const;
 
 const EVENT_LOG = process.env.NEXT_PUBLIC_EVENT_LOG || 'false';
+const STATUS = process.env.NODE_ENV;
 
 export const trackUserEvent = (event_type: keyof typeof MessageEnum) => {
   if (EVENT_LOG === 'true') {
@@ -43,12 +44,12 @@ export const TrackVisitEvent = () => {
   useEffect(() => {
     // 페이지 로드 시 시간 기록
     data.current.loadDate = new Date().toISOString();
-    if (process.env.NODE_ENV === 'production' && EVENT_LOG === 'true') {
+    if (STATUS === 'production' && EVENT_LOG === 'true') {
       window.addEventListener('unload', setUnloadData);
     }
 
     return () => {
-      if (process.env.NODE_ENV === 'production' && EVENT_LOG === 'true') {
+      if (STATUS === 'production' && EVENT_LOG === 'true') {
         window.removeEventListener('unload', setUnloadData);
       }
     };
