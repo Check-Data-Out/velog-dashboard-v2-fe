@@ -32,9 +32,10 @@ export const Content = () => {
         defaultValue={'조회수'}
       />
       <div className="w-full flex gap-10 max-MBI:flex-col max-MBI:gap-5">
-        {width < SCREENS.MBI && <Ranker name="정현우" rank={1} count={1235} />}
         <Ranker name="최하온" rank={2} count={1234} />
-        {width > SCREENS.MBI && <Ranker name="정현우" rank={1} count={1235} />}
+        <div className={`${width < SCREENS.MBI && 'order-first'} w-full`}>
+          <Ranker name="정현우" rank={1} count={1235} />
+        </div>
         <Ranker name="이호준" rank={3} count={1233} />
       </div>
       <div className="w-full flex flex-wrap gap-10 max-TBL:gap-5">

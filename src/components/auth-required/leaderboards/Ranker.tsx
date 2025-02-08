@@ -8,7 +8,7 @@ export interface IProp {
 export const Ranker = ({ name, rank, count, suffix = '회' }: IProp) => {
   return (
     <div
-      className={`${rank === 1 ? 'w-[40%] border-BORDER-SUB' : 'w-[35%] border-BORDER-MAIN'} max-MBI:border-[3px] flex justify-center items-center gap-[10px]  h-[250px] p-[25px] bg-BG-SUB rounded-[4px] max-MBI:w-full max-MBI:h-fit max-MBI:flex-row max-MBI:justify-between`}
+      className={`${rank === 1 ? 'w-full border-BORDER-SUB' : 'w-[70%] border-BORDER-MAIN'} max-MBI:border-[3px] flex justify-center items-center gap-[10px]  h-[250px] p-[25px] bg-BG-SUB rounded-[4px] max-MBI:w-full max-MBI:h-fit max-MBI:flex-row max-MBI:justify-between`}
     >
       <div className="flex gap-3 items-center MBI:flex-col">
         <span className="text-T4 text-TEXT-ALT max-TBL:text-T5">{rank}위</span>
