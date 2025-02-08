@@ -73,7 +73,8 @@ export const Content = () => {
                 새로고침
               </Button>
               <span className="text-TEXT-ALT text-ST4 max-TBL:text-ST5 max-MBI:hidden">
-                마지막 업데이트 : {summaries?.stats?.lastUpdatedDate || 'NULL'}
+                마지막 업데이트 :{' '}
+                {summaries?.stats?.lastUpdatedDate || '업데이트 중..'}
               </span>
             </div>
             <div className="flex items-center gap-3">
