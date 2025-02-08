@@ -1,5 +1,6 @@
-import { Content } from './Content';
+import { ArriveSoon } from '@/components';
+// import { Content } from './Content';
 
 export default function Page() {
-  return <Content />;
+  return <ArriveSoon />;
 }
