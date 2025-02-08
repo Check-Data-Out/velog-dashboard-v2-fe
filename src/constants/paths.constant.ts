@@ -1,5 +1,6 @@
 export const PATHS = {
   LOGIN: '/login',
+  SAMPLELOGIN: '/login-sample',
   EVENT: '/event',
   STAY: '/stay',
   POSTS: '/posts',

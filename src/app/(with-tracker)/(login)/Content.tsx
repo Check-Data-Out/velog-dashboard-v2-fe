@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useMutation } from '@tanstack/react-query';
 import { Input, Button } from '@/components';
 import { LoginVo } from '@/types';
-import { login } from '@/apis';
+import { login, sampleLogin } from '@/apis';
 import { trackUserEvent } from '@/utils/trackUtil';
 
 const responsiveStyle =
@@ -21,12 +21,19 @@ export const Content = () => {
     formState: { isValid },
   } = useForm<LoginVo>({ mode: 'all' });
 
+  const onSuccess = () => {
+    trackUserEvent('LOGIN');
+    replace('/main?asc=false&sort=');
+  };
+
   const { mutate } = useMutation({
     mutationFn: login,
-    onSuccess: () => {
-      trackUserEvent('LOGIN');
-      replace('/main?asc=false&sort=');
-    },
+    onSuccess,
+  });
+
+  const { mutate: sampleMutate } = useMutation({
+    mutationFn: sampleLogin,
+    onSuccess,
   });
 
   return (
@@ -70,6 +77,12 @@ export const Content = () => {
           >
             로그인
           </Button>
+          <span
+            className="text-TEXT-ALT text-I2 max-MBI:text-ST5 after:cursor-pointer after:hover:underline after:ml-2 after:content-['체험_계정으로_로그인'] after:text-PRIMARY-MAIN after:inline-block"
+            onClick={() => sampleMutate()}
+          >
+            서비스를 체험해보고 싶다면?
+          </span>
         </div>
       </form>
     </main>
