@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PATHS, SCREENS } from '@/constants';
 import { NameType } from '@/components';
 import { useResponsive } from '@/hooks';
@@ -23,11 +23,15 @@ export const Header = () => {
   const path = usePathname();
   const router = useRouter();
   const width = useResponsive();
+  const client = useQueryClient();
   const barWidth = width < SCREENS.MBI ? 65 : 180;
 
   const { mutate: out } = useMutation({
     mutationFn: logout,
-    onSuccess: () => router.replace('/'),
+    onSuccess: () => {
+      client.removeQueries();
+      router.replace('/');
+    },
   });
 
   const { data: profiles } = useQuery({
