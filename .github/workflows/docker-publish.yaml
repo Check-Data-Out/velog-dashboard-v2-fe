@@ -27,10 +27,11 @@ jobs:
       - name: Create .env file
         run: |
           echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env
+          echo "NEXT_PUBLIC_VELOG_URL=${{ secrets.NEXT_PUBLIC_VELOG_URL }}" >> .env
           echo "NEXT_PUBLIC_ABORT_MS=${{ secrets.NEXT_PUBLIC_ABORT_MS }}" >> .env
+          echo "NEXT_PUBLIC_EVENT_LOG=${{ secrets.NEXT_PUBLIC_EVENT_LOG }}" >> .env
           echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
-          echo "NEXT_PUBLIC_EVENT_LOG=true" >> .env
           cp .env .env.production
 
       - name: Build Next.js application
