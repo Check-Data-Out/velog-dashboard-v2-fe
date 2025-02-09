@@ -6,7 +6,7 @@ import { parseNumber } from '@/utils/numberUtil';
 import { COLORS, PATHS } from '@/constants';
 import { Icon } from '@/components';
 import { PostType, UserDto } from '@/types';
-import { trackUserEvent } from '@/utils/trackUtil';
+import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 import { Graph } from './Graph';
 
 export const Section = (p: PostType) => {
@@ -21,7 +21,7 @@ export const Section = (p: PostType) => {
       <div
         className={`p-[25px] h-fit cursor-pointer bg-BG-SUB flex justify-between items-center gap-4 ${!open ? 'rounded-[4px] max-MBI:pb-[35px_!important]' : 'rounded-t-[4px]'} max-xl:flex-col max-MBI:flex-col max-MBI:p-[20px]`}
         onClick={() => {
-          trackUserEvent('SECTION_INTERACT_MAIN');
+          trackUserEvent(MessageEnum.SECTION_INTERACT_MAIN);
           setOpen((prev) => !prev);
         }}
       >

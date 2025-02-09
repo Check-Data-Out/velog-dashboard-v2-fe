@@ -21,10 +21,12 @@ export const MessageEnum = {
 const EVENT_LOG = process.env.NEXT_PUBLIC_EVENT_LOG || 'false';
 const STATUS = process.env.NODE_ENV;
 
-export const trackUserEvent = (event_type: keyof typeof MessageEnum) => {
+export const trackUserEvent = (event: keyof typeof MessageEnum | number) => {
+  const eventType = typeof event === 'number' ? event : MessageEnum[event];
+
   if (EVENT_LOG === 'true') {
     instance('/event', {
-      body: { eventType: MessageEnum[event_type] },
+      body: { eventType },
       method: 'POST',
     });
   }

@@ -37,3 +37,13 @@ docker push nuung/velog-dashboard-v2-fe:latest
 docker pull nuung/velog-dashboard-v2-fe:latest
 docker run -p 3000:3000 nuung/velog-dashboard-v2-fe:latest
 ```
+
+## docker 관련, 이미지 정리
+
+```shell
+# 사용하지 않는 모든 이미지 정리
+docker image prune -af
+
+# 볼륨, 캐시, 컨테이너 포함 등 모든 사용하지 않는 리소스 정리
+docker system prune -af --volumes
+```

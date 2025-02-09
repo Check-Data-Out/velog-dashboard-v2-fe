@@ -3,7 +3,7 @@
 import { Dropdown, Ranker, Rank } from '@/components';
 import { SCREENS } from '@/constants';
 import { useResponsive, useSearchParam } from '@/hooks';
-import { trackUserEvent } from '@/utils/trackUtil';
+import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 
 const data = [
   { rank: 1, name: '정현우', count: 1235 },
@@ -26,7 +26,7 @@ export const Content = () => {
           ['좋아요', 'likes'],
         ]}
         onChange={(data) => {
-          trackUserEvent('SORT_INTERACT_BOARD');
+          trackUserEvent(MessageEnum.SORT_INTERACT_BOARD);
           setSearchParams({ type: data as string });
         }}
         defaultValue={'조회수'}

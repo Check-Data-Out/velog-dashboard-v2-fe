@@ -8,7 +8,7 @@ import { PATHS, SCREENS } from '@/constants';
 import { NameType } from '@/components';
 import { useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
-import { trackUserEvent } from '@/utils/trackUtil';
+import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 import { defaultStyle, Section, textStyle } from './Section';
 
 const PARAMS = {
@@ -114,7 +114,7 @@ export const Header = () => {
                   className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto"
                   onClick={() => {
                     out();
-                    trackUserEvent('LOGOUT');
+                    trackUserEvent(MessageEnum.LOGOUT);
                   }}
                 >
                   로그아웃
