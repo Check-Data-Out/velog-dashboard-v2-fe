@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Icon } from '@/components';
 import { PostSummaryDto } from '@/types';
-import { trackUserEvent } from '@/utils/trackUtil';
+import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 import { SidebarContent } from './SidebarContent';
 import { BarContent } from './BarContent';
 
@@ -38,7 +38,7 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
       <section
         className={`flex flex-col w-full px-5 bg-BG-SUB rounded-[4px] cursor-pointer MBI:hidden`}
         onClick={() => {
-          trackUserEvent('SECTION_INTERACT_MAIN');
+          trackUserEvent(MessageEnum.SECTION_INTERACT_MAIN);
           setOpen((prev) => !prev);
         }}
       >

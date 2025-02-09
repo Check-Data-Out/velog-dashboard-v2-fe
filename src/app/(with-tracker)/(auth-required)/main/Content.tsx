@@ -14,7 +14,7 @@ import {
 import { postList, postSummary } from '@/apis';
 import { PATHS } from '@/constants';
 import { useSearchParam } from '@/hooks/useSearchParam';
-import { trackUserEvent } from '@/utils/trackUtil';
+import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 
 const sorts: Array<OptionType> = [
   ['작성일순', ''],
@@ -68,7 +68,9 @@ export const Content = () => {
               <Button
                 size="SMALL"
                 disabled
-                onClick={() => trackUserEvent('REFRESH_INTERACT_MAIN')}
+                onClick={() =>
+                  trackUserEvent(MessageEnum.REFRESH_INTERACT_MAIN)
+                }
               >
                 새로고침
               </Button>
@@ -80,7 +82,7 @@ export const Content = () => {
             <div className="flex items-center gap-3">
               <Check
                 onChange={() => {
-                  trackUserEvent('SORT_INTERACT_MAIN');
+                  trackUserEvent(MessageEnum.SORT_INTERACT_MAIN);
                   setSearchParams({
                     asc: `${!(searchParams.asc === 'true')}`,
                   });
@@ -94,7 +96,7 @@ export const Content = () => {
                 }
                 options={sorts}
                 onChange={(data) => {
-                  trackUserEvent('SORT_INTERACT_MAIN');
+                  trackUserEvent(MessageEnum.SORT_INTERACT_MAIN);
                   setSearchParams({ sort: encodeURI(data as string) });
                 }}
               />
