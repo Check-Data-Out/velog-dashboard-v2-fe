@@ -11,10 +11,10 @@ import { Graph } from './Graph';
 
 export const Section = (p: PostType) => {
   const [open, setOpen] = useState(false);
-
   const client = useQueryClient();
 
-  const { username } = client.getQueryData([PATHS.ME]) as UserDto;
+  const username = (client.getQueryData([PATHS.ME]) as UserDto)?.username;
+  const url = `${process.env.NEXT_PUBLIC_VELOG_URL}/@${username || ''}/${p.slug}`;
 
   return (
     <section className="flex flex-col w-full h-fit relative">
@@ -31,9 +31,7 @@ export const Section = (p: PostType) => {
             title="해당 글로 바로가기"
             onClick={(e) => {
               e.stopPropagation();
-              window.open(
-                `${process.env.NEXT_PUBLIC_VELOG_URL}/@${username}/${p.slug}`,
-              );
+              window.open(url);
             }}
           >
             <Icon name="Shortcut" color="#ECECEC" size={20} />

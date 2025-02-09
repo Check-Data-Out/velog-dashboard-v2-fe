@@ -12,13 +12,13 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { COLORS, PATHS, SCREENS } from '@/constants';
 import { Dropdown, Input } from '@/components';
 import { useResponsive } from '@/hooks';
 import { postDetail } from '@/apis';
-import { PostDetailValue, PostSummaryDto } from '@/types';
+import { PostDetailValue } from '@/types';
 
 ChartJS.register(
   CategoryScale,
@@ -47,14 +47,6 @@ interface IProp {
 
 export const Graph = ({ id, releasedAt }: IProp) => {
   const width = useResponsive();
-  const client = useQueryClient();
-  const maxDate = useMemo(
-    () =>
-      (
-        client.getQueryData([PATHS.SUMMARY]) as PostSummaryDto
-      )?.stats.lastUpdatedDate.split('T')[0],
-    [],
-  );
 
   const isMBI = width < SCREENS.MBI;
 
@@ -90,7 +82,6 @@ export const Graph = ({ id, releasedAt }: IProp) => {
           form="SMALL"
           value={type.start}
           min={releasedAt.split('T')[0]}
-          max={maxDate}
           onChange={(e) => setType({ ...type, start: e.target.value })}
           placeholder="시작 날짜"
           type="date"
@@ -101,7 +92,6 @@ export const Graph = ({ id, releasedAt }: IProp) => {
           form="SMALL"
           value={type.end}
           min={type.start ? type.start : releasedAt.split('T')[0]}
-          max={maxDate}
           onChange={(e) => setType({ ...type, end: e.target.value })}
           placeholder="종료 날짜"
           type="date"
