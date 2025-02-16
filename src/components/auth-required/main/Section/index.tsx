@@ -18,7 +18,7 @@ export const Section = (p: PostType) => {
   if (!username) {
     throw new UserNameNotFound();
   }
-  const url = `${process.env.NEXT_PUBLIC_VELOG_URL}/@${username || ''}/${p.slug}`;
+  const url = `${process.env.NEXT_PUBLIC_VELOG_URL}/@${username}/${p.slug}`;
 
   return (
     <section className="flex flex-col w-full h-fit relative">
