@@ -62,7 +62,10 @@ export const Header = () => {
   return (
     <nav className="w-full max-MBI:flex max-MBI:justify-center">
       <div className="flex w-fit">
-        <Section clickType="none">
+        <Section
+          clickType="function"
+          action={() => router.replace(`/main${PARAMS.MAIN}`)}
+        >
           <Image
             width={35}
             height={35}

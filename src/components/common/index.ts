@@ -1,3 +1,4 @@
+export * from './ChannelTalkProvider';
 export * from './QueryProvider';
 export * from './ArriveSoon';
 export * from './Dropdown';
