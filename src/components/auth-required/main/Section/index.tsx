@@ -7,13 +7,17 @@ import { COLORS, PATHS } from '@/constants';
 import { Icon } from '@/components';
 import { PostType, UserDto } from '@/types';
 import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
+import { UserNameNotFound } from '@/errors';
 import { Graph } from './Graph';
 
 export const Section = (p: PostType) => {
   const [open, setOpen] = useState(false);
   const client = useQueryClient();
 
-  const username = (client.getQueryData([PATHS.ME]) as UserDto)?.username;
+  const { username } = client.getQueryData([PATHS.ME]) as UserDto;
+  if (!username) {
+    throw new UserNameNotFound();
+  }
   const url = `${process.env.NEXT_PUBLIC_VELOG_URL}/@${username || ''}/${p.slug}`;
 
   return (

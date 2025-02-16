@@ -60,9 +60,20 @@ export const instance = async <I, R>(
   init?: InitType<I>,
   error?: Record<string, Error>,
 ): Promise<R> => {
+  let cookieHeader = '';
+  if (typeof window === 'undefined') {
+    cookieHeader = (await import('next/headers')).cookies().toString();
+  }
+
   try {
     const data = await fetch('/api' + input, {
       ...init,
+      headers: cookieHeader
+        ? {
+            ...init?.headers,
+            Cookie: cookieHeader,
+          }
+        : init?.headers,
       body: init?.body ? JSON.stringify(init.body) : undefined,
       signal: AbortSignal.timeout
         ? AbortSignal.timeout(ABORT_MS)

@@ -37,15 +37,13 @@ export const Header = () => {
 
   const { mutate: out } = useMutation({
     mutationFn: logout,
-    onSuccess: () => {
-      client.removeQueries();
-      router.replace('/');
-    },
+    onMutate: () => router.replace('/'),
+    onSuccess: () => client.removeQueries(),
   });
 
   const { data: profiles } = useQuery({
     queryKey: [PATHS.ME],
-    queryFn: async () => me({}),
+    queryFn: me,
   });
 
   useEffect(() => {

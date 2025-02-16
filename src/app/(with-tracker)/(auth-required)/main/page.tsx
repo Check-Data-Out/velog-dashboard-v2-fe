@@ -1,6 +1,5 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import { PATHS } from '@/constants';
 import { postList, postSummary } from '@/apis';
 import { getQueryClient } from '@/utils/queryUtil';
@@ -24,20 +23,16 @@ export default async function Page({ searchParams }: IProp) {
   await client.prefetchInfiniteQuery({
     queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]],
     queryFn: async () =>
-      await postList(
-        { headers: { Cookie: cookies().toString() } },
-        {
-          asc: searchParams.asc === 'true',
-          sort: searchParams.sort || '',
-        },
-      ),
+      await postList({
+        asc: searchParams.asc === 'true',
+        sort: searchParams.sort || '',
+      }),
     initialPageParam: undefined,
   });
 
   await client.prefetchQuery({
     queryKey: [PATHS.SUMMARY],
-    queryFn: async () =>
-      await postSummary({ headers: { Cookie: cookies().toString() } }),
+    queryFn: postSummary,
   });
 
   return (
