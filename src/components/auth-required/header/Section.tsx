@@ -24,13 +24,13 @@ type PropType<T extends clickType> = T extends 'link'
     ? Partial<BaseType> & {
         clickType: 'function';
         action: () => void;
-        children: React.ReactNode | React.ReactNode[];
+        children: React.ReactNode;
       }
     : T extends 'none'
       ? Partial<BaseType> & {
           clickType: 'none';
           action?: undefined;
-          children: React.ReactNode | React.ReactNode[];
+          children: React.ReactNode;
         }
       : never;
 

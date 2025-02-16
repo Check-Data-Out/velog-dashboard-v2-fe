@@ -17,3 +17,13 @@ export class NotFoundError extends CustomError {
     super(message, code, 400);
   }
 }
+
+export class EnvNotFoundError extends CustomError {
+  constructor(message: string) {
+    super(
+      `${message}이(가) ENV에서 설정되지 않았습니다`,
+      'EnvNotFoundError',
+      0,
+    );
+  }
+}

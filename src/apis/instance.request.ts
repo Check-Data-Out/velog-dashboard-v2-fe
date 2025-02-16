@@ -1,17 +1,17 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
 
 import { captureException, setContext } from '@sentry/nextjs';
-import { ServerNotRespondingError } from '@/errors';
+import { EnvNotFoundError, ServerNotRespondingError } from '@/errors';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const ABORT_MS = Number(process.env.NEXT_PUBLIC_ABORT_MS);
 
 if (Number.isNaN(ABORT_MS)) {
-  throw new Error('ABORT_MS가 ENV에서 설정되지 않았습니다');
+  throw new EnvNotFoundError('ABORT_MS');
 }
 
 if (!BASE_URL) {
-  throw new Error('BASE_URL이 ENV에서 설정되지 않았습니다.');
+  throw new EnvNotFoundError('BASE_URL');
 }
 
 type ErrorType = {
@@ -60,9 +60,20 @@ export const instance = async <I, R>(
   init?: InitType<I>,
   error?: Record<string, Error>,
 ): Promise<R> => {
+  let cookieHeader = '';
+  if (typeof window === 'undefined') {
+    cookieHeader = (await import('next/headers')).cookies().toString();
+  }
+
   try {
     const data = await fetch('/api' + input, {
       ...init,
+      headers: cookieHeader
+        ? {
+            ...init?.headers,
+            Cookie: cookieHeader,
+          }
+        : init?.headers,
       body: init?.body ? JSON.stringify(init.body) : undefined,
       signal: AbortSignal.timeout
         ? AbortSignal.timeout(ABORT_MS)

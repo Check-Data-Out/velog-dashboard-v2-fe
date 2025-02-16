@@ -37,15 +37,13 @@ export const Header = () => {
 
   const { mutate: out } = useMutation({
     mutationFn: logout,
-    onSuccess: () => {
-      client.removeQueries();
-      router.replace('/');
-    },
+    onMutate: () => router.replace('/'),
+    onSuccess: () => client.removeQueries(),
   });
 
   const { data: profiles } = useQuery({
     queryKey: [PATHS.ME],
-    queryFn: async () => me({}),
+    queryFn: me,
   });
 
   useEffect(() => {
@@ -62,7 +60,10 @@ export const Header = () => {
   return (
     <nav className="w-full max-MBI:flex max-MBI:justify-center">
       <div className="flex w-fit">
-        <Section clickType="none">
+        <Section
+          clickType="function"
+          action={() => router.replace(`/main${PARAMS.MAIN}`)}
+        >
           <Image
             width={35}
             height={35}

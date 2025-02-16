@@ -5,7 +5,7 @@ import * as sentry from '@sentry/nextjs';
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import './globals.css';
-import { QueryProvider } from '@/components';
+import { ChannelTalkProvider, QueryProvider } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Velog Dashboard',
@@ -23,8 +23,10 @@ export default function RootLayout({
       <body className={`${NotoSansKr.className} w-full bg-BG-MAIN`}>
         <sentry.ErrorBoundary>
           <QueryProvider>
-            <ToastContainer autoClose={2000} />
-            {children}
+            <ChannelTalkProvider>
+              <ToastContainer autoClose={2000} />
+              {children}
+            </ChannelTalkProvider>
           </QueryProvider>
         </sentry.ErrorBoundary>
       </body>

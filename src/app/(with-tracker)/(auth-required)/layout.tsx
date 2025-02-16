@@ -1,9 +1,7 @@
 import { ReactElement } from 'react';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { cookies } from 'next/headers';
 import { Header } from '@/components';
 import { PATHS } from '@/constants';
-import { getCookieForAuth } from '@/utils/cookieUtil';
 import { me } from '@/apis';
 import { getQueryClient } from '@/utils/queryUtil';
 
@@ -16,8 +14,7 @@ export default async function Layout({ children }: IProp) {
 
   await client.prefetchQuery({
     queryKey: [PATHS.ME],
-    queryFn: async () =>
-      await me(getCookieForAuth(cookies, ['access_token', 'refresh_token'])),
+    queryFn: me,
   });
 
   return (

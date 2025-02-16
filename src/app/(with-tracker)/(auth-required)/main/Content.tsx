@@ -30,7 +30,6 @@ export const Content = () => {
     queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]], // Query Key
     queryFn: async ({ pageParam = '' }) =>
       await postList(
-        {},
         { asc: searchParams.asc === 'true', sort: searchParams.sort || '' },
         pageParam,
       ),
@@ -41,7 +40,7 @@ export const Content = () => {
 
   const { data: summaries } = useQuery({
     queryKey: [PATHS.SUMMARY],
-    queryFn: async () => await postSummary({}),
+    queryFn: postSummary,
   });
 
   useEffect(() => {
