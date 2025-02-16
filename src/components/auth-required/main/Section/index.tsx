@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { EnvNotFoundError, UserNameNotFoundError } from '@/errors';
+import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 import { parseNumber } from '@/utils/numberUtil';
 import { COLORS, PATHS } from '@/constants';
-import { Icon } from '@/components';
 import { PostType, UserDto } from '@/types';
-import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
-import { UserNameNotFound } from '@/errors';
+import { Icon } from '@/components';
 import { Graph } from './Graph';
 
 export const Section = (p: PostType) => {
@@ -15,9 +15,15 @@ export const Section = (p: PostType) => {
   const client = useQueryClient();
 
   const { username } = client.getQueryData([PATHS.ME]) as UserDto;
+  const { NEXT_PUBLIC_VELOG_URL } = process.env;
+
   if (!username) {
-    throw new UserNameNotFound();
+    throw new UserNameNotFoundError();
   }
+  if (NEXT_PUBLIC_VELOG_URL) {
+    throw new EnvNotFoundError('NEXT_PUBLIC_VELOG_URL');
+  }
+
   const url = `${process.env.NEXT_PUBLIC_VELOG_URL}/@${username}/${p.slug}`;
 
   return (
