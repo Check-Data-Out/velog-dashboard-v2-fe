@@ -8,7 +8,6 @@ const ChannelTalkServiceLoader = () => {
   if (!CHANNELTALK_PLUGIN_KEY) {
     throw new Error('ABORT_MS가 ENV에서 설정되지 않았습니다');
   }
-  console.log(CHANNELTALK_PLUGIN_KEY);
 
   ChannelService.loadScript();
   ChannelService.boot({ pluginKey: CHANNELTALK_PLUGIN_KEY });
