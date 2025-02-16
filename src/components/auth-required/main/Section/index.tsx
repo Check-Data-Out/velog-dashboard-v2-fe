@@ -15,16 +15,17 @@ export const Section = (p: PostType) => {
   const client = useQueryClient();
 
   const { username } = client.getQueryData([PATHS.ME]) as UserDto;
-  const { NEXT_PUBLIC_VELOG_URL } = process.env;
+  const URL = process.env.NEXT_PUBLIC_VELOG_URL;
 
   if (!username) {
     throw new UserNameNotFoundError();
   }
-  if (!NEXT_PUBLIC_VELOG_URL) {
+
+  if (!URL) {
     throw new EnvNotFoundError('NEXT_PUBLIC_VELOG_URL');
   }
 
-  const url = `${NEXT_PUBLIC_VELOG_URL}/@${username}/${p.slug}`;
+  const url = `${URL}/@${username}/${p.slug}`;
 
   return (
     <section className="flex flex-col w-full h-fit relative">
