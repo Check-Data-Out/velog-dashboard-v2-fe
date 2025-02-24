@@ -16,7 +16,7 @@ const data = [
 
 export const Content = () => {
   const width = useResponsive();
-  const { setSearchParams } = useSearchParam();
+  const [, setSearchParams] = useSearchParam();
 
   return (
     <div className="flex w-full h-full flex-col gap-[30px] overflow-auto items-center max-TBL:gap-5">
