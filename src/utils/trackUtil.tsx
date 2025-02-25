@@ -28,6 +28,7 @@ export const trackUserEvent = (event: keyof typeof MessageEnum | number) => {
     instance('/event', {
       body: { eventType },
       method: 'POST',
+      keepalive: true,
     });
   }
 };

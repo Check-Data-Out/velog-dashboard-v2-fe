@@ -32,18 +32,26 @@ export const Header = () => {
   const path = usePathname();
   const router = useRouter();
   const width = useResponsive();
-  const client = useQueryClient();
   const barWidth = width < SCREENS.MBI ? 65 : 180;
-
-  const { mutate: out } = useMutation({
-    mutationFn: logout,
-    onMutate: () => router.replace('/'),
-    onSuccess: () => client.removeQueries(),
-  });
+  const client = useQueryClient();
 
   const { data: profiles } = useQuery({
     queryKey: [PATHS.ME],
     queryFn: me,
+  });
+
+  const { mutate: out } = useMutation({
+    mutationFn: logout,
+    onSuccess: async () => {
+      client
+        .getQueryCache()
+        .findAll()
+        .forEach((query) => {
+          client.setQueryData(query.queryKey, null);
+        });
+      client.clear();
+      router.replace('/');
+    },
   });
 
   useEffect(() => {
