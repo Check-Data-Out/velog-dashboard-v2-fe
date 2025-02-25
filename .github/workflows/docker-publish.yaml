@@ -31,6 +31,7 @@ jobs:
           echo "NEXT_PUBLIC_ABORT_MS=${{ secrets.NEXT_PUBLIC_ABORT_MS }}" >> .env
           echo "NEXT_PUBLIC_EVENT_LOG=${{ secrets.NEXT_PUBLIC_EVENT_LOG }}" >> .env
           echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
+          echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=${{ secrets.NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY }}" >> .env
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
           cp .env .env.production
 

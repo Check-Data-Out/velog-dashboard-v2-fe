@@ -3,27 +3,23 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import {
-  Button,
-  Dropdown,
-  Section,
-  Summary,
-  Check,
-  OptionType,
-} from '@/components';
+import { Button, Dropdown, Section, Summary, Check } from '@/components';
 import { postList, postSummary } from '@/apis';
-import { PATHS } from '@/constants';
+import { PATHS, SORT_TYPE } from '@/constants';
 import { useSearchParam } from '@/hooks/useSearchParam';
 import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
+import { SortKey, SortValue } from '@/types';
 
-const sorts: Array<OptionType> = [
-  ['작성일순', ''],
-  ['조회순', 'dailyViewCount'],
-  ['좋아요순', 'dailyLikeCount'],
-];
+const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<
+  [SortKey, SortValue]
+>;
 
 export const Content = () => {
-  const { searchParams, setSearchParams } = useSearchParam();
+  const [searchParams, setSearchParams] = useSearchParam<{
+    asc: 'true' | 'false';
+    sort: SortValue;
+  }>();
+
   const { ref, inView } = useInView();
 
   const { data: posts, fetchNextPage } = useInfiniteQuery({
@@ -83,7 +79,7 @@ export const Content = () => {
                 onChange={() => {
                   trackUserEvent(MessageEnum.SORT_INTERACT_MAIN);
                   setSearchParams({
-                    asc: `${!(searchParams.asc === 'true')}`,
+                    asc: searchParams.asc === 'true' ? 'false' : 'true',
                   });
                 }}
                 checked={searchParams.asc === 'true'}
@@ -91,12 +87,13 @@ export const Content = () => {
               />
               <Dropdown
                 defaultValue={
-                  sorts.find((i) => i[1] === searchParams.sort) as OptionType
+                  sorts.find((i) => i[1] === searchParams.sort) ??
+                  SORT_TYPE['작성일순']
                 }
                 options={sorts}
                 onChange={(data) => {
                   trackUserEvent(MessageEnum.SORT_INTERACT_MAIN);
-                  setSearchParams({ sort: encodeURI(data as string) });
+                  setSearchParams({ sort: data as SortValue });
                 }}
               />
             </div>
