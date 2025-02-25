@@ -4,6 +4,7 @@ import { Header } from '@/components';
 import { PATHS } from '@/constants';
 import { me } from '@/apis';
 import { getQueryClient } from '@/utils/queryUtil';
+import { Header } from '@/components';
 
 interface IProp {
   children: ReactElement;

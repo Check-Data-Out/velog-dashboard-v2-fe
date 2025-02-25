@@ -3,14 +3,15 @@ import { toast } from 'react-toastify';
 
 let localQueryClient: QueryClient | undefined;
 const STALE_TIME = 1000 * 60 * 3;
-const GC_TIME = 1000 * 60 * 30;
+const GC_TIME = 1000;
 
 const createQueryClient = () =>
   new QueryClient({
     defaultOptions: {
       queries: {
         retry: 1,
-        refetchOnWindowFocus: false,
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
         staleTime: STALE_TIME,
         gcTime: GC_TIME,
       },

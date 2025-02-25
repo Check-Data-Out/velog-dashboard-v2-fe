@@ -32,8 +32,13 @@ export const Header = () => {
   const path = usePathname();
   const router = useRouter();
   const width = useResponsive();
-  const client = useQueryClient();
   const barWidth = width < SCREENS.MBI ? 65 : 180;
+  const client = useQueryClient();
+
+  const { data: profiles } = useQuery({
+    queryKey: [PATHS.ME],
+    queryFn: me,
+  });
 
   const { mutate: out } = useMutation({
     mutationFn: logout,
@@ -45,7 +50,7 @@ export const Header = () => {
     queryKey: [PATHS.ME],
     queryFn: me,
   });
-
+      
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) =>
       open &&
