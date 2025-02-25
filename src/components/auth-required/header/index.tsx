@@ -45,7 +45,7 @@ export const Header = () => {
     queryKey: [PATHS.ME],
     queryFn: me,
   });
-      
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) =>
       open &&
