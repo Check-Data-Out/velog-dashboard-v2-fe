@@ -35,11 +35,6 @@ export const Header = () => {
   const barWidth = width < SCREENS.MBI ? 65 : 180;
   const client = useQueryClient();
 
-  const { data: profiles } = useQuery({
-    queryKey: [PATHS.ME],
-    queryFn: me,
-  });
-
   const { mutate: out } = useMutation({
     mutationFn: logout,
     onMutate: () => router.replace('/'),
