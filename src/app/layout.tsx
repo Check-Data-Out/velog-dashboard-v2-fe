@@ -9,7 +9,7 @@ import './globals.css';
 import { ChannelTalkProvider, QueryProvider } from '@/components';
 import { env } from '@/constants';
 
-const BASE = 'https://velog-dashboard.kro.kr/';
+export const BASE = 'https://velog-dashboard.kro.kr/';
 
 export const metadata: Metadata = {
   title: 'Velog Dashboard',
