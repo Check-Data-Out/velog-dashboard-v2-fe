@@ -1,18 +1,8 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
 
 import { captureException, setContext } from '@sentry/nextjs';
-import { EnvNotFoundError, ServerNotRespondingError } from '@/errors';
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const ABORT_MS = Number(process.env.NEXT_PUBLIC_ABORT_MS);
-
-if (Number.isNaN(ABORT_MS)) {
-  throw new EnvNotFoundError('ABORT_MS');
-}
-
-if (!BASE_URL) {
-  throw new EnvNotFoundError('BASE_URL');
-}
+import { ServerNotRespondingError } from '@/errors';
+import { env } from '@/constants';
 
 type ErrorType = {
   code: string;
@@ -37,7 +27,7 @@ const abortPolyfill = (ms: number) => {
 };
 
 const fetch = returnFetch({
-  baseUrl: BASE_URL,
+  baseUrl: env.BASE_URL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -76,8 +66,8 @@ export const instance = async <I, R>(
         : init?.headers,
       body: init?.body ? JSON.stringify(init.body) : undefined,
       signal: AbortSignal.timeout
-        ? AbortSignal.timeout(ABORT_MS)
-        : abortPolyfill(ABORT_MS),
+        ? AbortSignal.timeout(Number(env.ABORT_MS))
+        : abortPolyfill(Number(env.ABORT_MS)),
       credentials: 'include',
       cache: 'no-store',
     });
