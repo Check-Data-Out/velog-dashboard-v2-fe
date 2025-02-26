@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import * as sentry from '@sentry/nextjs';
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import { ChannelTalkProvider, QueryProvider } from '@/components';
 
@@ -30,6 +31,7 @@ export default function RootLayout({
           </QueryProvider>
         </sentry.ErrorBoundary>
       </body>
+      <GoogleAnalytics gaId="G-8G3N74JV82" />
     </html>
   );
 }
