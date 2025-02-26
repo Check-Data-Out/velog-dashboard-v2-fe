@@ -6,7 +6,7 @@ import { env } from '@/constants';
 
 const ChannelTalkServiceLoader = () => {
   ChannelService.loadScript();
-  ChannelService.boot({ pluginKey: env.CHANNELTALK_KEY });
+  ChannelService.boot({ pluginKey: env.CHANNELTALK_PLUGIN_KEY });
 };
 
 export const ChannelTalkProvider = ({
