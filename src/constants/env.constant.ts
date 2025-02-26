@@ -1,7 +1,7 @@
 import { EnvNotFoundError } from '../errors/fetch.error';
 
 export const env = (() => {
-  const requiredEnv = process?.env as Required<Record<string, string>>;
+  const requiredEnv = process?.env as Record<string, string>;
 
   const env = {
     NODE_ENV: requiredEnv.NODE_ENV,
