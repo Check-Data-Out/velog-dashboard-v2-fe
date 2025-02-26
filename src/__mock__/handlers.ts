@@ -1,9 +1,9 @@
 import { http } from 'msw';
-import { PATHS } from '@/constants';
+import { env, PATHS } from '@/constants';
 import { LoginVo } from '@/types';
 import { BaseError, BaseSuccess } from './responses';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL + '/api';
+const BASE_URL = env.BASE_URL + '/api';
 
 const login = http.post(`${BASE_URL}${PATHS.LOGIN}`, async ({ request }) => {
   const { accessToken, refreshToken } = (await request.json()) as LoginVo;
