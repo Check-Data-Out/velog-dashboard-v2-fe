@@ -17,13 +17,13 @@ export const metadata: Metadata = {
   description: '어디서든 편리하게 확인하는 Velog 통계 서비스, Velog Dashboard',
   icons: { icon: '/favicon.png' },
   alternates: {
-    canonical: 'https://velog-dashboard.kro.kr/',
+    canonical: BASE,
   },
   openGraph: {
     siteName: 'Velog Dashboard',
     description:
       '어디서든 편리하게 확인하는 Velog 통계 서비스, Velog Dashboard',
-    url: 'https://velog-dashboard.kro.kr/',
+    url: BASE,
     images: [{ url: '/opengraph-image.png', alt: 'Velog Dashboard' }],
     type: 'website',
   },
