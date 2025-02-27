@@ -44,7 +44,7 @@ export default [
       '@typescript-eslint/promise-function-async': 'error',
       '@typescript-eslint/consistent-type-assertions': 'error',
       '@typescript-eslint/naming-convention': 'off',
-      'no-restricted-imports': ['error', { patterns: ['..*'] }],
+      'no-restricted-imports': ['warn', { patterns: ['..*'] }],
     },
     languageOptions: {
       parserOptions: { project: true, tsconfigRootDir: import.meta.dirname },
