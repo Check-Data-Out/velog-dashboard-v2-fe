@@ -19,5 +19,5 @@ export const env = (() => {
     });
   }
 
-  return env;
+  return env as Record<string, string>;
 })();
