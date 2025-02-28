@@ -7,7 +7,6 @@ import { Content } from './Content';
 
 export const metadata: Metadata = {
   title: '대시보드',
-  description: '각종 Velog 통계를 볼 수 있는 대시보드',
 };
 
 interface IProp {
