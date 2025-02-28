@@ -4,10 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { Input, Button } from '@/components';
 import { LoginVo } from '@/types';
 import { login, sampleLogin } from '@/apis';
 import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
+import { PATHS } from '@/constants';
 
 const responsiveStyle =
   "flex items-center gap-5 max-MBI:before:inline-block max-MBI:before:bg-[url('/favicon.png')] max-MBI:before:[background-size:_100%_100%] max-MBI:before:w-16 max-MBI:before:h-16";
@@ -15,6 +17,10 @@ const responsiveStyle =
 export const Content = () => {
   const { replace } = useRouter();
   const client = useQueryClient();
+
+  useEffect(() => {
+    if (client.getQueryData([PATHS.ME])) client.removeQueries();
+  }, []);
 
   const {
     register,
