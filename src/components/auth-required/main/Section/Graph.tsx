@@ -55,7 +55,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
   const [mode, setMode] = useState<ModeType>('none');
 
   const { data: datas } = useQuery({
-    queryKey: [PATHS.DETAIL, type],
+    queryKey: [PATHS.DETAIL, type, id],
     queryFn: async () => await postDetail(id, type.start, type.end),
     select: ({ post }) => {
       post = post.sort(
