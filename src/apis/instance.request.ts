@@ -78,7 +78,6 @@ export const instance = async <I, R>(
     if (location && !context.ok && context.status === 401) {
       window.location.replace('/');
     }
-    //context.status === 401 ||
     setContext('Request', {
       path: context.url,
       status: context.status,
