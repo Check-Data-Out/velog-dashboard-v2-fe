@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PATHS, SCREENS } from '@/constants';
 import { NameType } from '@/components';
 import { useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
 import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 import { revalidate } from '@/utils/revalidateUtil';
+
 import { defaultStyle, Section, textStyle } from './Section';
 
 const PARAMS = {
@@ -34,13 +35,24 @@ export const Header = () => {
   const router = useRouter();
   const width = useResponsive();
   const barWidth = width < SCREENS.MBI ? 65 : 180;
+  const client = useQueryClient();
 
   const { mutate: out } = useMutation({
     mutationFn: logout,
-    onSuccess: revalidate,
+    onSuccess: async () => {
+      await revalidate();
+      client.clear();
+      router.replace('/');
+    },
   });
 
-  const { data: profiles } = useQuery({ queryKey: [PATHS.ME], queryFn: me });
+  const { data: profiles } = useQuery({
+    queryKey: [PATHS.ME],
+    queryFn: me,
+    enabled: !!client.getQueryData([PATHS.ME]),
+    // 로그아웃 후 리렌더링되어 다시 fetch되는 경우 해결
+    // 어차피 prefetch를 통해 데이터를 불러온 상태에서 렌더하기 때문에, 캐시 여부만 판단하면 됨
+  });
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) =>
