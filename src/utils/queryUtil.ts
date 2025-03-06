@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 let localQueryClient: QueryClient | undefined;
 const STALE_TIME = 1000 * 60 * 3;
-const GC_TIME = 1000;
+const GC_TIME = 1000 * 60 * 20;
 
 const createQueryClient = () =>
   new QueryClient({
