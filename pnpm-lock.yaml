@@ -15,8 +15,8 @@ importers:
         specifier: ^15.1.7
         version: 15.1.7(next@14.2.18(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@sentry/core':
-        specifier: ^9.4.0
-        version: 9.4.0
+        specifier: ^8.47.0
+        version: 8.47.0
       '@sentry/nextjs':
         specifier: ^8.47.0
         version: 8.47.0(@opentelemetry/core@1.30.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.56.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.0(@opentelemetry/api@1.9.0))(next@14.2.18(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.97.1)
@@ -1501,10 +1501,6 @@ packages:
   '@sentry/core@8.47.0':
     resolution: {integrity: sha512-iSEJZMe3DOcqBFZQAqgA3NB2lCWBc4Gv5x/SCri/TVg96wAlss4VrUunSI2Mp0J4jJ5nJcJ2ChqHSBAU48k3FA==}
     engines: {node: '>=14.18'}
-
-  '@sentry/core@9.4.0':
-    resolution: {integrity: sha512-Edd/uWDGZ+1CMuVVWdxIOm1rBhzgpqiqz984TZu20wryoIoRsA8ZllUar6N+cWK17VusNY0OS2DozKO69y7fVQ==}
-    engines: {node: '>=18'}
 
   '@sentry/nextjs@8.47.0':
     resolution: {integrity: sha512-qr++MBYhyAwF25hGq7LAxe3Xehs+w2V4b8mVxilRYFXNkWFazY1ukZcVzq9pKrrt5uTiURTf68e8eVMraHnHEQ==}
@@ -6379,8 +6375,6 @@ snapshots:
       - supports-color
 
   '@sentry/core@8.47.0': {}
-
-  '@sentry/core@9.4.0': {}
 
   '@sentry/nextjs@8.47.0(@opentelemetry/core@1.30.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.56.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.0(@opentelemetry/api@1.9.0))(next@14.2.18(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.97.1)':
     dependencies:
