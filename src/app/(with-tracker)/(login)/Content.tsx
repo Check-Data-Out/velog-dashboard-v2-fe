@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { Input, Button } from '@/components';
 import { LoginVo } from '@/types';
 import { login, sampleLogin } from '@/apis';
@@ -14,7 +14,6 @@ const responsiveStyle =
 
 export const Content = () => {
   const { replace } = useRouter();
-  const client = useQueryClient();
 
   const {
     register,
@@ -23,7 +22,6 @@ export const Content = () => {
   } = useForm<LoginVo>({ mode: 'all' });
 
   const onSuccess = () => {
-    client.clear();
     trackUserEvent(MessageEnum.LOGIN);
     replace('/main?asc=false&sort=');
   };
