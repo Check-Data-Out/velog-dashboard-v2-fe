@@ -1,27 +1,22 @@
 'use client';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { UserNameNotFoundError } from '@/errors';
 import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 import { parseNumber } from '@/utils/numberUtil';
 import { COLORS, env, PATHS } from '@/constants';
 import { PostType, UserDto } from '@/types';
 import { Icon } from '@/components';
+import { getQueryClient } from '@/utils/queryUtil';
 import { Graph } from './Graph';
 
 export const Section = (p: PostType) => {
   const [open, setOpen] = useState(false);
-  const client = useQueryClient();
 
-  const { username } = client.getQueryData([PATHS.ME]) as UserDto;
-  const URL = env.VELOG_URL;
+  const username = (
+    getQueryClient().getQueryData([PATHS.ME]) as Partial<UserDto>
+  )?.username;
 
-  if (!username) {
-    throw new UserNameNotFoundError();
-  }
-
-  const url = `${URL}/@${username}/${p.slug}`;
+  const url = `${env.VELOG_URL}/@${username}/${p.slug}`;
 
   return (
     <section className="flex flex-col w-full h-fit relative">
