@@ -7,7 +7,6 @@ import { Button, Dropdown, Section, Summary, Check } from '@/components';
 import { postList, postSummary } from '@/apis';
 import { PATHS, SORT_TYPE } from '@/constants';
 import { useSearchParam } from '@/hooks/useSearchParam';
-import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 import { SortKey, SortValue } from '@/types';
 
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<
@@ -60,13 +59,7 @@ export const Content = () => {
           </span>
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3">
-              <Button
-                size="SMALL"
-                disabled
-                onClick={() =>
-                  trackUserEvent(MessageEnum.REFRESH_INTERACT_MAIN)
-                }
-              >
+              <Button size="SMALL" disabled>
                 새로고침
               </Button>
               <span className="text-TEXT-ALT text-ST4 max-TBL:text-ST5 max-MBI:hidden">
@@ -77,7 +70,6 @@ export const Content = () => {
             <div className="flex items-center gap-3">
               <Check
                 onChange={() => {
-                  trackUserEvent(MessageEnum.SORT_INTERACT_MAIN);
                   setSearchParams({
                     asc: searchParams.asc === 'true' ? 'false' : 'true',
                   });
@@ -91,10 +83,9 @@ export const Content = () => {
                   SORT_TYPE['작성일순']
                 }
                 options={sorts}
-                onChange={(data) => {
-                  trackUserEvent(MessageEnum.SORT_INTERACT_MAIN);
-                  setSearchParams({ sort: data as SortValue });
-                }}
+                onChange={(data) =>
+                  setSearchParams({ sort: data as SortValue })
+                }
               />
             </div>
           </div>
