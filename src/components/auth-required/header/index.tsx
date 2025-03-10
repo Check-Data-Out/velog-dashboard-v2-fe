@@ -12,6 +12,8 @@ import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 import { revalidate } from '@/utils/revalidateUtil';
 
 import { defaultStyle, Section, textStyle } from './Section';
+import { useModal } from '@/hooks/useModal';
+import { Modal } from '../notice/Modal';
 
 const PARAMS = {
   MAIN: '?asc=false&sort=',
@@ -30,6 +32,7 @@ const layouts: Array<{ icon: NameType; title: string; path: string }> = [
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
+  const { open: ModalOpen } = useModal();
   const menu = useRef<HTMLDivElement | null>(null);
   const path = usePathname();
   const router = useRouter();
@@ -118,15 +121,24 @@ export const Header = () => {
           {open && (
             <div className="flex flex-col items-center max-MBI:items-end absolute self-center top-[50px] max-MBI:right-[6px]">
               <div className="w-0 h-0 border-[15px] ml-3 mr-3 border-TRANSPARENT border-b-BG-SUB" />
-              <div className="cursor-pointer h-fit flex-col rounded-[4px] bg-BG-SUB hover:bg-BG-ALT shadow-BORDER-MAIN shadow-md">
+              <div className="cursor-pointer h-fit flex-col rounded-[4px] bg-BG-SUB shadow-BORDER-MAIN shadow-md">
                 <button
-                  className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto"
+                  className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto hover:bg-BG-ALT"
                   onClick={() => {
                     out();
                     trackUserEvent(MessageEnum.LOGOUT);
                   }}
                 >
                   로그아웃
+                </button>
+                <button
+                  className="text-TEXT-MAIN text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto hover:bg-BG-ALT"
+                  onClick={() => {
+                    ModalOpen(<Modal />);
+                    trackUserEvent(MessageEnum.LOGOUT);
+                  }}
+                >
+                  공지사항
                 </button>
               </div>
             </div>

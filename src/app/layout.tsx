@@ -6,7 +6,11 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
-import { ChannelTalkProvider, QueryProvider } from '@/components';
+import {
+  ChannelTalkProvider,
+  ModalProvider,
+  QueryProvider,
+} from '@/components';
 import { env } from '@/constants';
 
 export const BASE = 'https://velog-dashboard.kro.kr/';
@@ -41,6 +45,7 @@ export default function RootLayout({
           <QueryProvider>
             <ChannelTalkProvider>
               <ToastContainer autoClose={2000} />
+              <ModalProvider />
               {children}
             </ChannelTalkProvider>
           </QueryProvider>
