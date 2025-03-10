@@ -1,8 +1,10 @@
 'use client';
 
-import { Dropdown, Ranker, Rank } from '@/components';
+import { Dropdown } from '@/components';
+
 import { SCREENS } from '@/constants';
 import { useResponsive, useSearchParam } from '@/hooks';
+import { Ranker, Rank } from './components';
 
 const data = [
   { rank: 1, name: '정현우', count: 1235 },

@@ -15,7 +15,7 @@ const FORMS = {
 export const Input = forwardRef<HTMLInputElement, IProp>(
   (
     { form = 'LARGE', size, ...rest }: IProp,
-    ref?: ForwardedRef<HTMLInputElement> | undefined,
+    ref?: ForwardedRef<HTMLInputElement>,
   ) => (
     <input
       {...rest}

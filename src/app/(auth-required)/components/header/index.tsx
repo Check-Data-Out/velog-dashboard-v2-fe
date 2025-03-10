@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { revalidate } from '@/utils/revalidateUtil';
 import { PATHS, SCREENS } from '@/constants';
 import { NameType } from '@/components';
 import { useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
-import { revalidate } from '@/utils/revalidateUtil';
-
 import { defaultStyle, Section, textStyle } from './Section';
 
 const PARAMS = {
