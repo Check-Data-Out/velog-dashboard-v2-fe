@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { notiList } from '@/apis';
 import { PATHS } from '@/constants';
@@ -9,6 +10,13 @@ import { Icon } from '@/components/common';
 export const Modal = () => {
   const { close } = useModal();
   const { data } = useQuery({ queryKey: [PATHS.NOTIS], queryFn: notiList });
+
+  useEffect(() => {
+    const handleClose = (e: KeyboardEvent) => e.key === 'Escape' && close();
+
+    window.addEventListener('keydown', handleClose);
+    return () => window.removeEventListener('keydown', handleClose);
+  }, []);
 
   return (
     <div className="w-[800px] h-[500px] max-MBI:w-[450px] max-MBI:h-[200px] overflow-auto flex flex-col gap-3 p-10 max-MBI:p-7 rounded-md bg-BG-SUB">
