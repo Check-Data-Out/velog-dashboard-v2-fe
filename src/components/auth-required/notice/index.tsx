@@ -16,6 +16,7 @@ export const Notice = () => {
   const { open } = useModal();
 
   useEffect(() => {
+    if (!data?.posts || data.posts.length === 0) return;
     const lastUpdated = new Date(
       data?.posts[0].created_at?.split('T')[0] as string,
     ).getTime();
