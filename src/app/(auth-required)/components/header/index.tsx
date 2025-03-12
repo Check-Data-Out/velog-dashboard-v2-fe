@@ -1,16 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { revalidate } from '@/utils/revalidateUtil';
 import { PATHS, SCREENS } from '@/constants';
 import { NameType } from '@/components';
 import { useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
-import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
-import { revalidate } from '@/utils/revalidateUtil';
-
 import { defaultStyle, Section, textStyle } from './Section';
 
 const PARAMS = {
@@ -121,10 +119,7 @@ export const Header = () => {
               <div className="cursor-pointer h-fit flex-col rounded-[4px] bg-BG-SUB hover:bg-BG-ALT shadow-BORDER-MAIN shadow-md">
                 <button
                   className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto"
-                  onClick={() => {
-                    out();
-                    trackUserEvent(MessageEnum.LOGOUT);
-                  }}
+                  onClick={() => out()}
                 >
                   로그아웃
                 </button>

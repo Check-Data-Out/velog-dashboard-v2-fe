@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithQueryClient } from '@/utils';
-import { Content } from '@/app/(with-tracker)/(auth-required)/main/Content';
+import { Content } from '@/app/(auth-required)/main/Content';
 import { Header } from '@/components';
 
 jest.mock('next/navigation', () => ({
