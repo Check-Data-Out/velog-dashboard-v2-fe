@@ -36,16 +36,6 @@ export const Notice = () => {
     } catch (error) {
       console.error('알림 날짜 처리 중 오류 발생:', error);
     }
-
-    // if (!data?.posts || data.posts.length === 0) return;
-    // const lastUpdated = new Date(
-    //   data?.posts[0].created_at?.split('T')[0] as string,
-    // ).getTime();
-    // const lastDate = Math.ceil((new Date().getTime() - lastUpdated) / DAY);
-    // if (lastDate <= 4) {
-    //   const expiry = localStorage.getItem('noti_expiry');
-    //   if (!expiry || JSON.parse(expiry) < new Date().getTime()) setShow(true);
-    // }
   }, [data]);
 
   return (
