@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import typograpy from '@tailwindcss/typography';
 import {
   COLORS,
   SIZES,
@@ -21,7 +22,7 @@ const config: Config = {
     screens: SCREENS,
     fontSize: FONTS,
   },
-  plugins: [],
+  plugins: [typograpy()],
   safelist: Object.values(SIZES),
 };
 

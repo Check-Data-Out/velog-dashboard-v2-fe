@@ -36,9 +36,9 @@ export const Modal = () => {
             </h4>
           </div>
           <div
-            className="text-TEXT-MAIN text-I4"
+            className="text-TEXT-MAIN text-I4 prose"
             dangerouslySetInnerHTML={{ __html: content }}
-          ></div>
+          />
         </div>
       ))}
     </div>
