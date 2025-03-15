@@ -1,4 +1,4 @@
-import type { IProp } from './Ranker';
+import type { IProp } from '../../../../components/auth-required/leaderboards/Ranker';
 
 export const Rank = ({ name, rank, count, suffix = '회' }: IProp) => {
   return (

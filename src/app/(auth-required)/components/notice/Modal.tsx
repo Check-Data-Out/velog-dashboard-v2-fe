@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { notiList } from '@/apis';
 import { PATHS } from '@/constants';
 import { useModal } from '@/hooks/useModal';
-import { Icon } from '@/components/common';
+import { Icon } from '@/components';
 
 export const Modal = () => {
   const { close } = useModal();

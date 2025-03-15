@@ -1,9 +1,10 @@
 'use client';
 
-import { Dropdown, Ranker, Rank } from '@/components';
+import { Dropdown } from '@/components';
+
 import { SCREENS } from '@/constants';
 import { useResponsive, useSearchParam } from '@/hooks';
-import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
+import { Ranker, Rank } from './components';
 
 const data = [
   { rank: 1, name: '정현우', count: 1235 },
@@ -25,10 +26,7 @@ export const Content = () => {
           ['조회수', 'views'],
           ['좋아요', 'likes'],
         ]}
-        onChange={(data) => {
-          trackUserEvent(MessageEnum.SORT_INTERACT_BOARD);
-          setSearchParams({ type: data as string });
-        }}
+        onChange={(data) => setSearchParams({ type: data as string })}
         defaultValue={'조회수'}
       />
       <div className="w-full flex gap-10 max-MBI:flex-col max-MBI:gap-5">

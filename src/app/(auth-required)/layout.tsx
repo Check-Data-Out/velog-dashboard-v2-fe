@@ -1,10 +1,10 @@
-import { ReactElement } from 'react';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { Header } from '@/components';
+import { ReactElement } from 'react';
+import { getQueryClient } from '@/utils/queryUtil';
 import { PATHS } from '@/constants';
 import { me, notiList } from '@/apis';
-import { getQueryClient } from '@/utils/queryUtil';
-import { Notice } from '@/components/auth-required/notice';
+import { Notice } from './components/notice';
+import { Header } from './components/header';
 
 interface IProp {
   children: ReactElement;
@@ -13,10 +13,7 @@ interface IProp {
 export default async function Layout({ children }: IProp) {
   const client = getQueryClient();
 
-  await client.prefetchQuery({
-    queryKey: [PATHS.ME],
-    queryFn: me,
-  });
+  await client.prefetchQuery({ queryKey: [PATHS.ME], queryFn: me });
 
   await client.prefetchQuery({
     queryKey: [PATHS.NOTIS],

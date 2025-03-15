@@ -1,15 +1,15 @@
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Noto_Sans_KR } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import * as sentry from '@sentry/nextjs';
+import { ErrorBoundary } from '@sentry/nextjs';
+import { ReactNode, Suspense } from 'react';
 import type { Metadata } from 'next';
-import { ReactNode } from 'react';
-import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import {
   ChannelTalkProvider,
-  ModalProvider,
   QueryProvider,
+  ModalProvider,
 } from '@/components';
 import { env } from '@/constants';
 
@@ -20,9 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE),
   description: '어디서든 편리하게 확인하는 Velog 통계 서비스, Velog Dashboard',
   icons: { icon: '/favicon.png' },
-  alternates: {
-    canonical: BASE,
-  },
+  alternates: { canonical: BASE },
   openGraph: {
     siteName: 'Velog Dashboard',
     description:
@@ -41,15 +39,15 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${NotoSansKr.className} w-full bg-BG-MAIN`}>
-        <sentry.ErrorBoundary>
+        <ErrorBoundary>
           <QueryProvider>
             <ChannelTalkProvider>
               <ToastContainer autoClose={2000} />
               <ModalProvider />
-              {children}
+              <Suspense>{children}</Suspense>
             </ChannelTalkProvider>
           </QueryProvider>
-        </sentry.ErrorBoundary>
+        </ErrorBoundary>
       </body>
       <GoogleAnalytics gaId={env.GA_ID} />
     </html>

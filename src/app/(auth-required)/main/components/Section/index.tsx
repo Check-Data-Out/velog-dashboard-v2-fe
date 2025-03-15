@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { trackUserEvent, MessageEnum } from '@/utils/trackUtil';
 import { parseNumber } from '@/utils/numberUtil';
 import { COLORS, env, PATHS } from '@/constants';
 import { PostType, UserDto } from '@/types';
@@ -22,10 +21,7 @@ export const Section = (p: PostType) => {
     <section className="flex flex-col w-full h-fit relative">
       <div
         className={`p-[25px] h-fit cursor-pointer bg-BG-SUB flex justify-between items-center gap-4 ${!open ? 'rounded-[4px] max-MBI:pb-[35px_!important]' : 'rounded-t-[4px]'} max-xl:flex-col max-MBI:flex-col max-MBI:p-[20px]`}
-        onClick={() => {
-          trackUserEvent(MessageEnum.SECTION_INTERACT_MAIN);
-          setOpen((prev) => !prev);
-        }}
+        onClick={() => setOpen((prev) => !prev)}
       >
         <div className="flex gap-2 items-center">
           <div

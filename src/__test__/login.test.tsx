@@ -3,7 +3,7 @@ import { act, screen } from '@testing-library/react';
 import { ToastContainer } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { renderWithQueryClient } from '@/utils/componentUtil';
-import { default as Login } from '@/app/(with-tracker)/(login)/page';
+import { default as Login } from '@/app/(login)/page';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
