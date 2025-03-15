@@ -7,8 +7,10 @@ import { PATHS } from '@/constants';
 import { useModal } from '@/hooks/useModal';
 import { Modal } from './Modal';
 
-const DAY = 1000 * 60 * 60 * 24;
-const TTL = DAY * 2;
+const DAY_IN_MS = 1000 * 60 * 60 * 24;
+const TTL = DAY_IN_MS * 2;
+const RECENT_POST_THRESHOLD_DAYS = 4;
+const NOTIFICATION_STORAGE_KEY = 'noti_expiry';
 
 export const Notice = () => {
   const { data } = useQuery({ queryKey: [PATHS.NOTIS], queryFn: notiList });
@@ -16,15 +18,34 @@ export const Notice = () => {
   const { open } = useModal();
 
   useEffect(() => {
-    if (!data?.posts || data.posts.length === 0) return;
-    const lastUpdated = new Date(
-      data?.posts[0].created_at?.split('T')[0] as string,
-    ).getTime();
-    const lastDate = Math.ceil((new Date().getTime() - lastUpdated) / DAY);
-    if (lastDate <= 4) {
-      const expiry = localStorage.getItem('noti_expiry');
-      if (!expiry || JSON.parse(expiry) < new Date().getTime()) setShow(true);
+    try {
+      const lastUpdated = new Date(
+        data?.posts[0].created_at?.split('T')[0] as string,
+      ).getTime();
+
+      const daysSinceUpdate = Math.ceil(
+        (new Date().getTime() - lastUpdated) / DAY_IN_MS,
+      );
+
+      if (daysSinceUpdate <= RECENT_POST_THRESHOLD_DAYS) {
+        const expiry = localStorage.getItem(NOTIFICATION_STORAGE_KEY);
+        if (!expiry || parseInt(expiry, 10) < new Date().getTime()) {
+          setShow(true);
+        }
+      }
+    } catch (error) {
+      console.error('알림 날짜 처리 중 오류 발생:', error);
     }
+
+    // if (!data?.posts || data.posts.length === 0) return;
+    // const lastUpdated = new Date(
+    //   data?.posts[0].created_at?.split('T')[0] as string,
+    // ).getTime();
+    // const lastDate = Math.ceil((new Date().getTime() - lastUpdated) / DAY);
+    // if (lastDate <= 4) {
+    //   const expiry = localStorage.getItem('noti_expiry');
+    //   if (!expiry || JSON.parse(expiry) < new Date().getTime()) setShow(true);
+    // }
   }, [data]);
 
   return (
