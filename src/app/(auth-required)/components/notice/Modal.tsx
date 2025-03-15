@@ -16,7 +16,7 @@ export const Modal = () => {
 
     window.addEventListener('keydown', handleClose);
     return () => window.removeEventListener('keydown', handleClose);
-  }, []);
+  }, [close]);
 
   return (
     <div className="w-[800px] h-[500px] max-MBI:w-[450px] max-MBI:h-[200px] overflow-auto flex flex-col gap-3 p-10 max-MBI:p-7 rounded-md bg-BG-SUB">
