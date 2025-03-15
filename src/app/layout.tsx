@@ -5,9 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ErrorBoundary } from '@sentry/nextjs';
 import { ReactNode, Suspense } from 'react';
 import type { Metadata } from 'next';
-import { ChannelTalkProvider, QueryProvider } from '@/components';
-import { env } from '@/constants';
 import './globals.css';
+import {
+  ChannelTalkProvider,
+  QueryProvider,
+  ModalProvider,
+} from '@/components';
+import { env } from '@/constants';
 
 export const BASE = 'https://velog-dashboard.kro.kr/';
 
@@ -39,6 +43,7 @@ export default function RootLayout({
           <QueryProvider>
             <ChannelTalkProvider>
               <ToastContainer autoClose={2000} />
+              <ModalProvider />
               <Suspense>{children}</Suspense>
             </ChannelTalkProvider>
           </QueryProvider>
