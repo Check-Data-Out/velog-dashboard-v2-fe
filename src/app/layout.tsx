@@ -12,6 +12,7 @@ import {
   ModalProvider,
 } from '@/components';
 import { env } from '@/constants';
+import { TopBarProvider } from '@/components/Providers/TopBarProvider';
 
 export const BASE = 'https://velog-dashboard.kro.kr/';
 
@@ -44,6 +45,7 @@ export default function RootLayout({
             <ChannelTalkProvider>
               <ToastContainer autoClose={2000} />
               <ModalProvider />
+              <TopBarProvider />
               <Suspense>{children}</Suspense>
             </ChannelTalkProvider>
           </QueryProvider>

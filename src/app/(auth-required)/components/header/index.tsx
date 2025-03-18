@@ -1,13 +1,13 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { revalidate } from '@/utils/revalidateUtil';
 import { PATHS, SCREENS } from '@/constants';
 import { NameType } from '@/components';
-import { useResponsive } from '@/hooks';
+import { useaCustomNavigation, useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
 import { useModal } from '@/hooks/useModal';
 import { defaultStyle, Section, textStyle } from './Section';
@@ -33,7 +33,7 @@ export const Header = () => {
   const { open: ModalOpen } = useModal();
   const menu = useRef<HTMLDivElement | null>(null);
   const path = usePathname();
-  const router = useRouter();
+  const { replace } = useaCustomNavigation();
   const width = useResponsive();
   const barWidth = width < SCREENS.MBI ? 65 : 180;
   const client = useQueryClient();
@@ -43,7 +43,7 @@ export const Header = () => {
     onSuccess: async () => {
       await revalidate();
       client.clear();
-      router.replace('/');
+      replace('/');
     },
   });
 
@@ -71,7 +71,7 @@ export const Header = () => {
       <div className="flex w-fit">
         <Section
           clickType="function"
-          action={() => router.replace(`/main${PARAMS.MAIN}`)}
+          action={() => replace(`/main${PARAMS.MAIN}`)}
         >
           <Image
             width={35}
