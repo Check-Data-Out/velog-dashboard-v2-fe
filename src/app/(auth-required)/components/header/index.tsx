@@ -12,6 +12,7 @@ import { logout, me } from '@/apis';
 import { useModal } from '@/hooks/useModal';
 import { defaultStyle, Section, textStyle } from './Section';
 import { Modal } from '../notice/Modal';
+import { QRCode } from '../QRCode';
 
 const PARAMS = {
   MAIN: '?asc=false&sort=',
@@ -121,16 +122,31 @@ export const Header = () => {
               <div className="w-0 h-0 border-[15px] ml-3 mr-3 border-TRANSPARENT border-b-BG-SUB" />
               <div className="cursor-pointer h-fit flex-col rounded-[4px] bg-BG-SUB shadow-BORDER-MAIN shadow-md">
                 <button
-                  className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto"
-                  onClick={() => out()}
+                  className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 items-center justify-center flex whitespace-nowrap w-full hover:bg-BG-ALT"
+                  onClick={() => {
+                    setOpen(false);
+                    out();
+                  }}
                 >
                   로그아웃
                 </button>
                 <button
-                  className="text-TEXT-MAIN text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto hover:bg-BG-ALT"
-                  onClick={() => ModalOpen(<Modal />)}
+                  className="text-TEXT-MAIN text-I3 p-5 max-MBI:p-4 flex items-center justify-center whitespace-nowrap w-full hover:bg-BG-ALT"
+                  onClick={() => {
+                    setOpen(false);
+                    ModalOpen(<Modal />);
+                  }}
                 >
                   공지사항
+                </button>
+                <button
+                  className="text-TEXT-MAIN text-I3 p-5 max-MBI:p-4 flex items-center justify-center whitespace-nowrap w-full hover:bg-BG-ALT"
+                  onClick={() => {
+                    setOpen(false);
+                    ModalOpen(<QRCode />);
+                  }}
+                >
+                  QR 로그인
                 </button>
               </div>
             </div>

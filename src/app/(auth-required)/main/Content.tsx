@@ -3,12 +3,12 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useSearchParam } from '@/hooks/useSearchParam';
 import { Button, Dropdown, Check } from '@/components';
-import { Section, Summary } from './components';
 import { postList, postSummary } from '@/apis';
 import { PATHS, SORT_TYPE } from '@/constants';
-import { useSearchParam } from '@/hooks/useSearchParam';
 import { SortKey, SortValue } from '@/types';
+import { Section, Summary } from './components';
 
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<
   [SortKey, SortValue]
