@@ -27,7 +27,7 @@ export const useCustomNavigation = () => {
       router.replace(target);
       start();
     },
-    [pathname],
+    [router],
   );
 
   const push = useCallback(
@@ -35,7 +35,7 @@ export const useCustomNavigation = () => {
       router.push(target);
       start();
     },
-    [pathname],
+    [router],
   );
 
   useEffect(() => {
