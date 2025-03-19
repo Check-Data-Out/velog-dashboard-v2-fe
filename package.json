@@ -2,6 +2,12 @@
   "name": "velog-dashboard-v2-fe",
   "version": "0.1.0",
   "private": true,
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "next lint",
+      "prettier --check"
+    ]
+  },
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",
@@ -10,7 +16,8 @@
     "lint": "next lint",
     "lintTest": "eslint ./src/__test__",
     "format": "prettier --check --ignore-path .gitignore --ignore-path pnpm-lock.yaml .",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky"
   },
   "dependencies": {
     "@channel.io/channel-web-sdk-loader": "^2.0.0",
@@ -56,10 +63,12 @@
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-testing-library": "^6.5.0",
     "globals": "^15.12.0",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-fetch-mock": "^3.0.3",
     "jest-fixed-jsdom": "^0.0.9",
+    "lint-staged": "^15.5.0",
     "msw": "^2.7.3",
     "postcss": "^8",
     "prettier": "^3.3.3",
