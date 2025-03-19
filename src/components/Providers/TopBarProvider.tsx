@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useCustomNavigation } from '@/hooks';
 import { COLORS } from '@/constants';
 
@@ -15,14 +15,14 @@ export const TopBarProvider = () => {
   const initialLoadDone = useRef(false);
   const intervalRef = useRef<null | NodeJS.Timeout>(null);
 
-  const startLoading = () => {
+  const startLoading = useCallback(() => {
     setWidth(20);
     initialLoadDone.current = true;
 
     intervalRef.current = setInterval(() => {
       setWidth((prev) => prev + Math.random() * INCREASE_LEVEL[Math.floor(prev / 30)]);
     }, INCREASE_INTERVAL_MS);
-  };
+  }, []);
 
   useEffect(() => {
     if (isNavigating) {
