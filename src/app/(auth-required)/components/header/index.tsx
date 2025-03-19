@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { revalidate } from '@/utils/revalidateUtil';
 import { PATHS, SCREENS } from '@/constants';
 import { NameType } from '@/components';
-import { useaCustomNavigation, useResponsive } from '@/hooks';
+import { useCustomNavigation, useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
 import { useModal } from '@/hooks/useModal';
 import { defaultStyle, Section, textStyle } from './Section';
@@ -33,7 +33,7 @@ export const Header = () => {
   const { open: ModalOpen } = useModal();
   const menu = useRef<HTMLDivElement | null>(null);
   const path = usePathname();
-  const { replace } = useaCustomNavigation();
+  const { replace } = useCustomNavigation();
   const width = useResponsive();
   const barWidth = width < SCREENS.MBI ? 65 : 180;
   const client = useQueryClient();

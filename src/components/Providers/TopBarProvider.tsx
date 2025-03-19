@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { useaCustomNavigation } from '@/hooks';
+import { useCustomNavigation } from '@/hooks';
 import { COLORS } from '@/constants';
 
 const START_TIME_MS = 150;
@@ -9,7 +9,7 @@ const INCREASE_INTERVAL_MS = 300;
 const INCREASE_LEVEL = [0.6, 0.3, 0.1];
 
 export const TopBarProvider = () => {
-  const { isNavigating } = useaCustomNavigation();
+  const { isNavigating } = useCustomNavigation();
 
   const [width, setWidth] = useState(0);
   const initialLoadDone = useRef(false);

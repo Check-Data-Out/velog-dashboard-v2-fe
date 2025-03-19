@@ -14,7 +14,7 @@ const useNavStatus = create<{
   complete: () => set({ isNavigating: false }),
 }));
 
-export const useaCustomNavigation = () => {
+export const useCustomNavigation = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { isNavigating, start, complete } = useNavStatus();

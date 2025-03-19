@@ -6,13 +6,13 @@ import Image from 'next/image';
 import { Input, Button } from '@/components';
 import { login, sampleLogin } from '@/apis';
 import { LoginVo } from '@/types';
-import { useaCustomNavigation } from '@/hooks';
+import { useCustomNavigation } from '@/hooks';
 
 const responsiveStyle =
   "flex items-center gap-5 max-MBI:before:inline-block max-MBI:before:bg-[url('/favicon.png')] max-MBI:before:[background-size:_100%_100%] max-MBI:before:w-16 max-MBI:before:h-16";
 
 export const Content = () => {
-  const { replace, start, complete } = useaCustomNavigation();
+  const { replace, start, complete } = useCustomNavigation();
 
   const {
     register,
