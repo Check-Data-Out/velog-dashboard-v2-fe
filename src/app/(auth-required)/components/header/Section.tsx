@@ -40,12 +40,12 @@ export const Section = <T extends clickType>({
   icon,
 }: PropType<T>) => {
   const currentPath = usePathname();
-  const { replace } = useCustomNavigation();
+  const { push } = useCustomNavigation();
 
   if (clickType === 'link') {
     return (
       <div
-        onClick={() => replace(action)}
+        onClick={() => push(action)}
         className={defaultStyle + navigateStyle}
       >
         <Icon

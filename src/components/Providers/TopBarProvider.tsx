@@ -15,26 +15,21 @@ export const TopBarProvider = () => {
   const initialLoadDone = useRef(false);
   const intervalRef = useRef<null | NodeJS.Timeout>(null);
 
+  const startLoading = () => {
+    setWidth(20);
+    initialLoadDone.current = true;
+
+    intervalRef.current = setInterval(() => {
+      setWidth((prev) => prev + Math.random() * INCREASE_LEVEL[Math.floor(prev / 30)]);
+    }, INCREASE_INTERVAL_MS);
+  };
+
   useEffect(() => {
     if (isNavigating) {
       initialLoadDone.current = false;
       setWidth(0);
 
-      const initialTimer = setTimeout(() => {
-        setWidth(20);
-        initialLoadDone.current = true;
-
-        // 20%에서 조금씩 증가
-        intervalRef.current = setInterval(() => {
-          setWidth((prevWidth) => {
-            if (prevWidth < 60)
-              return prevWidth + Math.random() * INCREASE_LEVEL[0];
-            else if (prevWidth < 90)
-              return prevWidth + Math.random() * INCREASE_LEVEL[1];
-            else return prevWidth + Math.random() * INCREASE_LEVEL[2];
-          });
-        }, INCREASE_INTERVAL_MS);
-      }, START_TIME_MS);
+      const initialTimer = setTimeout(startLoading, START_TIME_MS);
 
       return () => {
         clearTimeout(initialTimer);
@@ -47,8 +42,8 @@ export const TopBarProvider = () => {
       }
 
       setWidth(100);
-
       const hideTimer = setTimeout(() => setWidth(0), REMOVE_BAR_TIME_MS);
+
       return () => clearTimeout(hideTimer);
     }
   }, [isNavigating]);

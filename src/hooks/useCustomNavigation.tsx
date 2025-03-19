@@ -1,13 +1,15 @@
 import { create } from 'zustand';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
-const useNavStatus = create<{
+type NavStatusStore = {
   isNavigating: boolean;
   flip: () => void;
   start: () => void;
   complete: () => void;
-}>((set) => ({
+};
+
+const useNavStatus = create<NavStatusStore>((set) => ({
   isNavigating: false,
   flip: () => set(({ isNavigating }) => ({ isNavigating: !isNavigating })),
   start: () => set({ isNavigating: true }),
@@ -17,22 +19,32 @@ const useNavStatus = create<{
 export const useCustomNavigation = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const prevPathRef = useRef(pathname);
   const { isNavigating, start, complete } = useNavStatus();
 
-  const replace = (target: string) => {
-    router.replace(target);
-    start();
-  };
+  const replace = useCallback(
+    (target: string) => {
+      router.replace(target);
+      start();
+    },
+    [pathname],
+  );
 
-  // 이전 경로와 검색 파라미터를 저장하기 위한 ref
-  const prevPathRef = useRef(pathname);
+  const push = useCallback(
+    (target: string) => {
+      router.push(target);
+      start();
+    },
+    [pathname],
+  );
 
   useEffect(() => {
+    // 페이지 이동 완료 감지
     if (prevPathRef.current !== pathname) {
       prevPathRef.current = pathname;
       complete();
     }
   }, [pathname]);
 
-  return { isNavigating, start, complete, replace };
+  return { isNavigating, start, push, complete, replace };
 };
