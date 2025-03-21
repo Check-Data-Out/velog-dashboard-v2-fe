@@ -1,4 +1,3 @@
-import globals from 'globals';
 import pluginJs from '@eslint/js';
 import { configs as tseslint } from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
@@ -34,10 +33,8 @@ export default [
   pluginImport.flatConfigs.recommended,
   {
     rules: {
-      'import/order': [
-        'error',
-        { groups: ['builtin', 'external', 'internal'] },
-      ],
+      'prettier/prettier': ['error', { printWidth: 100 }],
+      'import/order': ['error', { groups: ['builtin', 'external', 'internal'] }],
       'testing-library/no-container': 'warn',
       'testing-library/no-node-access': 'warn',
       'react/react-in-jsx-scope': 'off',

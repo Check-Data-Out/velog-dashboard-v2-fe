@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon, NameType } from '@/components';
 import { COLORS } from '@/constants';
+import { useCustomNavigation } from '@/hooks';
 
 export const defaultStyle =
   'w-[180px] h-[65px] px-9 transition-all duration-300 shrink-0 max-MBI:w-[65px] max-MBI:px-0 ';
@@ -40,13 +40,13 @@ export const Section = <T extends clickType>({
   icon,
 }: PropType<T>) => {
   const currentPath = usePathname();
+  const { push } = useCustomNavigation();
 
   if (clickType === 'link') {
     return (
-      <Link
-        href={action}
+      <div
+        onClick={() => push(action)}
         className={defaultStyle + navigateStyle}
-        id="navigation"
       >
         <Icon
           size={25}
@@ -64,7 +64,7 @@ export const Section = <T extends clickType>({
         >
           {children}
         </span>
-      </Link>
+      </div>
     );
   }
 
