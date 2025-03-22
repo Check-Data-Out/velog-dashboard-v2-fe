@@ -7,7 +7,7 @@
 - `git clone https://github.com/Check-Data-Out/velog-dashboard-v2-fe.git`
 - `cd velog-dashboard-v2-fe`
 - `pnpm install`
-- `pnpm prepare` (husky 설정)
+- `pnpm husky` (husky 설정)
 - `pnpm dev`
 
 ## 린팅

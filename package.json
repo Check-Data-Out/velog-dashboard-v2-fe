@@ -16,8 +16,7 @@
     "lint": "next lint",
     "lintTest": "eslint ./src/__test__",
     "format": "prettier --check --ignore-path .gitignore --ignore-path pnpm-lock.yaml .",
-    "test": "jest",
-    "prepare": "husky"
+    "test": "jest"
   },
   "dependencies": {
     "@channel.io/channel-web-sdk-loader": "^2.0.0",
