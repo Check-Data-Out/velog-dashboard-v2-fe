@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { revalidate } from '@/utils/revalidateUtil';
@@ -33,7 +33,8 @@ export const Header = () => {
   const { open: ModalOpen } = useModal();
   const menu = useRef<HTMLDivElement | null>(null);
   const path = usePathname();
-  const { replace } = useCustomNavigation();
+  const { replace, start } = useCustomNavigation();
+  const { replace: replaceWithoutLoading } = useRouter();
   const width = useResponsive();
   const barWidth = width < SCREENS.MBI ? 65 : 180;
   const client = useQueryClient();
@@ -57,10 +58,7 @@ export const Header = () => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) =>
-      open &&
-      menu.current &&
-      !menu.current.contains(e.target as HTMLElement) &&
-      setOpen(false);
+      open && menu.current && !menu.current.contains(e.target as HTMLElement) && setOpen(false);
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -69,20 +67,9 @@ export const Header = () => {
   return (
     <nav className="w-full max-MBI:flex max-MBI:justify-center">
       <div className="flex w-fit">
-        <Section
-          clickType="function"
-          action={() => replace(`/main${PARAMS.MAIN}`)}
-        >
-          <Image
-            width={35}
-            height={35}
-            src={'/favicon.png'}
-            className="transition-all"
-            alt=""
-          />
-          <span className="text-TEXT-MAIN text-T4 max-TBL:hidden">
-            Velog Dashboard
-          </span>
+        <Section clickType="function" action={() => replaceWithoutLoading(`/main${PARAMS.MAIN}`)}>
+          <Image width={35} height={35} src={'/favicon.png'} className="transition-all" alt="" />
+          <span className="text-TEXT-MAIN text-T4 max-TBL:hidden">Velog Dashboard</span>
         </Section>
         <div className="flex w-fit relative">
           <div
@@ -92,12 +79,7 @@ export const Header = () => {
             className={`${defaultStyle} h-[2px_!important] bg-TEXT-MAIN absolute bottom-0 left-0`}
           />
           {layouts.map((i) => (
-            <Section
-              key={i.title}
-              clickType="link"
-              icon={i.icon}
-              action={i.path}
-            >
+            <Section key={i.title} clickType="link" icon={i.icon} action={i.path}>
               {i.title}
             </Section>
           ))}
@@ -122,7 +104,10 @@ export const Header = () => {
               <div className="cursor-pointer h-fit flex-col rounded-[4px] bg-BG-SUB shadow-BORDER-MAIN shadow-md">
                 <button
                   className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto hover:bg-BG-ALT"
-                  onClick={() => out()}
+                  onClick={() => {
+                    start();
+                    out();
+                  }}
                 >
                   로그아웃
                 </button>
