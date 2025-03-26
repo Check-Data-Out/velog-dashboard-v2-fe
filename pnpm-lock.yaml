@@ -29,6 +29,9 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.69.0
         version: 5.69.0(@tanstack/react-query@5.69.0(react@18.3.1))(react@18.3.1)
+      '@types/gtag.js':
+        specifier: ^0.0.20
+        version: 0.0.20
       chart.js:
         specifier: ^4.4.7
         version: 4.4.7
@@ -1760,6 +1763,9 @@ packages:
 
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
+
+  '@types/gtag.js@0.0.20':
+    resolution: {integrity: sha512-wwAbk3SA2QeU67unN7zPxjEHmPmlXwZXZvQEpbEUQuMCRGgKyE1m6XDuTUA9b6pCGb/GqJmdfMOY5LuDjJSbbg==}
 
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
@@ -6896,6 +6902,8 @@ snapshots:
   '@types/graceful-fs@4.1.9':
     dependencies:
       '@types/node': 20.17.10
+
+  '@types/gtag.js@0.0.20': {}
 
   '@types/istanbul-lib-coverage@2.0.6': {}
 
