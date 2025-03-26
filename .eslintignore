@@ -1,0 +1,10 @@
+.next
+next-env.d.ts
+pnpm-lock.yaml
+public
+next.config.js
+readme.md
+Dockerfile
+.vscode
+.swc
+.github

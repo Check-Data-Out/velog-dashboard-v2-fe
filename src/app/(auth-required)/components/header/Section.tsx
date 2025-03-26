@@ -1,14 +1,12 @@
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon, NameType } from '@/components';
 import { COLORS } from '@/constants';
+import { useCustomNavigation } from '@/hooks';
 
 export const defaultStyle =
   'w-[180px] h-[65px] px-9 transition-all duration-300 shrink-0 max-MBI:w-[65px] max-MBI:px-0 ';
-export const navigateStyle =
-  'gap-5 flex items-center justify-center cursor-pointer ';
-export const textStyle =
-  'text-ST4 shrink-0 transition-all duration-300 max-MBI:hidden ';
+export const navigateStyle = 'gap-5 flex items-center justify-center cursor-pointer ';
+export const textStyle = 'text-ST4 shrink-0 transition-all duration-300 max-MBI:hidden ';
 
 type clickType = 'link' | 'function' | 'none';
 type BaseType = { icon: NameType };
@@ -40,22 +38,15 @@ export const Section = <T extends clickType>({
   icon,
 }: PropType<T>) => {
   const currentPath = usePathname();
+  const { push } = useCustomNavigation();
 
   if (clickType === 'link') {
     return (
-      <Link
-        href={action}
-        className={defaultStyle + navigateStyle}
-        id="navigation"
-      >
+      <div onClick={() => push(action)} className={defaultStyle + navigateStyle}>
         <Icon
           size={25}
           color={
-            COLORS.TEXT[
-              typeof action === 'string' && action.includes(currentPath)
-                ? 'MAIN'
-                : 'ALT'
-            ]
+            COLORS.TEXT[typeof action === 'string' && action.includes(currentPath) ? 'MAIN' : 'ALT']
           }
           name={icon}
         />
@@ -64,7 +55,7 @@ export const Section = <T extends clickType>({
         >
           {children}
         </span>
-      </Link>
+      </div>
     );
   }
 
