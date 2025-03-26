@@ -19,13 +19,9 @@ export const Notice = () => {
 
   useEffect(() => {
     try {
-      const lastUpdated = new Date(
-        data?.posts[0].created_at?.split('T')[0] as string,
-      ).getTime();
+      const lastUpdated = new Date(data?.posts[0].created_at?.split('T')[0] as string).getTime();
 
-      const daysSinceUpdate = Math.ceil(
-        (new Date().getTime() - lastUpdated) / DAY_IN_MS,
-      );
+      const daysSinceUpdate = Math.ceil((new Date().getTime() - lastUpdated) / DAY_IN_MS);
 
       if (daysSinceUpdate <= RECENT_POST_THRESHOLD_DAYS) {
         const expiry = localStorage.getItem(NOTIFICATION_STORAGE_KEY);
@@ -50,10 +46,8 @@ export const Notice = () => {
           className="text-PRIMARY-MAIN hover:text-PRIMARY-SUB text-ST4 transition-all duration-300 max-MBI:text-ST5"
           onClick={() => {
             setShow(false);
-            localStorage.setItem(
-              'noti_expiry',
-              JSON.stringify(new Date().getTime() + TTL),
-            );
+            window.gtag('event', 'click_event', { target: '공지사항 버튼' });
+            localStorage.setItem('noti_expiry', JSON.stringify(new Date().getTime() + TTL));
 
             open(<Modal />);
           }}
