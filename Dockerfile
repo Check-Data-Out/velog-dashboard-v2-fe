@@ -16,6 +16,7 @@ COPY .env.production ./.env.production
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --no-frozen-lockfile --prod
 
+
 EXPOSE 3000
 
 CMD ["pm2-runtime", "start", "ecosystem.config.js"]
