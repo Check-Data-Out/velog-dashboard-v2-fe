@@ -1,6 +1,6 @@
 ## Velog Dashboard
 - **📅 진행 기간** 2024. 11 ~ ONGOING  
-- **💻 서비스 URL** https://velog-dashboard.kro.kr/ (서비스 체험 가능!)
+- **💻 서비스 URL** [https://velog-dashboard.kro.kr/](https://velog-dashboard.kro.kr/?utm_source=github&utm_medium=repo) (서비스 체험 가능!)
 
 ## INTRO
 통계 기능이 부실한 블로그 서비스들을 위한 **블로그 통계 대시보드 서비스**입니다.  
