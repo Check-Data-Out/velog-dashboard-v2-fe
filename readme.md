@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/e43ab765-f94e-41d8-8f57-bf05100606cd)
+
 ## Velog Dashboard
 - **📅 진행 기간** 2024. 11 ~ ONGOING  
 - **💻 서비스 URL** [https://velog-dashboard.kro.kr/](https://velog-dashboard.kro.kr/?utm_source=github&utm_medium=repo) (서비스 체험 가능!)
