@@ -77,25 +77,26 @@ export const instance = async <I, R>(
     const context = err as Response;
     if (location && !context.ok && context.status === 401) {
       window.location.replace('/');
-    }
-    setContext('Request', {
-      path: context.url,
-      status: context.status,
-    });
-    if ((err as Error).name === 'TimeoutError') {
-      captureException(new ServerNotRespondingError());
-      throw new ServerNotRespondingError();
     } else {
-      if (!error?.[`${(err as Response).status}`]) {
-        const serverError = new Error(
-          `서버에서 예기치 않은 오류가 발생했습니다. (${(err as Error).name})`,
-        );
-        captureException(serverError);
-        throw serverError;
-      }
+      setContext('Request', {
+        path: context.url,
+        status: context.status,
+      });
+      if ((err as Error).name === 'TimeoutError') {
+        captureException(new ServerNotRespondingError());
+        throw new ServerNotRespondingError();
+      } else {
+        if (!error?.[`${(err as Response).status}`]) {
+          const serverError = new Error(
+            `서버에서 예기치 않은 오류가 발생했습니다. (${(err as Error).name})`,
+          );
+          captureException(serverError);
+          throw serverError;
+        }
 
-      captureException(error[`${(err as Response).status}`]);
-      throw error[`${(err as Response).status}`];
+        captureException(error[`${(err as Response).status}`]);
+        throw error[`${(err as Response).status}`];
+      }
     }
   }
 };
