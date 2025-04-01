@@ -49,7 +49,7 @@ export const instance = async <I, R>(
   input: URL | RequestInfo,
   init?: InitType<I>,
   error?: Record<string, Error>,
-): Promise<R> => {
+): Promise<R | void> => {
   let cookieHeader = '';
   if (typeof window === 'undefined') {
     cookieHeader = (await import('next/headers')).cookies().toString();
