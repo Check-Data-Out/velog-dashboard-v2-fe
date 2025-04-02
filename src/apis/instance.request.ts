@@ -68,7 +68,7 @@ export const instance = async <I, R>(
       signal: AbortSignal.timeout
         ? AbortSignal.timeout(Number(env.ABORT_MS))
         : abortPolyfill(Number(env.ABORT_MS)),
-      credentials: 'include',
+      credentials: input !== '/login' ? 'include' : 'omit',
       cache: 'no-store',
     });
 
