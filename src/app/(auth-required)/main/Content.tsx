@@ -10,9 +10,7 @@ import { PATHS, SORT_TYPE } from '@/constants';
 import { SortKey, SortValue } from '@/types';
 import { Section, Summary } from './components';
 
-const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<
-  [SortKey, SortValue]
->;
+const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
 
 export const Content = () => {
   const [searchParams, setSearchParams] = useSearchParam<{
@@ -40,11 +38,7 @@ export const Content = () => {
   });
 
   useEffect(() => {
-    if (
-      posts &&
-      posts.pages[posts.pages?.length - 1].nextCursor !== null &&
-      inView
-    ) {
+    if (posts && posts.pages[posts.pages?.length - 1].nextCursor !== null && inView) {
       fetchNextPage();
     }
   }, [inView]);
@@ -64,8 +58,7 @@ export const Content = () => {
                 새로고침
               </Button>
               <span className="text-TEXT-ALT text-ST4 max-TBL:text-ST5 max-MBI:hidden">
-                마지막 업데이트 :{' '}
-                {summaries?.stats?.lastUpdatedDate || '업데이트 중..'}
+                마지막 업데이트 : {summaries?.stats?.lastUpdatedDate || '업데이트 중..'}
               </span>
             </div>
             <div className="flex items-center gap-3">
@@ -80,13 +73,10 @@ export const Content = () => {
               />
               <Dropdown
                 defaultValue={
-                  sorts.find((i) => i[1] === searchParams.sort) ??
-                  SORT_TYPE['작성일순']
+                  sorts.find((i) => i[1] === searchParams.sort) ?? SORT_TYPE['작성일순']
                 }
                 options={sorts}
-                onChange={(data) =>
-                  setSearchParams({ sort: data as SortValue })
-                }
+                onChange={(data) => setSearchParams({ sort: data as SortValue })}
               />
             </div>
           </div>
