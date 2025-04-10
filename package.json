@@ -23,6 +23,7 @@
     "@next/third-parties": "^15.1.7",
     "@sentry/core": "^8.47.0",
     "@sentry/nextjs": "^8.47.0",
+    "@sentry/webpack-plugin": "^3.3.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tanstack/react-query": "^5.69.0",
     "@tanstack/react-query-devtools": "^5.69.0",
