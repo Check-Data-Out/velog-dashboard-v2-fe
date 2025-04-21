@@ -19,15 +19,7 @@ import { PostDetailValue } from '@/types';
 import { useResponsive } from '@/hooks';
 import { postDetail } from '@/apis';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const datasets = {
   backgroundColor: COLORS.TEXT.MAIN,
@@ -58,17 +50,13 @@ export const Graph = ({ id, releasedAt }: IProp) => {
     queryKey: [PATHS.DETAIL, type, id],
     queryFn: async () => await postDetail(id, type.start, type.end),
     select: ({ post }) => {
-      post = post.sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-      );
+      post = post.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
       return {
         labels: post.map((i) => i.date.split('T')[0]),
         datasets: [
           {
             label: type.type,
-            data: post.map(
-              (i) => i[`daily${type.type}Count` as keyof PostDetailValue],
-            ),
+            data: post.map((i) => i[`daily${type.type}Count` as keyof PostDetailValue]),
             ...datasets,
           },
         ],
@@ -141,9 +129,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
       <div className="w-full h-fit relative">
         {!datas && (
           <div className="absolute size-full bg-[#00000077] flex justify-center items-center backdrop-blur-sm rounded-sm">
-            <span className="text-TEXT-MAIN">
-              날짜를 선택해서 데이터를 확인하세요!
-            </span>
+            <span className="text-TEXT-MAIN">날짜를 선택해서 데이터를 확인하세요!</span>
           </div>
         )}
         <Line
@@ -155,8 +141,8 @@ export const Graph = ({ id, releasedAt }: IProp) => {
             interaction: { mode: 'nearest', intersect: false },
             plugins: { legend: { display: false } },
             scales: {
-              x: { axis: 'x', grid: { color: COLORS.BORDER.SUB } },
-              y: { axis: 'y', grid: { color: COLORS.BORDER.SUB } },
+              x: { axis: 'x', grid: { color: COLORS.BORDER.SUB }, ticks: { precision: 0 } },
+              y: { axis: 'y', grid: { color: COLORS.BORDER.SUB }, ticks: { precision: 0 } },
             },
           }}
           className="w-[100%_!important] h-[auto_!important] max-h-[300px]"
