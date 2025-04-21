@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { revalidate } from '@/utils/revalidateUtil';
 import { PATHS, SCREENS } from '@/constants';
-import { NameType } from '@/components';
+import { Icon, NameType } from '@/components';
 import { useCustomNavigation, useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
 import { useModal } from '@/hooks/useModal';
@@ -25,7 +25,6 @@ const layouts: Array<{ icon: NameType; title: string; path: string }> = [
     title: '리더보드',
     path: `/leaderboards${PARAMS.LEADERBOARDS}`,
   },
-  { icon: 'Compare', title: '통계 비교', path: '/compare' },
 ];
 
 export const Header = () => {
@@ -84,7 +83,10 @@ export const Header = () => {
             </Section>
           ))}
         </div>
-
+        <Section clickType="function" action={() => ModalOpen(<Modal />)}>
+          <Icon name="Loudspeaker" size={25} />
+          <span className={textStyle + 'text-TEXT-ALT'}>공지사항</span>
+        </Section>
         <div className="w-fit h-fit flex flex-col relative z-50" ref={menu}>
           <Section clickType="function" action={() => setOpen((prev) => !prev)}>
             <Image
@@ -110,12 +112,6 @@ export const Header = () => {
                   }}
                 >
                   로그아웃
-                </button>
-                <button
-                  className="text-TEXT-MAIN text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto hover:bg-BG-ALT"
-                  onClick={() => ModalOpen(<Modal />)}
-                >
-                  공지사항
                 </button>
               </div>
             </div>
