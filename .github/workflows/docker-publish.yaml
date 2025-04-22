@@ -22,6 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install -g pnpm
+          npm install -g @sentry/cli
           pnpm install --frozen-lockfile
 
       - name: Create .env file
@@ -39,6 +40,16 @@ jobs:
       - name: Build Next.js application
         run: |
           pnpm run build
+
+      - name: Upload Source Maps
+        run: |
+          sentry-cli releases new production
+          sentry-cli sourcemaps inject .next/static/chunks
+          sentry-cli releases files production upload-sourcemaps .next/static/chunks
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.NEXT_PUBLIC_SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: velog-dashboard2
+          SENTRY_PROJECT: vd-fe
 
       # Docker 로그인
       - name: Log in to Docker Hub
