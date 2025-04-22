@@ -49,19 +49,16 @@ export const Graph = ({ id, releasedAt }: IProp) => {
   const { data: datas } = useQuery({
     queryKey: [PATHS.DETAIL, type, id],
     queryFn: async () => await postDetail(id, type.start, type.end),
-    select: ({ post }) => {
-      post = post.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-      return {
-        labels: post.map((i) => i.date.split('T')[0]),
-        datasets: [
-          {
-            label: type.type,
-            data: post.map((i) => i[`daily${type.type}Count` as keyof PostDetailValue]),
-            ...datasets,
-          },
-        ],
-      };
-    },
+    select: ({ post }) => ({
+      labels: post.map((i) => i.date.split('T')[0]),
+      datasets: [
+        {
+          label: type.type,
+          data: post.map((i) => i[`daily${type.type}Count` as keyof PostDetailValue]),
+          ...datasets,
+        },
+      ],
+    }),
     enabled: !!type.start && !!type.end,
   });
 
