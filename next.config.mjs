@@ -4,15 +4,17 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: { forceSwcTransforms: true },
   output: 'standalone',
-
+  productionBrowserSourceMaps: false,
   webpack: (config, options) => {
     config.module.rules.push({
       test: /\.svg$/i,
-      use: [
-        options.defaultLoaders.babel,
-        { loader: '@svgr/webpack', options: { babel: false } },
-      ],
+      use: [options.defaultLoaders.babel, { loader: '@svgr/webpack', options: { babel: false } }],
     });
+    if (!options.dev) {
+      config.devtool =
+        process.env.NODE_ENV === 'production' ? 'hidden-source-map' : 'inline-source-map';
+    }
+
     return config;
   },
 

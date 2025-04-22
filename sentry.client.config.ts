@@ -9,12 +9,10 @@ Sentry.init({
   dsn: env.SENTRY_DSN,
 
   // Add optional integrations for additional features
-  integrations: [
-    Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false }),
-  ],
+  integrations: [Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false })],
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-  tracesSampleRate: env.NODE_ENV === 'production' ? 0.1 : 1,
+  tracesSampleRate: 0.1,
 
   // Define how likely Replay events are sampled.
   // This sets the sample rate to be 10%. You may want this to be 100% while
@@ -26,4 +24,5 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
+  enabled: process.env.NODE_ENV === 'production',
 });
