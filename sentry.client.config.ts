@@ -7,6 +7,7 @@ import { env } from '@/constants';
 
 Sentry.init({
   dsn: env.SENTRY_DSN,
+  release: 'production',
 
   // Add optional integrations for additional features
   integrations: [Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false })],

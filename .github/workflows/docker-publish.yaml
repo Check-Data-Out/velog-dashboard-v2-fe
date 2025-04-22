@@ -46,6 +46,7 @@ jobs:
           sentry-cli releases new production
           sentry-cli sourcemaps inject .next/static/chunks
           sentry-cli releases files production upload-sourcemaps .next/static/chunks
+          sentry-cli releases finalize production
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.NEXT_PUBLIC_SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: velog-dashboard2

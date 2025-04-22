@@ -8,6 +8,7 @@ import { env } from '@/constants';
 
 Sentry.init({
   dsn: env.SENTRY_DSN,
+  release: 'production',
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 0.05,
