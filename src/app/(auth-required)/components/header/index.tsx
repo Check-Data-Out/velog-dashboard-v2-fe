@@ -85,7 +85,7 @@ export const Header = () => {
         </div>
         <Section clickType="function" action={() => ModalOpen(<Modal />)}>
           <Icon name="Loudspeaker" size={25} />
-          <span className={textStyle + 'text-TEXT-ALT'}>공지사항</span>
+          <span className={`${textStyle} text-TEXT-ALT`}>공지사항</span>
         </Section>
         <div className="w-fit h-fit flex flex-col relative z-50" ref={menu}>
           <Section clickType="function" action={() => setOpen((prev) => !prev)}>
@@ -96,7 +96,7 @@ export const Header = () => {
               src={profiles?.profile.thumbnail || '/profile.jpg'}
               alt=""
             />
-            <span className={textStyle + 'text-TEXT-ALT'} id="profile">
+            <span className={`${textStyle} text-TEXT-ALT`} id="profile">
               {profiles?.username || 'NULL'}
             </span>
           </Section>
