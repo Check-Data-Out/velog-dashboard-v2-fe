@@ -25,6 +25,7 @@ const nextConfig = {
     ],
   },
 };
+
 export default withSentryConfig(nextConfig, {
   // 센트리 동작을 위한 기본값
   authToken: process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN,
