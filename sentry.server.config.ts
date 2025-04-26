@@ -7,10 +7,12 @@ import { env } from '@/constants';
 
 Sentry.init({
   dsn: env.SENTRY_DSN,
+  release: 'production',
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-  tracesSampleRate: env.NODE_ENV === 'production' ? 0.1 : 1,
+  tracesSampleRate: 0.1,
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
+  enabled: process.env.NODE_ENV === 'production',
 });
