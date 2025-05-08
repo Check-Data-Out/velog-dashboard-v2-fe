@@ -1,15 +1,21 @@
 import { withSentryConfig } from '@sentry/nextjs';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   experimental: { forceSwcTransforms: true },
   output: 'standalone',
-
+  productionBrowserSourceMaps: true,
   webpack: (config, options) => {
     config.module.rules.push({
       test: /\.svg$/i,
       use: [options.defaultLoaders.babel, { loader: '@svgr/webpack', options: { babel: false } }],
     });
+    if (!options.dev) {
+      config.devtool =
+        process.env.NODE_ENV === 'production' ? 'hidden-source-map' : 'inline-source-map';
+    }
+
     return config;
   },
 
@@ -20,42 +26,21 @@ const nextConfig = {
     ],
   },
 };
+
 export default withSentryConfig(nextConfig, {
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options
+  // 센트리 동작을 위한 기본값
+  authToken: process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN,
+  org: 'velog-dashboardv2',
+  project: 'vd-fe',
 
-  org: 'velog-dashboard',
-  project: 'velog-dashboard-fe',
+  widenClientFileUpload: true, // 파일의 크기가 비교적 큰 대신, 더 상세한 정보를 포함하는 소스맵 파일 생성
+  sourcemaps: { deleteSourcemapsAfterUpload: true }, // 소스맵 파일 업로드 후 자동 제거
+  hideSourceMaps: true, // 클라이언트 대상의 소스맵 파일 은닉
 
-  // Only print logs for uploading source maps in CI
-  silent: !process.env.CI,
+  silent: !process.env.CI, // CI 진행시에만 로그가 표시되도록 강제
+  disableLogger: true, // 번들 사이즈 감소를 위해 센트리 기본 로그 메세지 트리셰이크
 
-  // For all available options, see:
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+  reactComponentAnnotation: { enabled: true }, // 세션 리플레이와 브레드크럼에서 상세한 컴포넌트명 표시
 
-  // Upload a larger set of source maps for prettier stack traces (increases build time)
-  widenClientFileUpload: true,
-
-  // Automatically annotate React components to show their full name in breadcrumbs and session replay
-  reactComponentAnnotation: {
-    enabled: true,
-  },
-
-  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  // This can increase your server load as well as your hosting bill.
-  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-  // side errors will fail.
-  tunnelRoute: '/monitoring',
-
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
-
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
-  disableLogger: true,
-
-  // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-  // See the following for more information:
-  // https://docs.sentry.io/product/crons/
-  // https://vercel.com/docs/cron-jobs
-  automaticVercelMonitors: true,
+  tunnelRoute: '/monitoring', // ad-blocker 우회를 위한 경로 (저희가 이전에 왜 생기는지 이유를 추측했던 그 경로 맞습니다..)
 });

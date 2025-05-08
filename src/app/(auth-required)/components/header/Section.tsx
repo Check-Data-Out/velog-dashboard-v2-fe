@@ -4,9 +4,9 @@ import { COLORS } from '@/constants';
 import { useCustomNavigation } from '@/hooks';
 
 export const defaultStyle =
-  'w-[180px] h-[65px] px-9 transition-all duration-300 shrink-0 max-MBI:w-[65px] max-MBI:px-0 ';
-export const navigateStyle = 'gap-5 flex items-center justify-center cursor-pointer ';
-export const textStyle = 'text-ST4 shrink-0 transition-all duration-300 max-MBI:hidden ';
+  'w-[180px] h-[65px] px-9 transition-all duration-300 shrink-0 max-MBI:w-[65px] max-MBI:px-0';
+export const navigateStyle = 'gap-5 flex items-center justify-center cursor-pointer';
+export const textStyle = 'text-ST4 shrink-0 transition-all duration-300 max-MBI:hidden';
 
 type clickType = 'link' | 'function' | 'none';
 type BaseType = { icon: NameType };
@@ -42,7 +42,7 @@ export const Section = <T extends clickType>({
 
   if (clickType === 'link') {
     return (
-      <div onClick={() => push(action)} className={defaultStyle + navigateStyle}>
+      <div onClick={() => push(action)} className={`${defaultStyle} ${navigateStyle}`}>
         <Icon
           size={25}
           color={
@@ -51,7 +51,7 @@ export const Section = <T extends clickType>({
           name={icon}
         />
         <span
-          className={`${action.split('?')[0] === currentPath ? 'text-TEXT-MAIN' : 'text-TEXT-ALT'} ${textStyle}`}
+          className={`${textStyle} ${action.split('?')[0] === currentPath ? 'text-TEXT-MAIN' : 'text-TEXT-ALT'}`}
         >
           {children}
         </span>
@@ -62,7 +62,7 @@ export const Section = <T extends clickType>({
   return (
     <div
       onClick={action}
-      className={`${defaultStyle + navigateStyle} TBL:min-w-[180px] rounded-t-[4px] w-[fit-content_!important] max-MBI:w-[65px_!important]`}
+      className={`${defaultStyle} ${navigateStyle} TBL:min-w-[180px] rounded-t-[4px] w-[fit-content_!important] max-MBI:w-[65px_!important]`}
     >
       {children}
     </div>

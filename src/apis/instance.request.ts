@@ -60,9 +60,9 @@ export const instance = async <I, R>(
       ...init,
       headers: cookieHeader
         ? {
-            ...init?.headers,
-            Cookie: cookieHeader,
-          }
+          ...init?.headers,
+          Cookie: cookieHeader,
+        }
         : init?.headers,
       body: init?.body ? JSON.stringify(init.body) : undefined,
       signal: AbortSignal.timeout
@@ -77,6 +77,7 @@ export const instance = async <I, R>(
     const context = err as Response;
     if (location && !context.ok && context.status === 401) {
       window.location.replace('/');
+      return {} as never;
     }
     setContext('Request', {
       path: context.url,
