@@ -35,7 +35,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/__test__/main.test.tsx.ignore",
     ".eslintrc.js",
     "next.config.mjs"
   ],
