@@ -1,8 +1,7 @@
 'use client';
 
 import { QRCodeSVG } from 'qrcode.react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Icon } from '@/components';
 import { useModal } from '@/hooks/useModal';
 import { COLORS, env, PATHS, SCREENS } from '@/constants';
