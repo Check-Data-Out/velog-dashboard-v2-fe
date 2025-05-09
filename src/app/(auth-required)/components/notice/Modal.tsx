@@ -1,22 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { notiList } from '@/apis';
 import { PATHS } from '@/constants';
-import { useModal } from '@/hooks/useModal';
 import { Modal as Layout } from '@/components';
 
 export const Modal = () => {
-  const { close } = useModal();
   const { data } = useQuery({ queryKey: [PATHS.NOTIS], queryFn: notiList });
-
-  useEffect(() => {
-    const handleClose = (e: KeyboardEvent) => e.key === 'Escape' && close();
-
-    window.addEventListener('keydown', handleClose);
-    return () => window.removeEventListener('keydown', handleClose);
-  }, [close]);
 
   return (
     <Layout title="공지사항" className="w-[800px] h-[500px] max-MBI:w-[450px] max-MBI:h-[200px]">

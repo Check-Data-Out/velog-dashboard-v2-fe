@@ -1,5 +1,7 @@
 'use client';
+
 import { twMerge } from 'tailwind-merge';
+import { useEffect } from 'react';
 import { useModal } from '@/hooks';
 import { Icon } from './Icon';
 
@@ -10,6 +12,14 @@ interface IProp extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Modal = ({ title, children, ...rest }: IProp) => {
   const { close } = useModal();
+
+  useEffect(() => {
+    const handleClose = (e: KeyboardEvent) => e.key === 'Escape' && close();
+
+    window.addEventListener('keydown', handleClose);
+    return () => window.removeEventListener('keydown', handleClose);
+  }, [close]);
+
   return (
     <div
       {...rest}
