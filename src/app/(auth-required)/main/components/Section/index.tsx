@@ -11,9 +11,7 @@ import { Graph } from './Graph';
 export const Section = (p: PostType) => {
   const [open, setOpen] = useState(false);
 
-  const username = (
-    getQueryClient().getQueryData([PATHS.ME]) as Partial<UserDto>
-  )?.username;
+  const username = (getQueryClient().getQueryData([PATHS.ME]) as Partial<UserDto>)?.username;
 
   const url = `${env.VELOG_URL}/@${username}/${p.slug}`;
 
@@ -36,9 +34,7 @@ export const Section = (p: PostType) => {
             <span
               className={`text-T3 text-TEXT-MAIN hover:underline max-TBL:after:text-ST5 max-TBL:text-T4 max-MBI:text-ST4`}
             >
-              {p.title.length > 30
-                ? p.title.slice(0, 29).trim() + '..'
-                : p.title}
+              {p.title.length > 30 ? p.title.slice(0, 29).trim() + '..' : p.title}
             </span>
           </div>
 
@@ -50,9 +46,7 @@ export const Section = (p: PostType) => {
         <div className="flex items-center text-ST4 justify-between text-TEXT-ALT gap-1 max-TBL:text-ST5 max-MBI:w-full">
           <span className="MBI:hidden">{p.releasedAt.split('T')[0]}</span>
           <div className="flex flex-wrap items-center gap-[6px]">
-            <span className='after:content-["/"] after:ml-2'>
-              {parseNumber(p.views)}
-            </span>
+            <span className='after:content-["/"] after:ml-2'>{parseNumber(p.views)}</span>
             <span className="flex items-center before:text-PRIMARY-SUB before:content-['↑'] before:mr-1 after:ml-2 after:content-['/']">
               {parseNumber(p.views - p.yesterdayViews)}
             </span>

@@ -28,11 +28,7 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
           increasement={stats?.totalLikes - stats?.yesterdayLikes}
           id="totalLikes"
         />
-        <SidebarContent
-          title="총 게시글 수"
-          content={totalPostCount}
-          id="totalPosts"
-        />
+        <SidebarContent title="총 게시글 수" content={totalPostCount} id="totalPosts" />
       </aside>
       <section
         className={`flex flex-col w-full px-5 bg-BG-SUB rounded-[4px] cursor-pointer MBI:hidden`}
@@ -57,11 +53,7 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
               increasement={stats?.totalLikes - stats?.yesterdayLikes}
               id="totalLikes"
             />
-            <BarContent
-              title="총 게시글 수"
-              content={totalPostCount}
-              id="totalPosts"
-            />
+            <BarContent title="총 게시글 수" content={totalPostCount} id="totalPosts" />
           </div>
         )}
       </section>
