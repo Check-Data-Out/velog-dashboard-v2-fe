@@ -7,6 +7,7 @@ import pluginTest from 'eslint-plugin-testing-library';
 import pluginPrettier from 'eslint-plugin-prettier/recommended';
 import configPrettier from 'eslint-config-prettier';
 import pluginImport from 'eslint-plugin-import';
+import globals from 'globals';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
