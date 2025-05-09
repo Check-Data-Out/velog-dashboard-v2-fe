@@ -1,33 +1,27 @@
 'use client';
 
 import { QRCodeSVG } from 'qrcode.react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Icon } from '@/components';
 import { useModal } from '@/hooks/useModal';
-import { COLORS, env, SCREENS } from '@/constants';
+import { COLORS, env, PATHS, SCREENS } from '@/constants';
 import { useResponsive } from '@/hooks';
 import { createQRToken } from '@/apis';
 
 export const QRCode = () => {
   const { close } = useModal();
   const width = useResponsive();
-  const [token, setToken] = useState<null | string>(null);
 
-  const { mutate } = useMutation({
-    mutationFn: async () => await createQRToken(),
-    onSuccess: ({ token }) => setToken(token),
-  });
-
-  useEffect(() => mutate(), []);
+  const { data, isSuccess } = useQuery({ queryKey: [PATHS.QRLOGIN], queryFn: createQRToken });
 
   return (
     <div className="w-fit h-fit overflow-auto flex flex-col items-end gap-5 p-10 max-MBI:p-7 rounded-md bg-BG-SUB">
       <Icon name="Close" onClick={close} color="#FFFFFF" className="cursor-pointer" />
 
-      {token ? (
+      {isSuccess ? (
         <QRCodeSVG
-          value={`${env.BASE_URL}/api/qr-login?token=${token}`}
+          value={`${env.BASE_URL}/api/qr-login?token=${data.token}`}
           width={width < SCREENS.MBI ? 140 : 181}
           height={width < SCREENS.MBI ? 140 : 181}
           enableBackground={0}
