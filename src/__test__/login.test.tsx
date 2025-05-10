@@ -11,12 +11,8 @@ jest.mock('next/navigation', () => ({
 
 const getElements = () => {
   const buttonEl = screen.getByRole('button');
-  const accessInputEl = screen.getByPlaceholderText(
-    'Access Token을 입력하세요',
-  );
-  const refreshInputEl = screen.getByPlaceholderText(
-    'Refresh Token을 입력하세요',
-  );
+  const accessInputEl = screen.getByPlaceholderText('Access Token을 입력하세요');
+  const refreshInputEl = screen.getByPlaceholderText('Refresh Token을 입력하세요');
 
   return { buttonEl, accessInputEl, refreshInputEl };
 };
