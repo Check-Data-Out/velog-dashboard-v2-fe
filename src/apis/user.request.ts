@@ -17,3 +17,6 @@ export const me = async () => await instance<null, UserDto>(PATHS.ME);
 export const logout = async () => await instance(PATHS.LOGOUT, { method: 'POST', body: undefined });
 
 export const sampleLogin = async () => await instance(PATHS.SAMPLELOGIN, { method: 'POST' });
+
+export const createQRToken = async () =>
+  await instance<null, { token: string }>(PATHS.QRLOGIN, { method: 'POST' });

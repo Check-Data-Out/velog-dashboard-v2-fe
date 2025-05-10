@@ -24,7 +24,7 @@ export const Modal = ({ title, children, ...rest }: IProp) => {
     <div
       {...rest}
       className={twMerge(
-        'overflow-auto flex flex-col gap-3 p-10 max-MBI:p-7 rounded-md bg-BG-SUB',
+        'overflow-auto flex flex-col gap-5 p-10 max-MBI:p-7 rounded-md bg-BG-SUB',
         rest.className,
       )}
     >

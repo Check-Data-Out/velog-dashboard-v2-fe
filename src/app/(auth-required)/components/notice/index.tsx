@@ -19,15 +19,16 @@ export const Notice = () => {
 
   useEffect(() => {
     try {
-      const lastUpdated = new Date(data?.posts[0].created_at?.split('T')[0] as string).getTime();
+      if (!data?.posts[0]) return;
 
+      const lastUpdated = new Date(data?.posts[0].created_at?.split('T')[0] as string).getTime();
       const daysSinceUpdate = Math.ceil((new Date().getTime() - lastUpdated) / DAY_IN_MS);
 
-      if (daysSinceUpdate <= RECENT_POST_THRESHOLD_DAYS) {
-        const expiry = localStorage.getItem(NOTIFICATION_STORAGE_KEY);
-        if (!expiry || parseInt(expiry, 10) < new Date().getTime()) {
-          setShow(true);
-        }
+      if (daysSinceUpdate > RECENT_POST_THRESHOLD_DAYS) return;
+
+      const expiry = localStorage.getItem(NOTIFICATION_STORAGE_KEY);
+      if (!expiry || parseInt(expiry, 10) < new Date().getTime()) {
+        setShow(true);
       }
     } catch (error) {
       console.error('알림 날짜 처리 중 오류 발생:', error);
