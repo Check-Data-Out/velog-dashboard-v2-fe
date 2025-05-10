@@ -6,11 +6,7 @@ import { ErrorBoundary } from '@sentry/nextjs';
 import { ReactNode, Suspense } from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
-import {
-  ChannelTalkProvider,
-  QueryProvider,
-  ModalProvider,
-} from '@/components';
+import { ChannelTalkProvider, QueryProvider, ModalProvider } from '@/components';
 import { env } from '@/constants';
 import { TopBarProvider } from '@/components/Providers/TopBarProvider';
 
@@ -24,8 +20,7 @@ export const metadata: Metadata = {
   alternates: { canonical: BASE },
   openGraph: {
     siteName: 'Velog Dashboard',
-    description:
-      '어디서든 편리하게 확인하는 Velog 통계 서비스, Velog Dashboard',
+    description: '어디서든 편리하게 확인하는 Velog 통계 서비스, Velog Dashboard',
     url: BASE,
     images: [{ url: '/opengraph-image.png', alt: 'Velog Dashboard' }],
     type: 'website',
@@ -34,9 +29,7 @@ export const metadata: Metadata = {
 
 const NotoSansKr = Noto_Sans_KR({ subsets: ['latin'] });
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">
       <body className={`${NotoSansKr.className} w-full bg-BG-MAIN`}>

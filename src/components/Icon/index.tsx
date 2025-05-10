@@ -2,10 +2,7 @@ import * as Icons from './icons';
 export { default as SvgrMock } from './SvgrMock';
 
 export type NameType = keyof typeof Icons;
-type iconType = Record<
-  NameType,
-  React.JSXElementConstructor<React.SVGProps<SVGSVGElement>>
->;
+type iconType = Record<NameType, React.JSXElementConstructor<React.SVGProps<SVGSVGElement>>>;
 
 interface IProp extends React.SVGProps<SVGSVGElement> {
   name: NameType;
@@ -21,13 +18,7 @@ const rotates = {
   left: 'rotate-[-90deg]',
 };
 
-export const Icon = ({
-  name,
-  size = 30,
-  color = '#ACACAC',
-  rotate = 'up',
-  ...rest
-}: IProp) => {
+export const Icon = ({ name, size = 30, color = '#ACACAC', rotate = 'up', ...rest }: IProp) => {
   const Comp = (Icons as iconType)[name];
 
   if ((Comp as unknown as { src: string })?.src) {

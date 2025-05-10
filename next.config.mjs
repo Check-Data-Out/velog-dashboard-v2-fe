@@ -42,5 +42,5 @@ export default withSentryConfig(nextConfig, {
 
   reactComponentAnnotation: { enabled: true }, // 세션 리플레이와 브레드크럼에서 상세한 컴포넌트명 표시
 
-  tunnelRoute: '/monitoring', // ad-blocker 우회를 위한 경로 (저희가 이전에 왜 생기는지 이유를 추측했던 그 경로 맞습니다..)
+  tunnelRoute: '/monitoring', // ad-blocker 우회용 엔드포인트 (이벤트 로깅 관련)
 });

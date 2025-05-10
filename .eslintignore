@@ -8,3 +8,5 @@ Dockerfile
 .vscode
 .swc
 .github
+.eslintrc.js
+node_modules
