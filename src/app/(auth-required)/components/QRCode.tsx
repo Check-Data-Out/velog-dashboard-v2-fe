@@ -27,10 +27,6 @@ export const QRCode = () => {
       ) : (
         <div className="size-[180px] max-MBI:size-[140px] bg-BG-ALT" />
       )}
-
-      <span className="text-TEXT-MAIN text-ST4 transition-all max-MBI:text-ST5 w-full text-center">
-        해당 QR을 찍어 로그인
-      </span>
     </Layout>
   );
 };
