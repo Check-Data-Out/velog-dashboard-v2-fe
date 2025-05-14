@@ -60,9 +60,9 @@ export const instance = async <I, R>(
       ...init,
       headers: cookieHeader
         ? {
-          ...init?.headers,
-          Cookie: cookieHeader,
-        }
+            ...init?.headers,
+            Cookie: cookieHeader,
+          }
         : init?.headers,
       body: init?.body ? JSON.stringify(init.body) : undefined,
       signal: AbortSignal.timeout

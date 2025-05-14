@@ -11,13 +11,7 @@ interface IProp {
 const afterContent =
   'before:text-PRIMARY-SUB before:content-[attr(data-increasement)_"↑"] before:mr-2 before:text-T5';
 
-export const BarContent = ({
-  title,
-  content,
-  increasement,
-  prefix = '개',
-  id,
-}: IProp) => {
+export const BarContent = ({ title, content, increasement, prefix = '개', id }: IProp) => {
   return (
     <div className="w-full flex justify-between items-center">
       <span className="text-ST5 text-TEXT-ALT">{title}</span>

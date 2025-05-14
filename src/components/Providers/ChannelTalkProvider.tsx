@@ -9,11 +9,7 @@ const ChannelTalkServiceLoader = () => {
   ChannelService.boot({ pluginKey: env.CHANNELTALK_PLUGIN_KEY });
 };
 
-export const ChannelTalkProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const ChannelTalkProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => ChannelTalkServiceLoader(), []);
   return <>{children}</>;
 };

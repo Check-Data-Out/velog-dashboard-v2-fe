@@ -68,9 +68,8 @@ describe('메인(대시보드) 페이지에서', () => {
       const { container } = renderWithQueryClient(<Content />);
 
       await waitFor(() =>
-        expect(container.querySelector('span#totalViews')?.innerHTML).toBe(
-          '100회',
-        ),
+        // eslint-disable-next-line
+        expect(container.querySelector('span#totalViews')?.innerHTML).toBe('100회'),
       );
     });
   });

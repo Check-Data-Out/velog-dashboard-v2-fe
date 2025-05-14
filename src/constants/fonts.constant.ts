@@ -1,7 +1,4 @@
-export const FONTS: Record<
-  string,
-  [string, { lineHeight: string; fontWeight: number }]
-> = {
+export const FONTS: Record<string, [string, { lineHeight: string; fontWeight: number }]> = {
   T1: ['32px', { lineHeight: '46.3px', fontWeight: 700 }],
   T2: ['28px', { lineHeight: '40.5px', fontWeight: 700 }],
   T3: ['24px', { lineHeight: '34.8px', fontWeight: 700 }],

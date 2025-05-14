@@ -1,8 +1,7 @@
 import { ForwardedRef, forwardRef } from 'react';
 import { SIZES, SizeType } from '@/constants';
 
-interface IProp
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+interface IProp extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   form?: keyof typeof FORMS;
   size: SizeType;
 }
@@ -13,10 +12,7 @@ const FORMS = {
 };
 
 export const Input = forwardRef<HTMLInputElement, IProp>(
-  (
-    { form = 'LARGE', size, ...rest }: IProp,
-    ref?: ForwardedRef<HTMLInputElement>,
-  ) => (
+  ({ form = 'LARGE', size, ...rest }: IProp, ref?: ForwardedRef<HTMLInputElement>) => (
     <input
       {...rest}
       ref={ref}
