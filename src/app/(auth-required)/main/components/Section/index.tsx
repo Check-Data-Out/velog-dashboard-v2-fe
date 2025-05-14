@@ -6,6 +6,7 @@ import { COLORS, env, PATHS } from '@/constants';
 import { PostType, UserDto } from '@/types';
 import { Icon } from '@/components';
 import { getQueryClient } from '@/utils/queryUtil';
+import { convertDate } from '@/utils';
 import { Graph } from './Graph';
 
 export const Section = (p: PostType) => {
@@ -39,12 +40,12 @@ export const Section = (p: PostType) => {
           </div>
 
           <span className="text-TEXT-ALT text-ST4 MBI:content-[attr(data-date)] max-MBI:hidden">
-            {p.releasedAt.split('T')[0]}
+            {convertDate(p.releasedAt)?.short}
           </span>
         </div>
 
         <div className="flex items-center text-ST4 justify-between text-TEXT-ALT gap-1 max-TBL:text-ST5 max-MBI:w-full">
-          <span className="MBI:hidden">{p.releasedAt.split('T')[0]}</span>
+          <span className="MBI:hidden">{convertDate(p.releasedAt)?.short}</span>
           <div className="flex flex-wrap items-center gap-[6px]">
             <span className='after:content-["/"] after:ml-2'>{parseNumber(p.views)}</span>
             <span className="flex items-center before:text-PRIMARY-SUB before:content-['↑'] before:mr-1 after:ml-2 after:content-['/']">
