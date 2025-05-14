@@ -9,4 +9,5 @@ export const PATHS = {
   ME: '/me',
   LOGOUT: '/logout',
   DETAIL: '/post',
+  LEADERBOARD: '/leaderboard',
 };

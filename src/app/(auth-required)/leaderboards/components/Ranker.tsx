@@ -1,7 +1,7 @@
 export interface IProp {
   name: string;
-  rank: string | number;
-  count: number;
+  rank?: number;
+  count?: string | number;
   suffix?: string;
 }
 
@@ -16,7 +16,7 @@ export const Ranker = ({ name, rank, count, suffix = '회' }: IProp) => {
           className="flex items-center gap-3 text-T1 text-TEXT-MAIN after:text-PRIMARY-SUB after:content-['('_attr(data-count)_')'] after:text-ST3 max-TBL:text-T2 max-MBI:text-ST4 max-TBL:after:text-ST4 max-MBI:after:hidden"
           data-count={count + suffix}
         >
-          {name}
+          {name.length >= 10 ? name.slice(0, 10) + '...' : name}
         </span>
       </div>
       <span className="text-TEXT-SUB text-ST4 MBI:hidden">{count}회</span>

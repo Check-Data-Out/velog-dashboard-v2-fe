@@ -7,15 +7,16 @@ import Image from 'next/image';
 import { revalidate } from '@/utils/revalidateUtil';
 import { PATHS, SCREENS } from '@/constants';
 import { Icon, NameType } from '@/components';
-import { useCustomNavigation, useResponsive } from '@/hooks';
+import { useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
 import { useModal } from '@/hooks/useModal';
 import { defaultStyle, Section, textStyle } from './Section';
 import { Modal } from '../notice/Modal';
+import { startHolyLoader } from 'holy-loader';
 
 const PARAMS = {
   MAIN: '?asc=false&sort=',
-  LEADERBOARDS: '?type=views',
+  LEADERBOARDS: '?based=user&sort=viewCount&limit=10&dateRange=30',
 };
 
 const layouts: Array<{ icon: NameType; title: string; path: string }> = [
@@ -32,7 +33,7 @@ export const Header = () => {
   const { open: ModalOpen } = useModal();
   const menu = useRef<HTMLDivElement | null>(null);
   const path = usePathname();
-  const { replace, start } = useCustomNavigation();
+  const { replace } = useRouter();
   const { replace: replaceWithoutLoading } = useRouter();
   const width = useResponsive();
   const barWidth = width < SCREENS.MBI ? 65 : 180;
@@ -43,6 +44,7 @@ export const Header = () => {
     onSuccess: async () => {
       await revalidate();
       client.clear();
+      startHolyLoader();
       replace('/');
     },
   });
@@ -107,7 +109,7 @@ export const Header = () => {
                 <button
                   className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-auto hover:bg-BG-ALT"
                   onClick={() => {
-                    start();
+                    startHolyLoader();
                     out();
                   }}
                 >

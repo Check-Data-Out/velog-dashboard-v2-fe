@@ -1,0 +1,18 @@
+import { LeaderboardListDto } from '@/types/leaderboard.type';
+import { instance } from './instance.request';
+import { PATHS } from '@/constants';
+
+export const leaderboardList = async ({
+  based,
+  sort,
+  dateRange,
+  limit,
+}: {
+  based: string;
+  sort: string;
+  dateRange: string;
+  limit: string;
+}) =>
+  await instance<null, LeaderboardListDto>(
+    `${PATHS.LEADERBOARD}/${based}?sort=${sort}&dateRange=${dateRange}&limit=${limit}`,
+  );
