@@ -80,7 +80,6 @@ export const Content = () => {
               ['지난 30일', '30'],
               ['지난 7일', '7'],
             ]}
-            disabled
             onChange={(data) => handleChange({ dateRange: data as string })}
             defaultValue="지난 30일"
           />
@@ -89,14 +88,17 @@ export const Content = () => {
 
       <div className="h-full overflow-auto flex flex-col gap-[30px] max-TBL:gap-5">
         <div className="w-full flex gap-10 max-MBI:flex-col max-MBI:gap-5">
-          <Ranker name={data[1].name} rank={2} count={data[1].value} />
-          <div className={`${width < SCREENS.MBI && 'order-first'} w-full`}>
-            <Ranker name={data[0].name} rank={1} count={data[0].value} />
-          </div>
-          <Ranker name={data[2].name} rank={3} count={data[2].value} />
+          <Ranker name={data?.[1].name || '유저 없음'} rank={2} count={data?.[1].value} />
+          <Ranker
+            name={data?.[0].name || '유저 없음'}
+            rank={1}
+            count={data?.[0].value}
+            className={width < SCREENS.MBI ? 'order-first' : ''}
+          />
+          <Ranker name={data?.[2].name || '유저 없음'} rank={3} count={data?.[2].value} />
         </div>
         <div className="w-full flex flex-wrap gap-10 max-TBL:gap-5">
-          {data.map(({ name, value }, index) =>
+          {data?.map(({ name, value }, index) =>
             index >= 3 ? <Rank name={name} key={index} count={value} rank={index + 1} /> : null,
           )}
         </div>
