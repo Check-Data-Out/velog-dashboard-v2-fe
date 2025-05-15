@@ -9,14 +9,6 @@ const KST_DIFF = 9 * 60 * 60 * 1000;
  *   iso: string;   // ISO 8601 형식 + KST 오프셋 포함 문자열
  *   full: Date;    // KST로 보정된 Date 객체
  * } | undefined} 날짜가 없으면 undefined 반환
- *
- * @example
- * convertDateToKST("2025-05-15T08:00:00Z");
- * // {
- * //   short: "2025-05-15",
- * //   iso: "2025-05-15T17:00:00+09:00",
- * //   full: Date(2025-05-15T17:00:00.000+09:00)
- * // }
  */
 
 export const convertDateToKST = (date?: string) => {
