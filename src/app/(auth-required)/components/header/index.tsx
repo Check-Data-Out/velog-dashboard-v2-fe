@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { startHolyLoader } from 'holy-loader';
 import { revalidate } from '@/utils/revalidateUtil';
 import { PATHS, SCREENS } from '@/constants';
 import { Icon, NameType } from '@/components';
@@ -12,7 +13,6 @@ import { logout, me } from '@/apis';
 import { useModal } from '@/hooks/useModal';
 import { defaultStyle, Section, textStyle } from './Section';
 import { Modal } from '../notice/Modal';
-import { startHolyLoader } from 'holy-loader';
 import { QRCode } from '../QRCode';
 
 const PARAMS = {
