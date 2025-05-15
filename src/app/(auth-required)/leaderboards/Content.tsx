@@ -1,15 +1,14 @@
 'use client';
 
-import { Dropdown, Input } from '@/components';
-
+import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { startHolyLoader } from 'holy-loader';
+import { Dropdown } from '@/components';
 import { PATHS, SCREENS } from '@/constants';
 import { useResponsive, useSearchParam } from '@/hooks';
-import { Ranker, Rank } from './components';
-import { useQuery } from '@tanstack/react-query';
 import { leaderboardList } from '@/apis/leaderboard.request';
-import { useMemo } from 'react';
 import { LeaderboardItemType } from '@/types/leaderboard.type';
-import { startHolyLoader } from 'holy-loader';
+import { Ranker, Rank } from './components';
 
 export type searchParamsType = {
   based: 'user' | 'post';
@@ -54,7 +53,7 @@ export const Content = () => {
               ['게시글 기준', 'post'],
             ]}
             onChange={(data) => handleChange({ based: data as 'user' | 'post' })}
-            defaultValue=""
+            defaultValue="사용자 기준"
           />
           <Dropdown
             options={
@@ -64,7 +63,7 @@ export const Content = () => {
               ] as const
             }
             onChange={(data) => handleChange({ sort: data as 'viewCount' | 'likeCount' })}
-            defaultValue="조회수 증가량"
+            defaultValue="조회수 증가순"
           />
         </div>
         <div className="flex items-center gap-4">
