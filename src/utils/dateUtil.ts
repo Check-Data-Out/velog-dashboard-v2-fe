@@ -12,7 +12,7 @@ export const convertDateToKST = (date?: string) => {
   const seconds = converted.getSeconds().toString().padStart(2, '0');
 
   return {
-    short: `${converted.getFullYear()}-${converted.getMonth() + 1}-${converted.getDate()}`,
+    short: `${converted.getFullYear()}-${(converted.getMonth() + 1).toString().padStart(2, '0')}-${converted.getDate().toString().padStart(2, '0')}`,
     iso: `${year}-${month}-${day}T${hours}:${minutes}:${seconds}+09:00`,
     full: converted,
   };
