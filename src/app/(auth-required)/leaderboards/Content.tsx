@@ -36,7 +36,7 @@ export const Content = () => {
         value: searchParams.sort === 'viewCount' ? item.viewDiff : item.likeDiff,
       })) || []
     );
-  }, [boards, searchParams.based]);
+  }, [boards, searchParams.based, searchParams.sort]);
 
   const handleChange = (param: Partial<searchParamsType>) => {
     startHolyLoader();
