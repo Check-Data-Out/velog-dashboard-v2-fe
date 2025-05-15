@@ -18,7 +18,7 @@ import { Dropdown, Input } from '@/components';
 import { PostDetailValue } from '@/types';
 import { useResponsive } from '@/hooks';
 import { postDetail } from '@/apis';
-import { convertDate } from '@/utils';
+import { convertDateToKST } from '@/utils';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -51,7 +51,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
     queryKey: [PATHS.DETAIL, type, id],
     queryFn: async () => await postDetail(id, type.start, type.end),
     select: ({ post }) => ({
-      labels: post.map((i) => convertDate(i.date)?.short),
+      labels: post.map((i) => convertDateToKST(i.date)?.short),
       datasets: [
         {
           label: type.type,
@@ -88,7 +88,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
               size={isMBI ? 'SMALL' : 'MEDIUM'}
               form="SMALL"
               value={type.start}
-              min={convertDate(releasedAt)?.short}
+              min={convertDateToKST(releasedAt)?.short}
               onChange={(e) => setType({ ...type, start: e.target.value })}
               placeholder="시작 날짜"
               type="date"
@@ -98,7 +98,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
               size={isMBI ? 'SMALL' : 'MEDIUM'}
               form="SMALL"
               value={type.end}
-              min={type.start ? type.start : convertDate(releasedAt)?.short}
+              min={type.start ? type.start : convertDateToKST(releasedAt)?.short}
               onChange={(e) => setType({ ...type, end: e.target.value })}
               placeholder="종료 날짜"
               type="date"

@@ -1,6 +1,7 @@
 const KST_DIFF = 9 * 60 * 60 * 1000;
 
-export const convertDate = (date?: string) => {
+/**  */
+export const convertDateToKST = (date?: string) => {
   if (date) {
     const converted = new Date(new Date(date).getTime() + KST_DIFF);
     return {

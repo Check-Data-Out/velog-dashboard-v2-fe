@@ -8,7 +8,7 @@ import { Button, Dropdown, Check } from '@/components';
 import { postList, postSummary } from '@/apis';
 import { PATHS, SORT_TYPE } from '@/constants';
 import { SortKey, SortValue } from '@/types';
-import { convertDate } from '@/utils';
+import { convertDateToKST } from '@/utils';
 import { Section, Summary } from './components';
 
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
@@ -52,7 +52,8 @@ export const Content = () => {
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">
           <span className="text-TEXT-ALT text-ST5 MBI:hidden">
             마지막 업데이트 :{' '}
-            {convertDate(summaries?.stats?.lastUpdatedDate)?.full.toISOString() || '업데이트 중..'}
+            {convertDateToKST(summaries?.stats?.lastUpdatedDate)?.full.toISOString() ||
+              '업데이트 중..'}
           </span>
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3">
@@ -61,7 +62,7 @@ export const Content = () => {
               </Button>
               <span className="text-TEXT-ALT text-ST4 max-TBL:text-ST5 max-MBI:hidden">
                 마지막 업데이트 :{' '}
-                {convertDate(summaries?.stats?.lastUpdatedDate)?.full.toISOString() ||
+                {convertDateToKST(summaries?.stats?.lastUpdatedDate)?.full.toISOString() ||
                   '업데이트 중..'}
               </span>
             </div>
