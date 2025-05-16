@@ -6,13 +6,15 @@ import Image from 'next/image';
 import { Input, Button } from '@/components';
 import { login, sampleLogin } from '@/apis';
 import { LoginVo } from '@/types';
-import { useCustomNavigation } from '@/hooks';
+
+import { startHolyLoader, stopHolyLoader } from 'holy-loader';
+import { useRouter } from 'next/navigation';
 
 const responsiveStyle =
   "flex items-center gap-5 max-MBI:before:inline-block max-MBI:before:bg-[url('/favicon.png')] max-MBI:before:[background-size:_100%_100%] max-MBI:before:w-16 max-MBI:before:h-16";
 
 export const Content = () => {
-  const { replace, start, complete } = useCustomNavigation();
+  const { replace } = useRouter();
 
   const {
     register,
@@ -21,26 +23,27 @@ export const Content = () => {
   } = useForm<LoginVo>({ mode: 'all' });
 
   const onSuccess = () => {
+    startHolyLoader();
     replace('/main?asc=false&sort=');
   };
 
   const { mutate } = useMutation({
     mutationFn: login,
     onSuccess,
-    onError: complete,
+    onError: stopHolyLoader,
   });
 
   const { mutate: sampleMutate } = useMutation({
     mutationFn: sampleLogin,
     onSuccess,
-    onError: complete,
+    onError: stopHolyLoader,
   });
 
   return (
     <main className="w-full h-full flex justify-center MBI:items-center max-MBI:p-[30px_25px]">
       <form
         onSubmit={handleSubmit((data: LoginVo) => {
-          start();
+          startHolyLoader();
           mutate(data);
         })}
         className="h-[480px] flex bg-BG-SUB rounded-[4px] max-MBI:bg-BG-MAIN max-MBI:h-fit max-MBI:w-full"
@@ -83,7 +86,7 @@ export const Content = () => {
           <span
             className="text-TEXT-ALT text-I2 max-MBI:text-ST5 after:cursor-pointer after:hover:underline after:ml-2 after:content-['체험_계정으로_로그인'] after:text-PRIMARY-MAIN after:inline-block"
             onClick={() => {
-              start();
+              startHolyLoader();
               sampleMutate();
             }}
           >

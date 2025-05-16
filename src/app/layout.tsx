@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ChannelTalkProvider, QueryProvider, ModalProvider } from '@/components';
 import { env } from '@/constants';
-import { TopBarProvider } from '@/components/Providers/TopBarProvider';
+import HolyLoader from 'holy-loader';
 
 export const BASE = 'https://velog-dashboard.kro.kr/';
 
@@ -33,12 +33,13 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="ko">
       <body className={`${NotoSansKr.className} w-full bg-BG-MAIN`}>
+        <HolyLoader speed={400} height="0.25rem" easing="linear" color="#96f2d7" />
         <ErrorBoundary>
           <QueryProvider>
             <ChannelTalkProvider>
               <ToastContainer autoClose={2000} />
               <ModalProvider />
-              <TopBarProvider />
+
               <Suspense>{children}</Suspense>
             </ChannelTalkProvider>
           </QueryProvider>
