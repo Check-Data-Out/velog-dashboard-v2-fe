@@ -62,6 +62,9 @@ importers:
       return-fetch:
         specifier: ^0.4.6
         version: 0.4.6
+      sharp:
+        specifier: ^0.34.1
+        version: 0.34.1
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.2.0
@@ -177,9 +180,6 @@ importers:
       prettier:
         specifier: ^3.3.3
         version: 3.4.2
-      sharp:
-        specifier: ^0.34.1
-        version: 0.34.1
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.17(ts-node@10.9.2(@types/node@20.17.10)(typescript@5.7.2))
@@ -4464,8 +4464,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  semver@7.7.1:
-    resolution: {integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==}
+  semver@7.7.2:
+    resolution: {integrity: sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -10251,7 +10251,7 @@ snapshots:
 
   semver@7.6.3: {}
 
-  semver@7.7.1: {}
+  semver@7.7.2: {}
 
   serialize-javascript@6.0.2:
     dependencies:
@@ -10277,7 +10277,7 @@ snapshots:
     dependencies:
       color: 4.2.3
       detect-libc: 2.0.4
-      semver: 7.7.1
+      semver: 7.7.2
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.34.1
       '@img/sharp-darwin-x64': 0.34.1
