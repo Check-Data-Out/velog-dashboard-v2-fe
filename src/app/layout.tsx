@@ -6,9 +6,9 @@ import { ErrorBoundary } from '@sentry/nextjs';
 import { ReactNode, Suspense } from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
+import HolyLoader from 'holy-loader';
 import { ChannelTalkProvider, QueryProvider, ModalProvider } from '@/components';
 import { env } from '@/constants';
-import HolyLoader from 'holy-loader';
 
 export const BASE = 'https://velog-dashboard.kro.kr/';
 

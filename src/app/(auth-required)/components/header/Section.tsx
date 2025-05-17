@@ -1,8 +1,7 @@
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { startHolyLoader } from 'holy-loader';
 import { Icon, NameType } from '@/components';
 import { COLORS } from '@/constants';
-import { useRouter } from 'next/navigation';
-import { startHolyLoader } from 'holy-loader';
 
 export const defaultStyle =
   'w-[180px] h-[65px] px-9 transition-all duration-300 shrink-0 max-MBI:w-[65px] max-MBI:px-0';
