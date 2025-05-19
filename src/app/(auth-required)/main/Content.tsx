@@ -8,7 +8,7 @@ import { Button, Dropdown, Check } from '@/components';
 import { postList, postSummary } from '@/apis';
 import { PATHS, SORT_TYPE } from '@/constants';
 import { SortKey, SortValue } from '@/types';
-import { convertDateToKST } from '@/utils';
+import { convertDateToKST } from '@/utils/dateUtil';
 import { Section, Summary } from './components';
 
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
@@ -39,7 +39,7 @@ export const Content = () => {
   });
 
   useEffect(() => {
-    if (posts && posts.pages[posts.pages?.length - 1].nextCursor !== null && inView) {
+    if (posts?.pages?.[posts.pages?.length - 1].nextCursor !== null && inView) {
       fetchNextPage();
     }
   }, [inView]);

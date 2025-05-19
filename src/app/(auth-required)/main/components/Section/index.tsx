@@ -6,7 +6,7 @@ import { COLORS, env, PATHS } from '@/constants';
 import { PostType, UserDto } from '@/types';
 import { Icon } from '@/components';
 import { getQueryClient } from '@/utils/queryUtil';
-import { convertDateToKST } from '@/utils';
+import { convertDateToKST } from '@/utils/dateUtil';
 import { Graph } from './Graph';
 
 export const Section = (p: PostType) => {
