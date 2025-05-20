@@ -75,10 +75,11 @@ export const instance = async <I, R>(
     return (data.body as unknown as SuccessType<R>).data;
   } catch (err: unknown) {
     const context = err as Response;
-    if (location && !context.ok && context.status === 401) {
-      window.location.replace('/');
+    if (!context.ok && context.status === 401) {
+      if (location) window.location.replace('/');
       return {} as never;
     }
+
     setContext('Request', {
       path: context.url,
       status: context.status,
