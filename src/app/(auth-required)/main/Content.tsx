@@ -86,7 +86,7 @@ export const Content = () => {
         </div>
         <div className="w-full h-full flex flex-col gap-[30px] relative max-TBL:gap-[20px] overflow-auto">
           {posts?.pages?.map((n) =>
-            n.posts.map((i, j) =>
+            n.posts?.map((i, j) =>
               j !== n?.posts.length - 1 ? (
                 <Section key={i.id} {...i} />
               ) : (
