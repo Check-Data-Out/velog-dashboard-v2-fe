@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { ForwardedRef, forwardRef, useState } from 'react';
 import { parseNumber } from '@/utils/numberUtil';
 import { COLORS, env, PATHS } from '@/constants';
 import { PostType, UserDto } from '@/types';
@@ -9,7 +9,7 @@ import { getQueryClient } from '@/utils/queryUtil';
 import { convertDateToKST } from '@/utils/dateUtil';
 import { Graph } from './Graph';
 
-export const Section = (p: PostType) => {
+export const Section = forwardRef<HTMLElement, PostType>((p, ref) => {
   const [open, setOpen] = useState(false);
 
   const username = (getQueryClient().getQueryData([PATHS.ME]) as Partial<UserDto>)?.username;
@@ -17,7 +17,7 @@ export const Section = (p: PostType) => {
   const url = `${env.VELOG_URL}/@${username}/${p.slug}`;
 
   return (
-    <section className="flex flex-col w-full h-fit relative">
+    <section className="flex flex-col w-full h-fit relative" ref={ref}>
       <div
         className={`p-[25px] h-fit cursor-pointer bg-BG-SUB flex justify-between items-center gap-4 ${!open ? 'rounded-[4px] max-MBI:pb-[35px_!important]' : 'rounded-t-[4px]'} max-xl:flex-col max-MBI:flex-col max-MBI:p-[20px]`}
         onClick={() => setOpen((prev) => !prev)}
@@ -74,4 +74,4 @@ export const Section = (p: PostType) => {
       {open && <Graph id={p.id} releasedAt={p.releasedAt} />}
     </section>
   );
-};
+});
