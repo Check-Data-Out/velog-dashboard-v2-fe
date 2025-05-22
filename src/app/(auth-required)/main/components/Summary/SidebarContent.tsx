@@ -18,8 +18,9 @@ export const SidebarContent = ({ title, content, increasement, prefix = '개', i
 
   return (
     <div
-      onClick={() => open(<Modal name={id} />)}
-      className="flex flex-col items-center justify-center gap-[10px] bg-BG-SUB w-[375px] hover:bg-BG-ALT cursor-pointer transition-all duration-300 p-4 rounded-[4px] h-full max-TBL:w-[280px]"
+      // onClick={() => open(<Modal name={id} />)}
+      // className="flex flex-col items-center justify-center gap-[10px] bg-BG-SUB w-[375px] hover:bg-BG-ALT cursor-pointer transition-all duration-300 p-4 rounded-[4px] h-full max-TBL:w-[280px]"
+      className="flex flex-col items-center justify-center gap-[10px] bg-BG-SUB w-[375px] duration-300 p-4 rounded-[4px] h-full max-TBL:w-[280px]"
     >
       <span className="text-TEXT-ALT text-T4 transition-all max-TBL:text-T5">{title}</span>
       <span
@@ -29,7 +30,7 @@ export const SidebarContent = ({ title, content, increasement, prefix = '개', i
       >
         {parseNumber(content) + prefix}
       </span>
-      <span className="text-TEXT-ALT text-ST5">클릭해서 통계 그래프 보기</span>
+      {/* <span className="text-TEXT-ALT text-ST5">클릭해서 통계 그래프 보기</span> */}
     </div>
   );
 };
