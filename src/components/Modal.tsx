@@ -8,10 +8,9 @@ import { Icon } from './Icon';
 interface IProp extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   children: React.ReactNode;
-  fill?: boolean;
 }
 
-export const Modal = ({ title, children, fill, ...rest }: IProp) => {
+export const Modal = ({ title, children, ...rest }: IProp) => {
   const { close } = useModal();
 
   useEffect(() => {
@@ -34,8 +33,7 @@ export const Modal = ({ title, children, fill, ...rest }: IProp) => {
         {...rest}
         ref={ref}
         className={twMerge(
-          'overflow-hidden flex flex-col gap-5 p-10 max-MBI:p-7 rounded-md bg-BG-SUB max-MBI:size-full',
-          fill ? 'size-full' : 'size-fit',
+          'overflow-hidden flex flex-col gap-5 p-10 max-MBI:p-7 rounded-md size-fit bg-BG-SUB max-MBI:size-full',
           rest.className,
         )}
       >

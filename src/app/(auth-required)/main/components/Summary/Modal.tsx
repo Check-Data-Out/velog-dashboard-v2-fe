@@ -34,10 +34,7 @@ const defaultData = {
 
 export const Modal = ({ name }: { name: keyof typeof table }) => {
   return (
-    <Layout
-      title={table[name]}
-      className="w-[1100px] max-TBL:w-[800px] max-MBI:w-[500px] transition-all overflow-hidden"
-    >
+    <Layout title={table[name]} className="w-[1100px] h-fit max-TBL:w-[800px] transition-all">
       <Line
         data={defaultData}
         options={{
