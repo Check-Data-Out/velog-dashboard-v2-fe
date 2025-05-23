@@ -1,14 +1,14 @@
 'use client';
 
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSearchParam } from '@/hooks/useSearchParam';
 import { Button, Dropdown, Check } from '@/components';
 import { postList, postSummary } from '@/apis';
 import { PATHS, SORT_TYPE } from '@/constants';
 import { SortKey, SortValue } from '@/types';
-import { convertDateToKST } from '@/utils';
+import { convertDateToKST } from '@/utils/dateUtil';
 import { Section, Summary } from './components';
 
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
@@ -22,7 +22,7 @@ export const Content = () => {
   const { ref, inView } = useInView();
 
   const { data: posts, fetchNextPage } = useInfiniteQuery({
-    queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]], // Query Key
+    queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]],
     queryFn: async ({ pageParam = '' }) =>
       await postList(
         { asc: searchParams.asc === 'true', sort: searchParams.sort || '' },
@@ -39,10 +39,16 @@ export const Content = () => {
   });
 
   useEffect(() => {
-    if (posts && posts.pages[posts.pages?.length - 1].nextCursor !== null && inView) {
-      fetchNextPage();
-    }
+    const pages = posts?.pages;
+    if (!pages?.length || !inView) return;
+
+    const hasNextCursor = pages[pages.length - 1].nextCursor !== null;
+    if (!hasNextCursor) return;
+
+    fetchNextPage();
   }, [inView]);
+
+  const joinedPosts = useMemo(() => posts?.pages.flatMap((i) => i.posts), [posts]);
 
   return (
     <div className="flex w-full h-full gap-[30px] max-MBI:flex-col max-TBL:gap-[20px] overflow-hidden">
@@ -85,18 +91,9 @@ export const Content = () => {
           </div>
         </div>
         <div className="w-full h-full flex flex-col gap-[30px] relative max-TBL:gap-[20px] overflow-auto">
-          {posts?.pages?.map((n) =>
-            n.posts.map((i, j) =>
-              j !== n?.posts.length - 1 ? (
-                <Section key={i.id} {...i} />
-              ) : (
-                <div className="relative" key={i.id}>
-                  <div ref={ref} className="absolute" />
-                  <Section {...i} />
-                </div>
-              ),
-            ),
-          )}
+          {joinedPosts?.map((item, index, array) => (
+            <Section key={item.id} ref={index === array.length - 1 ? ref : undefined} {...item} />
+          ))}
         </div>
       </div>
     </div>

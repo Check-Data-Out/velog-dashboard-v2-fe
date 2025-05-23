@@ -1,5 +1,5 @@
-import { usePathname, useRouter } from 'next/navigation';
-import { startHolyLoader } from 'holy-loader';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { Icon, NameType } from '@/components';
 import { COLORS } from '@/constants';
 
@@ -38,17 +38,10 @@ export const Section = <T extends clickType>({
   icon,
 }: PropType<T>) => {
   const currentPath = usePathname();
-  const { push } = useRouter();
 
   if (clickType === 'link') {
     return (
-      <div
-        onClick={() => {
-          startHolyLoader();
-          push(action);
-        }}
-        className={`${defaultStyle} ${navigateStyle}`}
-      >
+      <Link href={action} className={`${defaultStyle} ${navigateStyle}`}>
         <Icon
           size={25}
           color={
@@ -61,7 +54,7 @@ export const Section = <T extends clickType>({
         >
           {children}
         </span>
-      </div>
+      </Link>
     );
   }
 

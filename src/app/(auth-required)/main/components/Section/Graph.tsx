@@ -18,7 +18,7 @@ import { Dropdown, Input } from '@/components';
 import { PostDetailValue } from '@/types';
 import { useResponsive } from '@/hooks';
 import { postDetail } from '@/apis';
-import { convertDateToKST } from '@/utils';
+import { convertDateToKST } from '@/utils/dateUtil';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
