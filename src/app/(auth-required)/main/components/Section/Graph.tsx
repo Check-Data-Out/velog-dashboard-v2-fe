@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { COLORS, PATHS, SCREENS } from '@/constants';
@@ -19,7 +20,16 @@ import { PostDetailValue } from '@/types';
 import { useResponsive } from '@/hooks';
 import { postDetail } from '@/apis';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartDataLabels,
+);
 
 const datasets = {
   backgroundColor: COLORS.TEXT.MAIN,
@@ -136,7 +146,35 @@ export const Graph = ({ id, releasedAt }: IProp) => {
             maintainAspectRatio: false,
             animation: false,
             interaction: { mode: 'nearest', intersect: false },
-            plugins: { legend: { display: false } },
+            layout: {
+              padding: {
+                top: 30,
+                bottom: 10,
+                left: 10,
+                right: 10,
+              },
+            },
+
+            plugins: {
+              legend: { display: false },
+              tooltip: { enabled: false },
+              datalabels: {
+                display: true,
+                color: COLORS.TEXT.MAIN,
+                backgroundColor: COLORS.BG.MAIN,
+                borderColor: COLORS.BORDER.SUB,
+                borderWidth: 1,
+                borderRadius: 4,
+                padding: 4,
+                font: {
+                  size: 12,
+                  weight: 'normal',
+                },
+                formatter: (value: number) => value.toString(),
+                anchor: 'end',
+                align: 'top',
+              },
+            },
             scales: {
               x: { axis: 'x', grid: { color: COLORS.BORDER.SUB }, ticks: { precision: 0 } },
               y: { axis: 'y', grid: { color: COLORS.BORDER.SUB }, ticks: { precision: 0 } },
