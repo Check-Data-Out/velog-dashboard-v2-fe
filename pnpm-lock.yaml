@@ -35,6 +35,9 @@ importers:
       chartjs-plugin-datalabels:
         specifier: ^2.2.0
         version: 2.2.0(chart.js@4.4.7)
+      holy-loader:
+        specifier: ^2.3.13
+        version: 2.3.13(react@18.3.1)
       next:
         specifier: 14.2.18
         version: 14.2.18(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -62,6 +65,9 @@ importers:
       return-fetch:
         specifier: ^0.4.6
         version: 0.4.6
+      sharp:
+        specifier: ^0.34.1
+        version: 0.34.1
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.2.0
@@ -177,9 +183,6 @@ importers:
       prettier:
         specifier: ^3.3.3
         version: 3.4.2
-      sharp:
-        specifier: ^0.34.1
-        version: 0.34.1
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.17(ts-node@10.9.2(@types/node@20.17.10)(typescript@5.7.2))
@@ -3240,6 +3243,11 @@ packages:
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
+  holy-loader@2.3.13:
+    resolution: {integrity: sha512-SnQ06sfMgbhiRGkHZ0RFMbexSpZN3i6tgItt3q8GWNba3mOdsq1RNJXkoqsWkqPIAmyroj2/xIOHu1hCFnjkBQ==}
+    peerDependencies:
+      react: '>= 16.0.0'
+
   html-encoding-sniffer@3.0.0:
     resolution: {integrity: sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==}
     engines: {node: '>=12'}
@@ -4464,8 +4472,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  semver@7.7.1:
-    resolution: {integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==}
+  semver@7.7.2:
+    resolution: {integrity: sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -8837,6 +8845,10 @@ snapshots:
     dependencies:
       react-is: 16.13.1
 
+  holy-loader@2.3.13(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+
   html-encoding-sniffer@3.0.0:
     dependencies:
       whatwg-encoding: 2.0.0
@@ -10251,7 +10263,7 @@ snapshots:
 
   semver@7.6.3: {}
 
-  semver@7.7.1: {}
+  semver@7.7.2: {}
 
   serialize-javascript@6.0.2:
     dependencies:
@@ -10277,7 +10289,7 @@ snapshots:
     dependencies:
       color: 4.2.3
       detect-libc: 2.0.4
-      semver: 7.7.1
+      semver: 7.7.2
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.34.1
       '@img/sharp-darwin-x64': 0.34.1

@@ -1,43 +1,107 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { startHolyLoader } from 'holy-loader';
 import { Dropdown } from '@/components';
-
-import { SCREENS } from '@/constants';
+import { PATHS, SCREENS } from '@/constants';
 import { useResponsive, useSearchParam } from '@/hooks';
+import { leaderboardList } from '@/apis/leaderboard.request';
+import { LeaderboardItemType } from '@/types/leaderboard.type';
 import { Ranker, Rank } from './components';
 
-const data = [
-  { rank: 1, name: '정현우', count: 1235 },
-  { rank: 2, name: '최하온', count: 1234 },
-  { rank: 3, name: '이하준', count: 1233 },
-  { rank: 4, name: '육기준', count: 1232 },
-  { rank: 5, name: '칠기준', count: 1231 },
-  { rank: 6, name: '팔기준', count: 1230 },
-];
+export type searchParamsType = {
+  based: 'user' | 'post';
+  sort: 'viewCount' | 'likeCount';
+  limit: string;
+  dateRange: string;
+};
 
 export const Content = () => {
   const width = useResponsive();
-  const [, setSearchParams] = useSearchParam();
+  const [searchParams, setSearchParams] = useSearchParam<searchParamsType>();
+
+  const { data: boards } = useQuery({
+    queryKey: [PATHS.LEADERBOARD, searchParams],
+    queryFn: async () => await leaderboardList(searchParams),
+  });
+
+  const data = useMemo(() => {
+    const value = (
+      searchParams.based === 'user' ? boards?.users : boards?.posts
+    ) as LeaderboardItemType[];
+    return (
+      value.map((item) => ({
+        name: searchParams.based === 'user' ? item.email.split('@')[0] : item.title,
+        value: searchParams.sort === 'viewCount' ? item.viewDiff : item.likeDiff,
+      })) || []
+    );
+  }, [boards, searchParams.based, searchParams.sort]);
+
+  const handleChange = (param: Partial<searchParamsType>) => {
+    startHolyLoader();
+    setSearchParams(param);
+  };
 
   return (
-    <div className="flex w-full h-full flex-col gap-[30px] overflow-auto items-center max-TBL:gap-5">
-      <Dropdown
-        options={[
-          ['조회수', 'views'],
-          ['좋아요', 'likes'],
-        ]}
-        onChange={(data) => setSearchParams({ type: data as string })}
-        defaultValue={'조회수'}
-      />
-      <div className="w-full flex gap-10 max-MBI:flex-col max-MBI:gap-5">
-        <Ranker name="최하온" rank={2} count={1234} />
-        <div className={`${width < SCREENS.MBI && 'order-first'} w-full`}>
-          <Ranker name="정현우" rank={1} count={1235} />
+    <div className="flex w-full h-full flex-col gap-[30px] overflow-hidden items-center max-TBL:gap-5">
+      <div className="flex items-center gap-4 flex-wrap justify-center">
+        <div className="flex items-center gap-4">
+          <Dropdown
+            options={[
+              ['사용자 기준', 'user'],
+              ['게시글 기준', 'post'],
+            ]}
+            onChange={(data) => handleChange({ based: data as 'user' | 'post' })}
+            defaultValue="사용자 기준"
+          />
+          <Dropdown
+            options={
+              [
+                ['조회수 증가순', 'viewCount'],
+                ['좋아요 증가순', 'likeCount'],
+              ] as const
+            }
+            onChange={(data) => handleChange({ sort: data as 'viewCount' | 'likeCount' })}
+            defaultValue="조회수 증가순"
+          />
         </div>
-        <Ranker name="이호준" rank={3} count={1233} />
+        <div className="flex items-center gap-4">
+          <Dropdown
+            options={[
+              ['10위까지', '10'],
+              ['30위까지', '30'],
+            ]}
+            onChange={(data) => handleChange({ limit: data as string })}
+            defaultValue={`${searchParams.limit}위까지`}
+          />
+          <Dropdown
+            options={[
+              ['지난 30일', '30'],
+              ['지난 7일', '7'],
+            ]}
+            onChange={(data) => handleChange({ dateRange: data as string })}
+            defaultValue="지난 30일"
+          />
+        </div>
       </div>
-      <div className="w-full flex flex-wrap gap-10 max-TBL:gap-5">
-        {data?.map((i) => (i.rank > 3 ? <Rank key={i.rank} {...i} /> : null))}
+
+      <div className="h-full overflow-auto flex flex-col gap-[30px] max-TBL:gap-5">
+        <div className="w-full flex gap-10 max-MBI:flex-col max-MBI:gap-5">
+          <Ranker name={data?.[1].name || '유저 없음'} rank={2} count={data?.[1].value} />
+          <Ranker
+            name={data?.[0].name || '유저 없음'}
+            rank={1}
+            count={data?.[0].value}
+            className={width < SCREENS.MBI ? 'order-first' : ''}
+          />
+          <Ranker name={data?.[2].name || '유저 없음'} rank={3} count={data?.[2].value} />
+        </div>
+        <div className="w-full flex flex-wrap gap-10 max-TBL:gap-5">
+          {data?.map(({ name, value }, index) =>
+            index >= 3 ? <Rank name={name} key={index} count={value} rank={index + 1} /> : null,
+          )}
+        </div>
       </div>
     </div>
   );

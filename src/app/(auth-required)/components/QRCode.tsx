@@ -13,20 +13,22 @@ export const QRCode = () => {
   const { data, isSuccess } = useQuery({ queryKey: [PATHS.QRLOGIN], queryFn: createQRToken });
 
   return (
-    <Layout title="QR 로그인" className="w-fit h-fit">
-      {isSuccess ? (
-        <QRCodeSVG
-          value={`${env.BASE_URL}/api/qr-login?token=${data.token}`}
-          width={width < SCREENS.MBI ? 140 : 181}
-          height={width < SCREENS.MBI ? 140 : 181}
-          enableBackground={0}
-          bgColor={COLORS.BG.SUB}
-          fgColor={COLORS.TEXT.MAIN}
-          className="transition-all"
-        />
-      ) : (
-        <div className="size-[180px] max-MBI:size-[140px] bg-BG-ALT" />
-      )}
+    <Layout title="QR 로그인">
+      <div className="size-full flex items-center justify-center">
+        {isSuccess ? (
+          <QRCodeSVG
+            value={`${env.BASE_URL}/api/qr-login?token=${data.token}`}
+            width={width < SCREENS.MBI ? 140 : 181}
+            height={width < SCREENS.MBI ? 140 : 181}
+            enableBackground={0}
+            bgColor={COLORS.BG.SUB}
+            fgColor={COLORS.TEXT.MAIN}
+            className="transition-all"
+          />
+        ) : (
+          <div className="size-[180px] max-MBI:size-[140px] bg-BG-ALT" />
+        )}
+      </div>
     </Layout>
   );
 };

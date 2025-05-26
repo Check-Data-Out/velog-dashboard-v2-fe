@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { notiList } from '@/apis';
 import { PATHS } from '@/constants';
 import { useModal } from '@/hooks/useModal';
+import { convertDateToKST } from '@/utils/dateUtil';
 import { Modal } from './Modal';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
@@ -19,9 +20,11 @@ export const Notice = () => {
 
   useEffect(() => {
     try {
-      if (!data?.posts[0]) return;
+      if (!data?.posts?.length) return;
 
-      const lastUpdated = new Date(data?.posts[0].created_at?.split('T')[0] as string).getTime();
+      const lastUpdated = new Date(
+        convertDateToKST(data?.posts[0].created_at)?.short as string,
+      ).getTime();
       const daysSinceUpdate = Math.ceil((new Date().getTime() - lastUpdated) / DAY_IN_MS);
 
       if (daysSinceUpdate > RECENT_POST_THRESHOLD_DAYS) return;
