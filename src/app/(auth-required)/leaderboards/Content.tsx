@@ -6,8 +6,8 @@ import { startHolyLoader } from 'holy-loader';
 import { Dropdown } from '@/components';
 import { PATHS } from '@/constants';
 import { useSearchParam } from '@/hooks';
-import { leaderboardList } from '@/apis/leaderboard.request';
-import { LeaderboardItemType } from '@/types/leaderboard.type';
+import { leaderboardList } from '@/apis';
+import { LeaderboardItemType } from '@/types';
 import { Rank } from './Rank';
 
 export type searchParamsType = {

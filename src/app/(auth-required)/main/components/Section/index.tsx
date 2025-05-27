@@ -1,10 +1,10 @@
 'use client';
 
-import { ForwardedRef, forwardRef, useState } from 'react';
-import { parseNumber } from '@/utils/numberUtil';
+import { forwardRef, useState } from 'react';
 import { COLORS, env, PATHS } from '@/constants';
 import { PostType, UserDto } from '@/types';
 import { Icon } from '@/components';
+import { parseNumber } from '@/utils/numberUtil';
 import { getQueryClient } from '@/utils/queryUtil';
 import { convertDateToKST } from '@/utils/dateUtil';
 import { Graph } from './Graph';

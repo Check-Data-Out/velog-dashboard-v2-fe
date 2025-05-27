@@ -10,7 +10,7 @@ import { PATHS, SCREENS } from '@/constants';
 import { Icon, NameType } from '@/components';
 import { useResponsive } from '@/hooks';
 import { logout, me } from '@/apis';
-import { useModal } from '@/hooks/useModal';
+import { useModal } from '@/hooks';
 import { defaultStyle, Section, textStyle } from './Section';
 import { Modal } from '../notice/Modal';
 import { QRCode } from '../QRCode';

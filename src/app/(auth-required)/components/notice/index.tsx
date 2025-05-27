@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { notiList } from '@/apis';
 import { PATHS } from '@/constants';
-import { useModal } from '@/hooks/useModal';
+import { useModal } from '@/hooks';
 import { convertDateToKST } from '@/utils/dateUtil';
 import { Modal } from './Modal';
 
