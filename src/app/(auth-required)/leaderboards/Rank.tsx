@@ -15,7 +15,7 @@ export const Rank = ({ name, rank, count, suffix = '회' }: IProp) => {
     <div
       className={twMerge(
         'min-w-[40%] w-full p-[25px] bg-BG-SUB rounded-[4px] gap-3 justify-between flex',
-        rank - 1 <= 2 ? `border-2 ${colorTable[rank - 1]}` : 'border-0',
+        rank > 3 ? 'border-0' : `border-2 ${colorTable[rank - 1]}`,
       )}
     >
       <span
