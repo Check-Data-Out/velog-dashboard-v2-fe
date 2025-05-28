@@ -20,5 +20,5 @@ export const env = (() => {
     });
   }
 
-  return env;
+  return env as Record<keyof typeof env, string>;
 })();
