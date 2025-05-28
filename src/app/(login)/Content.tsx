@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Input, Button, Icon } from '@/components';
 import { login, sampleLogin } from '@/apis';
 import { LoginVo } from '@/types';
-import { COLORS } from '@/constants';
+import { COLORS, env } from '@/constants';
 
 const responsiveStyle =
   "flex items-center gap-5 max-MBI:before:inline-block max-MBI:before:bg-[url('/favicon.png')] max-MBI:before:[background-size:_100%_100%] max-MBI:before:w-16 max-MBI:before:h-16";
@@ -97,7 +97,7 @@ export const Content = () => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://app.arcade.software/share/8LEqkpUQfEK0p0QpQDLF"
+              href={env.ARCADE_URL}
               className="flex gap-2 items-center text-I2 max-MBI:text-ST5 text-PRIMARY-MAIN hover:border-b hover:-mb-[1px] border-b-PRIMARY-MAIN cursor-pointer"
             >
               <Icon name="Video" color={COLORS.PRIMARY.MAIN} size={18} />
