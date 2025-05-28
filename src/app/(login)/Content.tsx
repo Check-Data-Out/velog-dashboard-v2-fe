@@ -96,6 +96,7 @@ export const Content = () => {
             </button>
             <a
               target="_blank"
+              rel="noopener noreferrer"
               href="https://app.arcade.software/share/8LEqkpUQfEK0p0QpQDLF"
               className="flex gap-2 items-center text-I2 max-MBI:text-ST5 text-PRIMARY-MAIN hover:border-b hover:-mb-[1px] border-b-PRIMARY-MAIN cursor-pointer"
             >
