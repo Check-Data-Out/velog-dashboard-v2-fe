@@ -59,7 +59,7 @@ export const Modal = ({ name }: { name: keyof typeof table }) => {
   return (
     <Layout
       title={table[name]}
-      className="w-[1100px] max-TBL:w-[800px] max-MBI:w-[500px] transition-all overflow-hidden"
+      className="w-[1000px] max-w-full max-TBL:w-[700px] max-MBI:w-full transition-all overflow-hidden"
     >
       <Line
         data={defaultData}
