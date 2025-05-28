@@ -3,7 +3,7 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useSearchParam } from '@/hooks/useSearchParam';
+import { useSearchParam } from '@/hooks';
 import { Button, Dropdown, Check } from '@/components';
 import { postList, postSummary } from '@/apis';
 import { PATHS, SORT_TYPE } from '@/constants';
