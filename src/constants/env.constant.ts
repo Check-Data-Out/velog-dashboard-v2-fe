@@ -11,6 +11,7 @@ export const env = (() => {
     GA_ID: process.env.NEXT_PUBLIC_GA_ID,
     SENTRY_AUTH_TOKEN: process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN,
     SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    ARCADE_URL: process.env.NEXT_PUBLIC_ARCADE_URL,
   } as const;
 
   if (env.NODE_ENV) {
@@ -19,5 +20,5 @@ export const env = (() => {
     });
   }
 
-  return env as Record<string, string>;
+  return env as Record<keyof typeof env, string>;
 })();

@@ -3,8 +3,7 @@ import { ReactElement } from 'react';
 import { getQueryClient } from '@/utils/queryUtil';
 import { PATHS } from '@/constants';
 import { me, notiList } from '@/apis';
-import { Notice } from './components/notice';
-import { Header } from './components/header';
+import { Notice, Header } from './components';
 
 interface IProp {
   children: ReactElement;

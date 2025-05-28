@@ -5,9 +5,10 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { startHolyLoader, stopHolyLoader } from 'holy-loader';
 import { useRouter } from 'next/navigation';
-import { Input, Button } from '@/components';
+import { Input, Button, Icon } from '@/components';
 import { login, sampleLogin } from '@/apis';
 import { LoginVo } from '@/types';
+import { COLORS, env } from '@/constants';
 
 const responsiveStyle =
   "flex items-center gap-5 max-MBI:before:inline-block max-MBI:before:bg-[url('/favicon.png')] max-MBI:before:[background-size:_100%_100%] max-MBI:before:w-16 max-MBI:before:h-16";
@@ -82,15 +83,27 @@ export const Content = () => {
           >
             로그인
           </Button>
-          <span
-            className="text-TEXT-ALT text-I2 max-MBI:text-ST5 after:cursor-pointer after:hover:underline after:ml-2 after:content-['체험_계정으로_로그인'] after:text-PRIMARY-MAIN after:inline-block"
-            onClick={() => {
-              startHolyLoader();
-              sampleMutate();
-            }}
-          >
-            서비스를 체험해보고 싶다면?
-          </span>
+          <div className="w-[400px] justify-center flex items-center gap-10">
+            <button
+              className="flex gap-2 items-center hover:border-b hover:-mb-[1px] border-b-PRIMARY-MAIN cursor-pointer"
+              onClick={() => {
+                startHolyLoader();
+                sampleMutate();
+              }}
+            >
+              <Icon name="Door" color={COLORS.PRIMARY.MAIN} size={18} />
+              <span className="text-I2 max-MBI:text-ST5 text-PRIMARY-MAIN">체험 계정 로그인 →</span>
+            </button>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={env.ARCADE_URL}
+              className="flex gap-2 items-center text-I2 max-MBI:text-ST5 text-PRIMARY-MAIN hover:border-b hover:-mb-[1px] border-b-PRIMARY-MAIN cursor-pointer"
+            >
+              <Icon name="Video" color={COLORS.PRIMARY.MAIN} size={18} />
+              <span className="text-I2 max-MBI:text-ST5 text-PRIMARY-MAIN">서비스 사용법 →</span>
+            </a>
+          </div>
         </div>
       </form>
     </main>

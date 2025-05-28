@@ -4,11 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { startHolyLoader } from 'holy-loader';
 import { Dropdown } from '@/components';
-import { PATHS, SCREENS } from '@/constants';
-import { useResponsive, useSearchParam } from '@/hooks';
-import { leaderboardList } from '@/apis/leaderboard.request';
-import { LeaderboardItemType } from '@/types/leaderboard.type';
-import { Ranker, Rank } from './components';
+import { PATHS } from '@/constants';
+import { useSearchParam } from '@/hooks';
+import { leaderboardList } from '@/apis';
+import { LeaderboardItemType } from '@/types';
+import { Rank } from './Rank';
 
 export type searchParamsType = {
   based: 'user' | 'post';
@@ -18,7 +18,6 @@ export type searchParamsType = {
 };
 
 export const Content = () => {
-  const width = useResponsive();
   const [searchParams, setSearchParams] = useSearchParam<searchParamsType>();
 
   const { data: boards } = useQuery({
@@ -86,22 +85,10 @@ export const Content = () => {
         </div>
       </div>
 
-      <div className="h-full overflow-auto flex flex-col gap-[30px] max-TBL:gap-5">
-        <div className="w-full flex gap-10 max-MBI:flex-col max-MBI:gap-5">
-          <Ranker name={data?.[1].name || '유저 없음'} rank={2} count={data?.[1].value} />
-          <Ranker
-            name={data?.[0].name || '유저 없음'}
-            rank={1}
-            count={data?.[0].value}
-            className={width < SCREENS.MBI ? 'order-first' : ''}
-          />
-          <Ranker name={data?.[2].name || '유저 없음'} rank={3} count={data?.[2].value} />
-        </div>
-        <div className="w-full flex flex-wrap gap-10 max-TBL:gap-5">
-          {data?.map(({ name, value }, index) =>
-            index >= 3 ? <Rank name={name} key={index} count={value} rank={index + 1} /> : null,
-          )}
-        </div>
+      <div className="w-full flex flex-wrap gap-5 overflow-auto">
+        {data?.map(({ name, value }, index) => (
+          <Rank name={name} key={index} count={value} rank={index + 1} />
+        ))}
       </div>
     </div>
   );

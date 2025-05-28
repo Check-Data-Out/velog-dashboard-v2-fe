@@ -1,6 +1,7 @@
-import { useModal } from '@/hooks';
+// import { useModal } from '@/hooks';
 import { parseNumber } from '@/utils/numberUtil';
-import { Modal, table } from './Modal';
+// import { Modal, table } from './Modal';
+import { table } from './Modal';
 
 interface IProp {
   title: string;
@@ -14,7 +15,7 @@ const afterContent =
   'after:text-PRIMARY-SUB after:content-[attr(data-increasement)_"↑"] after:ml-2 after:text-ST3 max-TBL:after:text-ST4 transition-all';
 
 export const SidebarContent = ({ title, content, increasement, prefix = '개', id }: IProp) => {
-  const { open } = useModal();
+  // const { open } = useModal();
 
   return (
     <div
