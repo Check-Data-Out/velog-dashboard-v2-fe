@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
-import { renderWithQueryClient } from '@/utils';
+import { renderWithQueryClient } from '@/utils/componentUtil';
 import { Content } from '@/app/(auth-required)/main/Content';
-import { Header } from '@/components';
+import { Header } from '@/app/(auth-required)/components/header';
 
 jest.mock('next/navigation', () => ({
   useSearchParams: () => ({
