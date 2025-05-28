@@ -5,3 +5,5 @@ export { default as Like } from './Like.svg';
 export { default as Shortcut } from './Shortcut.svg';
 export { default as Close } from './Close.svg';
 export { default as Loudspeaker } from './Loudspeaker.svg';
+export { default as Door } from './Door.svg';
+export { default as Video } from './Video.svg';
