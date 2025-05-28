@@ -1,6 +1,29 @@
 import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Modal as Layout } from '@/components';
 import { COLORS } from '@/constants';
+import { graphOptions } from '@/constants/graph.constant';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartDataLabels,
+);
 
 export const table = {
   totalViews: '전체 조회수 통계',
@@ -34,20 +57,13 @@ const defaultData = {
 
 export const Modal = ({ name }: { name: keyof typeof table }) => {
   return (
-    <Layout title={table[name]} className="w-[1100px] h-fit max-TBL:w-[800px] transition-all">
+    <Layout
+      title={table[name]}
+      className="w-[1000px] max-w-full max-TBL:w-[700px] max-MBI:w-full transition-all overflow-hidden"
+    >
       <Line
         data={defaultData}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: false,
-          interaction: { mode: 'nearest', intersect: false },
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { axis: 'x', grid: { color: COLORS.BORDER.SUB }, ticks: { precision: 0 } },
-            y: { axis: 'y', grid: { color: COLORS.BORDER.SUB }, ticks: { precision: 0 } },
-          },
-        }}
+        options={graphOptions}
         className="w-full h-[auto_!important] max-h-[300px]"
       />
     </Layout>

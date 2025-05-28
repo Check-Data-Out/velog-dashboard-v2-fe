@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { COLORS, PATHS, SCREENS } from '@/constants';
@@ -19,8 +20,18 @@ import { PostDetailValue } from '@/types';
 import { useResponsive } from '@/hooks';
 import { postDetail } from '@/apis';
 import { convertDateToKST } from '@/utils/dateUtil';
+import { graphOptions } from '@/constants/graph.constant';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartDataLabels,
+);
 
 const datasets = {
   backgroundColor: COLORS.TEXT.MAIN,
@@ -132,17 +143,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
         )}
         <Line
           data={datas || defaultData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: false,
-            interaction: { mode: 'nearest', intersect: false },
-            plugins: { legend: { display: false } },
-            scales: {
-              x: { axis: 'x', grid: { color: COLORS.BORDER.SUB }, ticks: { precision: 0 } },
-              y: { axis: 'y', grid: { color: COLORS.BORDER.SUB }, ticks: { precision: 0 } },
-            },
-          }}
+          options={graphOptions}
           className="w-[100%_!important] h-[auto_!important] max-h-[300px]"
         />
       </div>
