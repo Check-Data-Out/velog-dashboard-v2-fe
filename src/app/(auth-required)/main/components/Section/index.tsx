@@ -75,3 +75,5 @@ export const Section = forwardRef<HTMLElement, PostType>((p, ref) => {
     </section>
   );
 });
+
+Section.displayName = 'Section';
