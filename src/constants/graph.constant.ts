@@ -7,10 +7,10 @@ export const graphOptions = {
   interaction: { mode: 'nearest', intersect: false },
   layout: {
     padding: {
-      top: 30,
+      top: 40,
       bottom: 10,
-      left: 10,
-      right: 10,
+      left: 15,
+      right: 15,
     },
   },
   plugins: {
