@@ -1,13 +1,14 @@
 import { useModal } from '@/hooks';
 import { parseNumber } from '@/utils/numberUtil';
-import { Modal, table } from './Modal';
+import { SidebarIdType } from '@/constants';
+import { Modal } from './Modal';
 
 interface IProp {
   title: string;
   content: number;
   increasement?: number;
   prefix?: string;
-  id: keyof typeof table;
+  id: SidebarIdType;
 }
 
 const afterContent =

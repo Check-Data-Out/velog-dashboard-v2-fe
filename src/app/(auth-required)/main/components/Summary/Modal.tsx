@@ -12,7 +12,7 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useQuery } from '@tanstack/react-query';
 import { Modal as Layout } from '@/components';
-import { COLORS, PATHS } from '@/constants';
+import { COLORS, PATHS, sidebarId, SidebarIdType } from '@/constants';
 import { graphOptions } from '@/constants/graph.constant';
 import { totalStats } from '@/apis/dashboard.request';
 import { convertDateToKST } from '@/utils/dateUtil';
@@ -27,12 +27,6 @@ ChartJS.register(
   Legend,
   ChartDataLabels,
 );
-
-export const table = {
-  view: '전체 조회수 통계',
-  like: '전체 좋아요 통계',
-  post: '총 게시글 통계',
-};
 
 const datasets = {
   backgroundColor: COLORS.TEXT.MAIN,
@@ -50,7 +44,7 @@ const defaultData = {
   ],
 };
 
-export const Modal = ({ name }: { name: keyof typeof table }) => {
+export const Modal = ({ name }: { name: SidebarIdType }) => {
   const { data } = useQuery({
     queryKey: [PATHS.TOTALSTATS, name],
     queryFn: async () => await totalStats(name),
@@ -62,7 +56,7 @@ export const Modal = ({ name }: { name: keyof typeof table }) => {
 
   return (
     <Layout
-      title={table[name]}
+      title={sidebarId[name]}
       className="w-[1000px] max-w-full gap-1 max-TBL:w-[700px] max-MBI:w-full transition-all overflow-hidden"
     >
       <Line
