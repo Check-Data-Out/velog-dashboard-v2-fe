@@ -10,9 +10,12 @@ import {
   Legend,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { useQuery } from '@tanstack/react-query';
 import { Modal as Layout } from '@/components';
-import { COLORS } from '@/constants';
+import { COLORS, PATHS } from '@/constants';
 import { graphOptions } from '@/constants/graph.constant';
+import { totalStats } from '@/apis/dashboard.request';
+import { convertDateToKST } from '@/utils/dateUtil';
 
 ChartJS.register(
   CategoryScale,
@@ -26,9 +29,9 @@ ChartJS.register(
 );
 
 export const table = {
-  totalViews: '전체 조회수 통계',
-  totalLikes: '전체 좋아요 통계',
-  totalPosts: '총 게시글 통계',
+  view: '전체 조회수 통계',
+  like: '전체 좋아요 통계',
+  post: '총 게시글 통계',
 };
 
 const datasets = {
@@ -37,35 +40,39 @@ const datasets = {
 };
 
 const defaultData = {
-  labels: [
-    '2025-03-01',
-    '2025-03-02',
-    '2025-03-03',
-    '2025-03-04',
-    '2025-03-05',
-    '2025-03-06',
-    '2025-03-07',
-  ],
+  labels: [],
   datasets: [
     {
-      label: 'Temp',
-      data: [10, 11, 14, 23, 36, 50, 79],
+      label: 'default',
+      data: [],
       ...datasets,
     },
   ],
 };
 
 export const Modal = ({ name }: { name: keyof typeof table }) => {
+  const { data } = useQuery({
+    queryKey: [PATHS.TOTALSTATS, name],
+    queryFn: async () => await totalStats(name),
+    select: (res) => ({
+      labels: res.map((i) => convertDateToKST(i.date)?.short),
+      datasets: [{ label: name, data: res.map((i) => i.value), ...datasets }],
+    }),
+  });
+
   return (
     <Layout
       title={table[name]}
-      className="w-[1000px] max-w-full max-TBL:w-[700px] max-MBI:w-full transition-all overflow-hidden"
+      className="w-[1000px] max-w-full gap-1 max-TBL:w-[700px] max-MBI:w-full transition-all overflow-hidden"
     >
       <Line
-        data={defaultData}
+        data={data || defaultData}
         options={graphOptions}
         className="w-full h-[auto_!important] max-h-[300px]"
       />
+      <span className="text-ST5 self-end text-PRIMARY-MAIN">
+        * 7일 전까지의 데이터만 표시됩니다
+      </span>
     </Layout>
   );
 };
