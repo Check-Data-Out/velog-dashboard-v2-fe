@@ -1,5 +1,6 @@
-import { PostDetailDto, PostListDto, PostSummaryDto } from '@/types';
-import { PATHS } from '@/constants';
+import { PostDetailDto, PostListDto, PostSummaryDto, TotalStatsDto } from '@/types';
+import { PATHS, SidebarIdType } from '@/constants';
+
 import { instance } from './instance.request';
 
 type SortType = {
@@ -18,3 +19,6 @@ export const postSummary = async () => await instance<null, PostSummaryDto>(PATH
 
 export const postDetail = async (path: string, start: string, end: string) =>
   await instance<null, PostDetailDto>(`${PATHS.DETAIL}/${path}?start=${start}&end=${end}`);
+
+export const totalStats = async (type: SidebarIdType, period: number = 7) =>
+  await instance<null, TotalStatsDto>(`${PATHS.TOTALSTATS}?period=${period}&type=${type}`);

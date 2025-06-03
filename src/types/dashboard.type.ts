@@ -35,3 +35,5 @@ export type PostDetailValue = {
 export type PostDetailDto = {
   post: PostDetailValue[];
 };
+
+export type TotalStatsDto = Array<{ date: string; value: number }>;

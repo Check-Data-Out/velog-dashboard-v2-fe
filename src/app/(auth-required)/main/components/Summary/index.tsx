@@ -20,15 +20,15 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
           content={stats?.totalViews}
           prefix="회"
           increasement={stats?.totalViews - stats?.yesterdayViews}
-          id="totalViews"
+          id="view"
         />
         <SidebarContent
           title="전체 좋아요 수"
           content={stats?.totalLikes}
           increasement={stats?.totalLikes - stats?.yesterdayLikes}
-          id="totalLikes"
+          id="like"
         />
-        <SidebarContent title="총 게시글 수" content={totalPostCount} id="totalPosts" />
+        <SidebarContent title="총 게시글 수" content={totalPostCount} id="post" />
       </aside>
       <section
         className={`flex flex-col w-full px-5 bg-BG-SUB rounded-[4px] cursor-pointer MBI:hidden`}
@@ -45,15 +45,13 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
               content={stats?.totalViews}
               prefix="회"
               increasement={stats?.totalViews - stats?.yesterdayViews}
-              id="totalViews"
             />
             <BarContent
               title="전체 좋아요 수"
               content={stats?.totalLikes}
               increasement={stats?.totalLikes - stats?.yesterdayLikes}
-              id="totalLikes"
             />
-            <BarContent title="총 게시글 수" content={totalPostCount} id="totalPosts" />
+            <BarContent title="총 게시글 수" content={totalPostCount} />
           </div>
         )}
       </section>

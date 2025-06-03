@@ -10,5 +10,6 @@ export const PATHS = {
   ME: '/me',
   LOGOUT: '/logout',
   DETAIL: '/post',
+  TOTALSTATS: '/total-stats',
   LEADERBOARD: '/leaderboard',
 };
