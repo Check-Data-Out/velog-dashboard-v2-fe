@@ -12,7 +12,7 @@ import { useResponsive, useModal } from '@/hooks';
 import { logout, me } from '@/apis';
 import { defaultStyle, Section, textStyle } from './Section';
 import { Modal } from '../notice/Modal';
-import { QRCode } from '../QRCode';
+import { QRCode } from '../qrcode';
 
 const PARAMS = {
   MAIN: '?asc=false&sort=',

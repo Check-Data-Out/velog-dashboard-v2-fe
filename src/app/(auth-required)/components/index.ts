@@ -1,3 +1,3 @@
 export * from './header';
 export * from './notice';
-export * from './QRCode';
+export * from './qrcode';
