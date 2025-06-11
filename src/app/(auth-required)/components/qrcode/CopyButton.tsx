@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const ROLLBACK_AFTER_CLICK_MS = 1000;
 
@@ -10,6 +10,12 @@ interface IProp {
 export const CopyButton = ({ url, disabled }: IProp) => {
   const [clicked, setClicked] = useState(false);
   const clickedRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (clickedRef.current) clearTimeout(clickedRef.current);
+    };
+  }, []);
 
   const handleClick = async () => {
     if (clicked || !url) return;

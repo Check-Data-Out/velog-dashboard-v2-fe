@@ -37,7 +37,7 @@ export const QRCode = () => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isLoading, timeLeft]);
+  }, [isLoading]);
 
   return (
     <Layout title="QR 로그인">
