@@ -43,7 +43,11 @@ export const QRCode = () => {
     <Layout title="QR 로그인">
       <div className="flex items-center justify-center gap-10">
         <div
-          className={`relative ${isExpired || isLoading ? `after:inset-0 ${isLoading ? 'after:content-["로딩중"]' : 'after:content-["만료됨"]'} after:absolute after:m-auto after:bg-BG-MAIN after:size-fit after:text-TEXT-MAIN after:px-3 after:py-1 after:rounded-lg after:font-medium` : ''}`}
+          className={
+            isExpired || isLoading
+              ? `relative after:inset-0 after:absolute after:m-auto after:bg-BG-MAIN after:size-fit after:text-TEXT-MAIN after:px-3 after:py-1 after:rounded-lg after:font-medium ${isLoading ? 'after:content-["로딩중"]' : 'after:content-["만료됨"]'}`
+              : ''
+          }
         >
           <QRCodeSVG
             value={url}
