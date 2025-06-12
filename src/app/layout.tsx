@@ -9,6 +9,7 @@ import './globals.css';
 import HolyLoader from 'holy-loader';
 import { ChannelTalkProvider, QueryProvider, ModalProvider } from '@/components';
 import { env } from '@/constants';
+import { TermsOfService } from './TermsOfService';
 
 export const BASE = 'https://velog-dashboard.kro.kr/';
 
@@ -39,8 +40,10 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <ChannelTalkProvider>
               <ToastContainer autoClose={2000} />
               <ModalProvider />
-
-              <Suspense>{children}</Suspense>
+              <Suspense>
+                {children}
+                <TermsOfService />
+              </Suspense>
             </ChannelTalkProvider>
           </QueryProvider>
         </ErrorBoundary>
