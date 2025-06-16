@@ -1,9 +1,10 @@
 import { ForwardedRef, forwardRef } from 'react';
-import { SIZES, SizeType } from '@/constants';
+import { twMerge } from 'tailwind-merge';
+import { SIZES } from '@/constants';
 
 interface IProp extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   form?: keyof typeof FORMS;
-  size: SizeType;
+  size: keyof typeof SIZES;
 }
 
 const FORMS = {
@@ -17,7 +18,12 @@ export const Input = forwardRef<HTMLInputElement, IProp>(
       {...rest}
       ref={ref}
       data-placeholder={rest?.placeholder}
-      className={`bg-BG-SUB border-BORDER-SUB text-I2 shrink-0 text-TEXT-MAIN border-[1px] ${FORMS[form]} ${SIZES[size]} ${rest.className} disabled:cursor-pointer placeholder:text-TEXT-ALT max-TBL:text-I4`}
+      className={twMerge(
+        'bg-BG-SUB border-BORDER-SUB text-I2 shrink-0 text-TEXT-MAIN border-[1px] disabled:cursor-pointer placeholder:text-TEXT-ALT max-TBL:text-I4',
+        FORMS[form],
+        SIZES[size],
+        rest.className,
+      )}
     />
   ),
 );

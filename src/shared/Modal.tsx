@@ -1,7 +1,7 @@
 'use client';
 
-import { twMerge } from 'tailwind-merge';
 import { useEffect, useRef } from 'react';
+import { twMerge } from 'tailwind-merge';
 import { useModal } from '@/hooks';
 import { Icon } from './Icon';
 
@@ -25,9 +25,7 @@ export const Modal = ({ title, children, ...rest }: IProp) => {
   return (
     <div
       className="w-full h-screen bg-[#000000AA] absolute z-[100] flex items-center justify-center"
-      onMouseDown={({ target }) => {
-        if (ref.current && !ref.current.contains(target as Node)) close();
-      }}
+      onMouseDown={({ target }) => ref.current && !ref.current.contains(target as Node) && close()}
     >
       <div
         {...rest}

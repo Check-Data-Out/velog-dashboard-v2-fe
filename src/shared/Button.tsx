@@ -1,8 +1,9 @@
-import { SIZES, SizeType } from '@/constants';
+import { twMerge } from 'tailwind-merge';
+import { SIZES } from '@/constants';
 
 interface IProp extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   form?: keyof typeof FORMS;
-  size: SizeType;
+  size: keyof typeof SIZES;
 }
 
 const FORMS = {
@@ -13,7 +14,12 @@ const FORMS = {
 export const Button = ({ form = 'SMALL', size, children, ...rest }: IProp) => (
   <button
     {...rest}
-    className={`bg-PRIMARY-MAIN text-BG-MAIN shrink-0 text-I1 ${FORMS[form]} ${SIZES[size]} ${rest.className} disabled:bg-BORDER-SUB disabled:cursor-not-allowed hover:bg-PRIMARY-SUB max-TBL:text-I3`}
+    className={twMerge(
+      'bg-PRIMARY-MAIN text-BG-MAIN shrink-0 text-I1 disabled:bg-BORDER-SUB disabled:cursor-not-allowed hover:bg-PRIMARY-SUB max-TBL:text-I3',
+      FORMS[form],
+      SIZES[size],
+      rest.className,
+    )}
   >
     {children}
   </button>
