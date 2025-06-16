@@ -1,8 +1,8 @@
-import { Metadata } from 'next';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getQueryClient } from '@/utils/queryUtil';
-import { PATHS } from '@/constants';
+import { Metadata } from 'next';
 import { leaderboardList } from '@/apis';
+import { PATHS } from '@/constants';
+import { getQueryClient } from '@/utils';
 import { Content, searchParamsType } from './Content';
 
 export const metadata: Metadata = {
