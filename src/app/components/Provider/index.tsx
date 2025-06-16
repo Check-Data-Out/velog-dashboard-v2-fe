@@ -1,3 +1,5 @@
+'use client';
+
 import * as ChannelService from '@channel.io/channel-web-sdk-loader';
 import { ErrorBoundary } from '@sentry/nextjs';
 import HolyLoader, { HolyLoaderProps } from 'holy-loader';
