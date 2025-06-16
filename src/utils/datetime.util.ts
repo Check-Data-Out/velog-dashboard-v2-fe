@@ -47,6 +47,13 @@ export const convertDateToKST = (date?: string): KSTDateFormat | undefined => {
   };
 };
 
+/**
+ * 주어진 초 정수를 'N분 M초' 형태로 변환함.
+ *
+ * @param {number} [time] - 변환할 초 정수 (예: 360, 6분 0초를 의미함)
+ * @returns {string}
+ */
+
 export const formatTimeToMMSS = (time: number) => {
   const minute = Math.floor(time / 60)
     .toString()
