@@ -1,13 +1,13 @@
 'use client';
 
-import { QRCodeSVG } from 'qrcode.react';
 import { useQuery } from '@tanstack/react-query';
+import { QRCodeSVG } from 'qrcode.react';
 import { useState, useRef, useEffect } from 'react';
-import { COLORS, env, PATHS, SCREENS } from '@/constants';
-import { useResponsive } from '@/hooks';
 import { createQRToken } from '@/apis';
-import { Modal as Layout } from '@/components';
-import { formatTimeToMMSS } from '@/utils/dateUtil';
+import { COLORS, ENVS, PATHS, SCREENS } from '@/constants';
+import { useResponsive } from '@/hooks';
+import { Modal as Layout } from '@/shared';
+import { formatTimeToMMSS } from '@/utils';
 import { CopyButton } from './CopyButton';
 
 const TIMER_DURATION = 5 * 60; // 5분 = 300초
@@ -26,7 +26,7 @@ export const QRCode = () => {
     staleTime: 0,
     refetchOnWindowFocus: false,
   });
-  const url = `${env.BASE_URL}/api/qr-login?token=${data?.token}`;
+  const url = `${ENVS.BASE_URL}/api/qr-login?token=${data?.token}`;
 
   // 타이머 시작
   useEffect(() => {

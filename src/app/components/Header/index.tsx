@@ -1,18 +1,18 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { startHolyLoader } from 'holy-loader';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import { startHolyLoader } from 'holy-loader';
-import { revalidate } from '@/utils/revalidateUtil';
-import { PATHS, SCREENS } from '@/constants';
-import { Icon, NameType } from '@/components';
-import { useResponsive, useModal } from '@/hooks';
 import { logout, me } from '@/apis';
+import { PATHS, SCREENS } from '@/constants';
+import { useResponsive, useModal } from '@/hooks';
+import { Icon, NameType } from '@/shared';
+import { revalidate } from '@/utils';
 import { defaultStyle, Section, textStyle } from './Section';
-import { Modal } from '../notice/Modal';
-import { QRCode } from '../qrcode';
+import { Modal } from '../Notice/Modal';
+import { QRCode } from '../QRCode';
 
 const PARAMS = {
   MAIN: '?asc=false&sort=',

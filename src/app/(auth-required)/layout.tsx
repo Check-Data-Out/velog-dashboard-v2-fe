@@ -1,23 +1,14 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { ReactElement } from 'react';
-import { getQueryClient } from '@/utils/queryUtil';
-import { PATHS } from '@/constants';
 import { me, notiList } from '@/apis';
-import { Notice, Header } from './components';
+import { Notice, Header } from '@/app/components';
+import { PATHS } from '@/constants';
+import { getQueryClient } from '@/utils';
 
-interface IProp {
-  children: ReactElement;
-}
-
-export default async function Layout({ children }: IProp) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
   const client = getQueryClient();
 
   await client.prefetchQuery({ queryKey: [PATHS.ME], queryFn: me });
-
-  await client.prefetchQuery({
-    queryKey: [PATHS.NOTIS],
-    queryFn: notiList,
-  });
+  await client.prefetchQuery({ queryKey: [PATHS.NOTIS], queryFn: notiList });
 
   return (
     <HydrationBoundary state={dehydrate(client)}>

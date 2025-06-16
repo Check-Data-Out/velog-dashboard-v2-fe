@@ -1,4 +1,4 @@
-import { parseNumber } from '@/utils/numberUtil';
+import { parseNumber } from '@/utils';
 
 interface IProp {
   title: string;

@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { notiList } from '@/apis';
 import { PATHS } from '@/constants';
-import { Modal as Layout } from '@/components';
-import { convertDateToKST } from '@/utils/dateUtil';
+import { Modal as Layout } from '@/shared';
+import { convertDateToKST } from '@/utils';
 
 export const Modal = () => {
   const { data } = useQuery({ queryKey: [PATHS.NOTIS], queryFn: notiList });

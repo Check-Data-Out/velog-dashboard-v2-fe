@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Icon } from '@/components';
+import { Icon } from '@/shared';
 import { PostSummaryDto } from '@/types';
-import { SidebarContent } from './SidebarContent';
 import { BarContent } from './BarContent';
+import { SidebarContent } from './SidebarContent';
 
 export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
   const [open, setOpen] = useState(false);

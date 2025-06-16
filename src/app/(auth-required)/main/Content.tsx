@@ -3,13 +3,13 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useSearchParam } from '@/hooks';
-import { Button, Dropdown, Check } from '@/components';
 import { postList, postSummary } from '@/apis';
+import { Section, Summary } from '@/app/components';
 import { PATHS, SORT_TYPE } from '@/constants';
+import { useSearchParam } from '@/hooks';
+import { Button, Dropdown, Check } from '@/shared';
 import { SortKey, SortValue } from '@/types';
-import { convertDateToKST } from '@/utils/dateUtil';
-import { Section, Summary } from './components';
+import { convertDateToKST } from '@/utils';
 
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
 
@@ -28,7 +28,7 @@ export const Content = () => {
         { asc: searchParams.asc === 'true', sort: searchParams.sort || '' },
         pageParam,
       ),
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => lastPage?.nextCursor,
     getPreviousPageParam: () => '',
     initialPageParam: '',
   });

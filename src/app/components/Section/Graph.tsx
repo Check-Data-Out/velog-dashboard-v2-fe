@@ -1,6 +1,6 @@
 'use client';
 
-import { Line } from 'react-chartjs-2';
+import { useQuery } from '@tanstack/react-query';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,15 +12,14 @@ import {
   Legend,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { COLORS, PATHS, SCREENS } from '@/constants';
-import { Dropdown, Input } from '@/components';
-import { PostDetailValue } from '@/types';
-import { useResponsive } from '@/hooks';
+import { Line } from 'react-chartjs-2';
 import { postDetail } from '@/apis';
-import { convertDateToKST } from '@/utils/dateUtil';
-import { graphOptions } from '@/constants/graph.constant';
+import { COLORS, PATHS, SCREENS, GRAPH_OPTIONS } from '@/constants';
+import { useResponsive } from '@/hooks';
+import { Dropdown, Input } from '@/shared';
+import { PostDetailValue } from '@/types';
+import { convertDateToKST } from '@/utils';
 
 ChartJS.register(
   CategoryScale,
@@ -143,7 +142,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
         )}
         <Line
           data={datas || defaultData}
-          options={graphOptions}
+          options={GRAPH_OPTIONS}
           className="w-[100%_!important] h-[auto_!important] max-h-[300px]"
         />
       </div>

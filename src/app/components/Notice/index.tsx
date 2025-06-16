@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { notiList } from '@/apis';
 import { PATHS } from '@/constants';
 import { useModal } from '@/hooks';
-import { convertDateToKST } from '@/utils/dateUtil';
+import { convertDateToKST } from '@/utils';
 import { Modal } from './Modal';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;

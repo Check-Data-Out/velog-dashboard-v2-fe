@@ -1,12 +1,10 @@
 'use client';
 
 import { forwardRef, useState } from 'react';
-import { COLORS, env, PATHS } from '@/constants';
+import { COLORS, PATHS, URLS } from '@/constants';
+import { Icon } from '@/shared';
 import { PostType, UserDto } from '@/types';
-import { Icon } from '@/components';
-import { parseNumber } from '@/utils/numberUtil';
-import { getQueryClient } from '@/utils/queryUtil';
-import { convertDateToKST } from '@/utils/dateUtil';
+import { parseNumber, convertDateToKST, getQueryClient } from '@/utils';
 import { Graph } from './Graph';
 
 export const Section = forwardRef<HTMLElement, PostType>((p, ref) => {
@@ -14,7 +12,7 @@ export const Section = forwardRef<HTMLElement, PostType>((p, ref) => {
 
   const username = (getQueryClient().getQueryData([PATHS.ME]) as Partial<UserDto>)?.username;
 
-  const url = `${env.VELOG_URL}/@${username}/${p.slug}`;
+  const url = `${URLS.VELOG}/@${username}/${p.slug}`;
 
   return (
     <section className="flex flex-col w-full h-fit relative" ref={ref}>

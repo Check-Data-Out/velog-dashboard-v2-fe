@@ -1,6 +1,6 @@
-import { useModal } from '@/hooks';
-import { parseNumber } from '@/utils/numberUtil';
 import { SidebarIdType } from '@/constants';
+import { useModal } from '@/hooks';
+import { parseNumber } from '@/utils';
 import { Modal } from './Modal';
 
 interface IProp {

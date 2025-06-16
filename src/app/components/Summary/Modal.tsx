@@ -1,4 +1,4 @@
-import { Line } from 'react-chartjs-2';
+import { useQuery } from '@tanstack/react-query';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,12 +10,11 @@ import {
   Legend,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { useQuery } from '@tanstack/react-query';
-import { Modal as Layout } from '@/components';
-import { COLORS, PATHS, sidebarId, SidebarIdType } from '@/constants';
-import { graphOptions } from '@/constants/graph.constant';
-import { totalStats } from '@/apis/dashboard.request';
-import { convertDateToKST } from '@/utils/dateUtil';
+import { Line } from 'react-chartjs-2';
+import { totalStats } from '@/apis';
+import { COLORS, PATHS, sidebarId, SidebarIdType, GRAPH_OPTIONS } from '@/constants';
+import { Modal as Layout } from '@/shared';
+import { convertDateToKST } from '@/utils';
 
 ChartJS.register(
   CategoryScale,
@@ -61,7 +60,7 @@ export const Modal = ({ name }: { name: SidebarIdType }) => {
     >
       <Line
         data={data || defaultData}
-        options={graphOptions}
+        options={GRAPH_OPTIONS}
         className="w-full h-[auto_!important] max-h-[300px]"
       />
       <span className="text-ST5 self-end text-PRIMARY-MAIN">

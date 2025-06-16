@@ -1,7 +1,7 @@
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Icon, NameType } from '@/components';
+import { usePathname } from 'next/navigation';
 import { COLORS } from '@/constants';
+import { Icon, NameType } from '@/shared';
 
 export const defaultStyle =
   'w-[180px] h-[65px] px-9 transition-all duration-300 shrink-0 max-MBI:w-[65px] max-MBI:px-0';
