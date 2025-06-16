@@ -1,9 +1,9 @@
-import { userEvent } from '@testing-library/user-event';
 import { act, screen } from '@testing-library/react';
-import { ToastContainer } from 'react-toastify';
+import { userEvent } from '@testing-library/user-event';
 import { useRouter } from 'next/navigation';
-import { renderWithQueryClient } from '@/utils/componentUtil';
+import { ToastContainer } from 'react-toastify';
 import { default as Login } from '@/app/(login)/page';
+import { renderWithQueryClient } from './instance.test';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),

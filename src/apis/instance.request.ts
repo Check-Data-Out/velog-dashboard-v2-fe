@@ -1,8 +1,7 @@
-import returnFetch, { FetchArgs } from 'return-fetch';
-
 import { captureException, setContext } from '@sentry/nextjs';
+import returnFetch, { FetchArgs } from 'return-fetch';
+import { ENVS } from '@/constants';
 import { ServerNotRespondingError } from '@/errors';
-import { env } from '@/constants';
 
 type ErrorType = {
   code: string;
@@ -27,7 +26,7 @@ const abortPolyfill = (ms: number) => {
 };
 
 const fetch = returnFetch({
-  baseUrl: env.BASE_URL,
+  baseUrl: ENVS.BASE_URL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -66,8 +65,8 @@ export const instance = async <I, R>(
         : init?.headers,
       body: init?.body ? JSON.stringify(init.body) : undefined,
       signal: AbortSignal.timeout
-        ? AbortSignal.timeout(Number(env.ABORT_MS))
-        : abortPolyfill(Number(env.ABORT_MS)),
+        ? AbortSignal.timeout(Number(ENVS.ABORT_MS))
+        : abortPolyfill(Number(ENVS.ABORT_MS)),
       credentials: 'include',
       cache: 'no-store',
     });
