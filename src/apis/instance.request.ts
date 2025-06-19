@@ -3,6 +3,8 @@ import returnFetch, { FetchArgs } from 'return-fetch';
 import { ENVS } from '@/constants';
 import { ServerNotRespondingError } from '@/errors';
 
+const ABORT_MS = 10000;
+
 type ErrorType = {
   code: string;
   statusCode: number;
@@ -65,8 +67,8 @@ export const instance = async <I, R>(
         : init?.headers,
       body: init?.body ? JSON.stringify(init.body) : undefined,
       signal: AbortSignal.timeout
-        ? AbortSignal.timeout(Number(ENVS.ABORT_MS))
-        : abortPolyfill(Number(ENVS.ABORT_MS)),
+        ? AbortSignal.timeout(Number(ABORT_MS))
+        : abortPolyfill(Number(ABORT_MS)),
       credentials: 'include',
       cache: 'no-store',
     });
