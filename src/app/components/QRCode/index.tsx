@@ -3,10 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState, useRef, useEffect } from 'react';
+import { twJoin } from 'tailwind-merge';
 import { createQRToken } from '@/apis';
 import { COLORS, ENVS, PATHS, SCREENS } from '@/constants';
 import { useResponsive } from '@/hooks';
-import { Modal as Layout } from '@/shared';
+import { Inform, Modal as Layout } from '@/shared';
 import { formatTimeToMMSS } from '@/utils';
 import { CopyButton } from './CopyButton';
 
@@ -15,9 +16,7 @@ const TIMER_DURATION = 5 * 60; // 5분 = 300초
 export const QRCode = () => {
   const width = useResponsive();
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
-
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const isExpired = timeLeft === 0;
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: [PATHS.QRLOGIN],
@@ -26,9 +25,10 @@ export const QRCode = () => {
     staleTime: 0,
     refetchOnWindowFocus: false,
   });
-  const url = `${ENVS.BASE_URL}/api/qr-login?token=${data?.token}`;
 
-  // 타이머 시작
+  const url = `${ENVS.BASE_URL}/api/qr-login?token=${data?.token}`;
+  const isUnusable = timeLeft === 0 || isLoading;
+
   useEffect(() => {
     if (!isLoading) {
       timerRef.current = setInterval(() => setTimeLeft((prev) => (prev <= 1 ? 0 : prev - 1)), 1000);
@@ -43,11 +43,10 @@ export const QRCode = () => {
     <Layout title="QR 로그인">
       <div className="flex items-center justify-center gap-10">
         <div
-          className={
-            isExpired || isLoading
-              ? `relative after:inset-0 after:absolute after:m-auto after:bg-BG-MAIN after:size-fit after:text-TEXT-MAIN after:px-3 after:py-1 after:rounded-lg after:font-medium ${isLoading ? 'after:content-["로딩중"]' : 'after:content-["만료됨"]'}`
-              : ''
-          }
+          className={twJoin(
+            isUnusable &&
+              `relative after:inset-0 after:absolute after:m-auto after:bg-BG-MAIN after:size-fit after:text-TEXT-MAIN after:px-3 after:py-1 after:rounded-lg after:font-medium ${isLoading ? 'after:content-["로딩중"]' : 'after:content-["만료됨"]'}`,
+          )}
         >
           <QRCodeSVG
             value={url}
@@ -56,19 +55,17 @@ export const QRCode = () => {
             enableBackground={0}
             bgColor={COLORS.BG.SUB}
             fgColor={COLORS.TEXT.MAIN}
-            className={`transition-all ${isExpired || isLoading ? 'blur-sm' : ''}`}
+            className={twJoin('transition-all', isUnusable && 'blur-sm')}
           />
         </div>
         <div className="flex flex-col items-center gap-4">
-          <h3 className="text-T4 text-TEXT-ALT leading-none">만료까지</h3>
-          <h2
-            className={`text-T2 leading-none min-w-[130px] text-center ${timeLeft <= 60 ? 'text-DESTRUCTIVE-SUB' : 'text-TEXT-MAIN'}`}
-          >
-            {formatTimeToMMSS(timeLeft)}
-          </h2>
-          {isExpired && !isLoading && (
+          <Inform>
+            <Inform.Title>만료까지</Inform.Title>
+            <Inform.Content>{formatTimeToMMSS(timeLeft)}</Inform.Content>
+          </Inform>
+          {isUnusable && (
             <button
-              className="text-I1 text-BG-MAIN bg-PRIMARY-MAIN px-5 py-1 rounded-sm"
+              className="text-INPUT-1 text-BG-MAIN bg-PRIMARY-MAIN px-5 py-1 rounded-sm"
               onClick={async () => {
                 await refetch();
                 setTimeLeft(TIMER_DURATION);
@@ -80,7 +77,7 @@ export const QRCode = () => {
         </div>
       </div>
 
-      <CopyButton url={url} disabled={isExpired || isLoading} />
+      <CopyButton url={url} disabled={isUnusable} />
     </Layout>
   );
 };
