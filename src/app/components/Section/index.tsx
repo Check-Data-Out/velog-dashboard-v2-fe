@@ -31,18 +31,18 @@ export const Section = forwardRef<HTMLElement, PostType>((p, ref) => {
           >
             <Icon name="Shortcut" color="#ECECEC" size={20} />
             <span
-              className={`text-T3 text-TEXT-MAIN hover:underline max-TBL:after:text-ST5 max-TBL:text-T4 max-MBI:text-ST4`}
+              className={`text-TITLE-3 text-TEXT-MAIN hover:underline max-TBL:after:text-SUBTITLE-5 max-TBL:text-TITLE-4 max-MBI:text-SUBTITLE-4`}
             >
               {p.title.length > 30 ? p.title.slice(0, 29).trim() + '..' : p.title}
             </span>
           </div>
 
-          <span className="text-TEXT-ALT text-ST4 MBI:content-[attr(data-date)] max-MBI:hidden">
+          <span className="text-TEXT-ALT text-SUBTITLE-4 MBI:content-[attr(data-date)] max-MBI:hidden">
             {convertDateToKST(p.releasedAt)?.short}
           </span>
         </div>
 
-        <div className="flex items-center text-ST4 justify-between text-TEXT-ALT gap-1 max-TBL:text-ST5 max-MBI:w-full">
+        <div className="flex items-center text-SUBTITLE-4 justify-between text-TEXT-ALT gap-1 max-TBL:text-SUBTITLE-5 max-MBI:w-full">
           <span className="MBI:hidden">{convertDateToKST(p.releasedAt)?.short}</span>
           <div className="flex flex-wrap items-center gap-[6px]">
             <span className='after:content-["/"] after:ml-2'>{parseNumber(p.views)}</span>

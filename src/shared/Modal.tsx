@@ -36,7 +36,9 @@ export const Modal = ({ title, children, ...rest }: IProp) => {
         )}
       >
         <div className="flex items-center justify-between">
-          <h2 className="text-TEXT-MAIN items-cenetr gap-3 text-T3 max-MBI:text-T4">{title}</h2>
+          <h2 className="text-TEXT-MAIN items-cenetr gap-3 text-TITLE-3 max-MBI:text-TITLE-4">
+            {title}
+          </h2>
           <Icon name="Close" onClick={close} className="cursor-pointer" />
         </div>
         {children}

@@ -15,8 +15,8 @@ export const Modal = () => {
         {data?.posts?.map(({ content, created_at, id, title }) => (
           <div key={id} className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
-              <h3 className="text-TEXT-MAIN text-T4 max-MBI:text-T5">{title}</h3>
-              <h4 className="text-TEXT-ALT text-T5 max-MBI:text-ST5">
+              <h3 className="text-TEXT-MAIN text-TITLE-4 max-MBI:text-TITLE-5">{title}</h3>
+              <h4 className="text-TEXT-ALT text-TITLE-5 max-MBI:text-SUBTITLE-5">
                 {convertDateToKST(created_at)?.short}
               </h4>
             </div>

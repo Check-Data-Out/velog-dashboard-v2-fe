@@ -43,7 +43,7 @@ export const Content = () => {
         </div>
         <div className="w-[500px] h-full flex flex-col gap-[30px] items-center justify-center max-MBI:w-full">
           <h1
-            className={`text-TEXT-MAIN text-T1 max-TBL:text-T2 max-MBI:text-ST3 ${responsiveStyle}`}
+            className={`text-TEXT-MAIN text-TITLE-1 max-TBL:text-TITLE-2 max-MBI:text-SUBTITLE-3 ${responsiveStyle}`}
           >
             Velog Dashboard
           </h1>
@@ -79,16 +79,20 @@ export const Content = () => {
               onClick={() => sampleMutate()}
             >
               <Icon name="Door" color={COLORS.PRIMARY.MAIN} size={18} />
-              <span className="text-I2 max-MBI:text-ST5 text-PRIMARY-MAIN">체험 계정 로그인 →</span>
+              <span className="text-INPUT-2 max-MBI:text-SUBTITLE-5 text-PRIMARY-MAIN">
+                체험 계정 로그인 →
+              </span>
             </button>
             <a
               target="_blank"
               rel="noopener noreferrer"
               href={URLS.ARCADE}
-              className="flex gap-2 items-center text-I2 max-MBI:text-ST5 text-PRIMARY-MAIN hover:border-b hover:-mb-[1px] border-b-PRIMARY-MAIN cursor-pointer"
+              className="flex gap-2 items-center text-INPUT-2 max-MBI:text-SUBTITLE-5 text-PRIMARY-MAIN hover:border-b hover:-mb-[1px] border-b-PRIMARY-MAIN cursor-pointer"
             >
               <Icon name="Video" color={COLORS.PRIMARY.MAIN} size={18} />
-              <span className="text-I2 max-MBI:text-ST5 text-PRIMARY-MAIN">서비스 사용법 →</span>
+              <span className="text-INPUT-2 max-MBI:text-SUBTITLE-5 text-PRIMARY-MAIN">
+                서비스 사용법 →
+              </span>
             </a>
           </div>
         </div>

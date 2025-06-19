@@ -22,7 +22,7 @@ export const Dropdown = ({ options, onChange, defaultValue, disabled, ...rest }:
           onChange(typeof value === 'object' ? (value[2] ? value : value[1]) : value);
         }}
         defaultValue={typeof defaultValue === 'object' ? defaultValue[0] : defaultValue}
-        className="w-full bg-TRANSPARENT text-I2 max-TBL:text-I4 text-TEXT-MAIN cursor-pointer z-40"
+        className="w-full bg-TRANSPARENT text-INPUT-2 max-TBL:text-INPUT-4 text-TEXT-MAIN cursor-pointer z-40"
       >
         {options.map((i, j) => (
           <option key={j} className="bg-BG-SUB">

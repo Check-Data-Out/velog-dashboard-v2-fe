@@ -18,9 +18,9 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
         <SidebarContent
           title="전체 조회수"
           content={stats?.totalViews}
-          prefix="회"
           increasement={stats?.totalViews - stats?.yesterdayViews}
           id="view"
+          typeIsCount
         />
         <SidebarContent
           title="전체 좋아요 수"
@@ -34,7 +34,7 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
         className={`flex flex-col w-full px-5 bg-BG-SUB rounded-[4px] cursor-pointer MBI:hidden`}
         onClick={() => setOpen((prev) => !prev)}
       >
-        <div className="text-TEXT-ALT flex items-center justify-center text-ST5 w-full h-[52px] gap-[10px] shrink-0">
+        <div className="text-TEXT-ALT flex items-center justify-center text-SUBTITLE-5 w-full h-[52px] gap-[10px] shrink-0">
           <span>요약 정보 {open ? '펼치기' : '접기'}</span>
           <Icon name="Arrow" size={17} rotate={open ? 'up' : 'down'} />
         </div>

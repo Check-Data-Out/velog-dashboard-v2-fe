@@ -103,7 +103,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
               placeholder="시작 날짜"
               type="date"
             />
-            <span className="text-ST4 max-TBL:text-T5 text-TEXT-MAIN">~</span>
+            <span className="text-SUBTITLE-4 max-TBL:text-TITLE-5 text-TEXT-MAIN">~</span>
             <Input
               size={isMBI ? 'SMALL' : 'MEDIUM'}
               form="SMALL"
@@ -143,7 +143,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
         <Line
           data={datas || defaultData}
           options={GRAPH_OPTIONS}
-          className="w-[100%_!important] h-[auto_!important] max-h-[300px]"
+          className="!w-full !h-auto max-h-[300px]"
         />
       </div>
     </div>

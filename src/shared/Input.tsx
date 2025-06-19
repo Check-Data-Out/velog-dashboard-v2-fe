@@ -19,7 +19,7 @@ export const Input = forwardRef<HTMLInputElement, IProp>(
       ref={ref}
       data-placeholder={rest?.placeholder}
       className={twMerge(
-        'bg-BG-SUB border-BORDER-SUB text-I2 shrink-0 text-TEXT-MAIN border-[1px] disabled:cursor-pointer placeholder:text-TEXT-ALT max-TBL:text-I4',
+        'bg-BG-SUB border-BORDER-SUB text-INPUT-2 shrink-0 text-TEXT-MAIN border-[1px] disabled:cursor-pointer placeholder:text-TEXT-ALT max-TBL:text-INPUT-4',
         FORMS[form],
         SIZES[size],
         rest.className,

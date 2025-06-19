@@ -15,7 +15,7 @@ export const Check = ({ checked, label, onChange, direction = 'left', ...rest }:
         direction === 'left' ? 'flex-row' : 'flex-row-reverse',
       )}
     >
-      {label && <span className="text-TEXT-SUB text-I2 max-TBL:text-I4">{label}</span>}
+      {label && <span className="text-TEXT-SUB text-INPUT-2 max-TBL:text-INPUT-4">{label}</span>}
       <div
         data-label={label}
         className={twJoin(

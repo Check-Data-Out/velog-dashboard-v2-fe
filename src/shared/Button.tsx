@@ -15,7 +15,7 @@ export const Button = ({ form = 'SMALL', size, children, ...rest }: IProp) => (
   <button
     {...rest}
     className={twMerge(
-      'bg-PRIMARY-MAIN text-BG-MAIN shrink-0 text-I1 disabled:bg-BORDER-SUB disabled:cursor-not-allowed hover:bg-PRIMARY-SUB max-TBL:text-I3',
+      'bg-PRIMARY-MAIN text-BG-MAIN shrink-0 text-INPUT-1 disabled:bg-BORDER-SUB disabled:cursor-not-allowed hover:bg-PRIMARY-SUB max-TBL:text-INPUT-3',
       FORMS[form],
       SIZES[size],
       rest.className,

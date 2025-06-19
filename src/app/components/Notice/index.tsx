@@ -43,11 +43,11 @@ export const Notice = () => {
       <div
         className={`transition-all shrink-0 duration-300 flex items-center justify-center gap-2 w-full overflow-hidden  bg-BORDER-SUB ${show ? 'h-[50px]' : 'h-[0px]'}`}
       >
-        <h1 className="text-TEXT-MAIN text-ST4 max-MBI:text-ST5">
+        <h1 className="text-TEXT-MAIN text-SUBTITLE-4 max-MBI:text-SUBTITLE-5">
           📣 새로운 업데이트를 확인해보세요!
         </h1>
         <button
-          className="text-PRIMARY-MAIN hover:text-PRIMARY-SUB text-ST4 transition-all duration-300 max-MBI:text-ST5"
+          className="text-PRIMARY-MAIN hover:text-PRIMARY-SUB text-SUBTITLE-4 transition-all duration-300 max-MBI:text-SUBTITLE-5"
           onClick={() => {
             setShow(false);
             window.gtag('event', 'click_event', { target: '공지사항 버튼' });

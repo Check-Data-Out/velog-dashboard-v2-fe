@@ -61,9 +61,9 @@ export const Modal = ({ name }: { name: SidebarIdType }) => {
       <Line
         data={data || defaultData}
         options={GRAPH_OPTIONS}
-        className="w-full h-[auto_!important] max-h-[300px]"
+        className="w-full !h-auto max-h-[300px]"
       />
-      <span className="text-ST5 self-end text-PRIMARY-MAIN">
+      <span className="text-SUBTITLE-5 self-end text-PRIMARY-MAIN">
         * 7일 전까지의 데이터만 표시됩니다
       </span>
     </Layout>

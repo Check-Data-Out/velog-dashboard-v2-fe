@@ -70,7 +70,7 @@ export const Header = () => {
       <div className="flex w-fit">
         <Section clickType="function" action={() => replaceWithoutLoading(`/main${PARAMS.MAIN}`)}>
           <Image width={35} height={35} src={'/favicon.png'} className="transition-all" alt="" />
-          <span className="text-TEXT-MAIN text-T4 max-TBL:hidden">Velog Dashboard</span>
+          <span className="text-TEXT-MAIN text-TITLE-4 max-TBL:hidden">Velog Dashboard</span>
         </Section>
         <div className="flex w-fit relative">
           <div
@@ -107,7 +107,7 @@ export const Header = () => {
               <div className="w-0 h-0 border-[15px] ml-3 mr-3 border-TRANSPARENT border-b-BG-SUB" />
               <div className="cursor-pointer h-fit flex-col rounded-[4px] bg-BG-SUB shadow-BORDER-MAIN shadow-md">
                 <button
-                  className="text-DESTRUCTIVE-SUB text-I3 p-5 max-MBI:p-4 flex whitespace-nowrap w-full justify-center hover:bg-BG-ALT"
+                  className="text-DESTRUCTIVE-SUB text-INPUT-3 p-5 max-MBI:p-4 flex whitespace-nowrap w-full justify-center hover:bg-BG-ALT"
                   onClick={() => {
                     startHolyLoader();
                     out();
@@ -116,7 +116,7 @@ export const Header = () => {
                   로그아웃
                 </button>
                 <button
-                  className="text-TEXT-MAIN text-I3 p-5 max-MBI:p-4 flex items-center justify-center whitespace-nowrap w-full hover:bg-BG-ALT"
+                  className="text-TEXT-MAIN text-INPUT-3 p-5 max-MBI:p-4 flex items-center justify-center whitespace-nowrap w-full hover:bg-BG-ALT"
                   onClick={() => {
                     setOpen(false);
                     ModalOpen(<QRCode />);

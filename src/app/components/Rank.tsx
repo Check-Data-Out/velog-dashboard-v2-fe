@@ -20,11 +20,11 @@ export const Rank = ({ name, rank, count, suffix = '회' }: IProp) => {
     >
       <span
         data-rank={rank}
-        className="text-T3 text-TEXT-MAIN flex items-center gap-3 before:content-[attr(data-rank)_'위'] before:text-ST4 before:text-TEXT-ALT max-TBL:text-T4 max-TBL:before:text-T5 max-MBI:text-ST4 max-MBI:before:text-ST5"
+        className="text-TITLE-3 text-TEXT-MAIN flex items-center gap-3 before:content-[attr(data-rank)_'위'] before:text-SUBTITLE-4 before:text-TEXT-ALT max-TBL:text-TITLE-4 max-TBL:before:text-SUBTITLE-5 max-MBI:text-SUBTITLE-4 max-MBI:before:text-SUBTITLE-5"
       >
         {name}
       </span>
-      <span className="text-ST3 shrink-0 text-TEXT-SUB max-TBL:text-T4 max-MBI:text-ST4">
+      <span className="text-SUBTITLE-3 shrink-0 text-TEXT-SUB max-TBL:text-TITLE-4 max-MBI:text-SUBTITLE-4">
         {count}
         {suffix}
       </span>
