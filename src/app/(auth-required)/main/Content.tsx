@@ -56,7 +56,7 @@ export const Content = () => {
 
       <div className="w-full flex flex-col gap-[30px] overflow-auto max-TBL:gap-[20px]">
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">
-          <span className="text-TEXT-ALT text-SUBTITLE-5 max-MBI:hidden">
+          <span className="text-TEXT-ALT text-SUBTITLE-5 MBI:hidden">
             마지막 업데이트 :{' '}
             {convertDateToKST(summaries?.stats?.lastUpdatedDate)?.iso || '업데이트 중..'}
           </span>
