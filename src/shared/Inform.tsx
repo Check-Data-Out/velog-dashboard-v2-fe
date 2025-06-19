@@ -32,7 +32,7 @@ const InformContent = ({ children, suffix }: { children: string; suffix?: string
 
   return (
     <span className="text-TEXT-MAIN text-TITLE-1 max-TBL:text-TITLE-2 transition-all">
-      {`${children}${suffix}`}
+      {`${children}${suffix || ''}`}
     </span>
   );
 };
@@ -56,7 +56,7 @@ const InformHighlighted = ({ children, suffix }: { children: string; suffix?: st
 
   return (
     <span className="text-PRIMARY-SUB text-SUBTITLE-3 max-TBL:text-SUBTITLE-4">
-      {`${children}${suffix}`}
+      {`${children}${suffix || ''}`}
     </span>
   );
 };
