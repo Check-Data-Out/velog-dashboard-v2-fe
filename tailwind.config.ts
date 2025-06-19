@@ -1,4 +1,4 @@
-import typograpy from '@tailwindcss/typography';
+import typograhpy from '@tailwindcss/typography';
 import type { Config } from 'tailwindcss';
 import { COLORS, SIZES, SCREENS as CUSTOMSCREENS, FONTS as CUSTOMFONTS } from './src/constants';
 
@@ -13,7 +13,7 @@ Object.entries(CUSTOMFONTS).map(([section, items]) => {
 const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: { colors: COLORS, screens: SCREENS, fontSize: FONTS },
-  plugins: [typograpy()],
+  plugins: [typograhpy()],
   safelist: Object.values(SIZES),
 };
 
