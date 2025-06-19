@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation';
  * NextJS Client-Side Cache 해결을 위해 제작됨.
  */
 
-export async function revalidate() {
+export async function revalidate(): Promise<void> {
   revalidatePath('/', 'layout');
   redirect('/');
 }
