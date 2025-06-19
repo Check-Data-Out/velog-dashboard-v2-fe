@@ -1,11 +1,8 @@
 {
   "settings": {
-    "import/resolver": {
-      // You will also need to install and configure the TypeScript resolver
-      // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
-      "typescript": true,
-      "node": true
-    }
+    // You will also need to install and configure the TypeScript resolver
+    // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
+    "import/resolver": { "typescript": true, "node": true }
   },
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -20,23 +17,18 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "baseUrl": "./src",
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "paths": { "@/*": ["./*"] }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".eslintrc.js",
-    "next.config.mjs"
+    ".eslintrc.ts",
+    "next.config.mjs",
+    "src/app/components/Provider/index.tsx"
   ],
   "exclude": ["node_modules"]
 }

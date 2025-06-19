@@ -1,21 +1,12 @@
 import { MetadataRoute } from 'next';
-import { BASE } from './layout';
+import { URLS } from '@/constants';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    { url: BASE, lastModified: new Date(), changeFrequency: 'monthly' },
+    { url: URLS.VELOG_DASHBOARD, lastModified: new Date(), changeFrequency: 'monthly' },
+    { url: URLS.VELOG_DASHBOARD + '/main', lastModified: new Date(), changeFrequency: 'monthly' },
     {
-      url: BASE + '/main',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-    },
-    {
-      url: BASE + '/leaderboards',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-    },
-    {
-      url: BASE + '/compare',
+      url: URLS.VELOG_DASHBOARD + '/leaderboards',
       lastModified: new Date(),
       changeFrequency: 'monthly',
     },

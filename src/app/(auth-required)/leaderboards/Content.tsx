@@ -1,14 +1,14 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
 import { startHolyLoader } from 'holy-loader';
-import { Dropdown } from '@/components';
+import { useMemo } from 'react';
+import { leaderboardList } from '@/apis';
+import { Rank } from '@/app/components';
 import { PATHS } from '@/constants';
 import { useSearchParam } from '@/hooks';
-import { leaderboardList } from '@/apis';
+import { Dropdown } from '@/shared';
 import { LeaderboardItemType } from '@/types';
-import { Rank } from './Rank';
 
 export type searchParamsType = {
   based: 'user' | 'post';

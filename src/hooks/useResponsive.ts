@@ -8,13 +8,14 @@ export const useResponsive = (): number => {
     if (typeof window === 'undefined') {
       return () => window.removeEventListener('resize', () => null);
     }
+
     setWidth(window.innerWidth);
+
     const handleResize = () => {
       clearTimeout(timer);
-      timer = setTimeout(() => {
-        setWidth(window.innerWidth);
-      }, 10);
+      timer = setTimeout(() => setWidth(window.innerWidth), 10);
     };
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);

@@ -1,18 +1,11 @@
-import { COLORS } from './colors.constant';
+import { COLORS } from './styles.constant';
 
-export const graphOptions = {
+export const GRAPH_OPTIONS = {
   responsive: true,
   maintainAspectRatio: false,
   animation: false,
   interaction: { mode: 'nearest', intersect: false },
-  layout: {
-    padding: {
-      top: 40,
-      bottom: 10,
-      left: 15,
-      right: 15,
-    },
-  },
+  layout: { padding: { top: 40, bottom: 10, left: 15, right: 15 } },
   plugins: {
     legend: { display: false },
     tooltip: { enabled: false },
@@ -24,10 +17,7 @@ export const graphOptions = {
       borderWidth: 1,
       borderRadius: 4,
       padding: 4,
-      font: {
-        size: 12,
-        weight: 'normal',
-      },
+      font: { size: 12, weight: 'normal' },
       formatter: (value: number) => value.toString(),
       anchor: 'end',
       align: 'top',

@@ -28,7 +28,10 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': ['error', { printWidth: 100 }],
-    'import/order': ['error', { groups: ['builtin', 'external', 'internal'] }],
+    'import/order': [
+      'error',
+      { groups: ['builtin', 'external', 'internal'], alphabetize: { order: 'asc' } },
+    ],
     'no-restricted-imports': ['warn', { patterns: ['../../*'] }],
     'react/react-in-jsx-scope': 'off',
     'testing-library/no-container': 'warn',

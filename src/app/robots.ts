@@ -1,12 +1,6 @@
 import { MetadataRoute } from 'next';
-import { BASE } from './layout';
+import { URLS } from '@/constants';
 
 export default function robots(): MetadataRoute.Robots {
-  return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-    },
-    sitemap: BASE + '/sitemap.xml',
-  };
+  return { rules: { userAgent: '*', allow: '/' }, sitemap: URLS.VELOG_DASHBOARD + '/sitemap.xml' };
 }
