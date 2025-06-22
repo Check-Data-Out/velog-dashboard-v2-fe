@@ -1,5 +1,5 @@
-import { NotFoundError } from '@/errors';
 import { PATHS } from '@/constants';
+import { NotFoundError } from '@/errors';
 import { LoginVo, UserDto } from '@/types';
 import { instance } from './instance.request';
 

@@ -1,5 +1,5 @@
-import { PostDetailDto, PostListDto, PostSummaryDto, TotalStatsDto } from '@/types';
 import { PATHS, SidebarIdType } from '@/constants';
+import { PostDetailDto, PostListDto, PostSummaryDto, TotalStatsDto } from '@/types';
 
 import { instance } from './instance.request';
 
