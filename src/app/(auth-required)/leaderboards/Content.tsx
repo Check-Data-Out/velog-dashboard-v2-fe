@@ -5,7 +5,7 @@ import { startHolyLoader } from 'holy-loader';
 import { useMemo } from 'react';
 import { leaderboardList } from '@/apis';
 import { Rank } from '@/app/components';
-import { PATHS } from '@/constants';
+import { PATHS, URLS } from '@/constants';
 import { useSearchParam } from '@/hooks';
 import { Dropdown } from '@/shared';
 import { LeaderboardItemType } from '@/types';
@@ -30,9 +30,11 @@ export const Content = () => {
       searchParams.based === 'user' ? boards?.users : boards?.posts
     ) as LeaderboardItemType[];
     return (
-      value.map((item) => ({
-        name: searchParams.based === 'user' ? item.email.split('@')[0] : item.title,
-        value: searchParams.sort === 'viewCount' ? item.viewDiff : item.likeDiff,
+      value.map(({ username, title, viewDiff, likeDiff, slug }) => ({
+        key: searchParams.based === 'user' ? username : title,
+        username,
+        url: `${URLS.VELOG}/@${username}/${searchParams.based === 'user' ? 'posts' : `${slug}`}`,
+        value: searchParams.sort === 'viewCount' ? viewDiff : likeDiff,
       })) || []
     );
   }, [boards, searchParams.based, searchParams.sort]);
@@ -86,8 +88,15 @@ export const Content = () => {
       </div>
 
       <div className="w-full flex flex-wrap gap-5 overflow-auto">
-        {data?.map(({ name, value }, index) => (
-          <Rank name={name} key={index} count={value} rank={index + 1} />
+        {data?.map(({ key, username, url, value }, index) => (
+          <Rank
+            name={key}
+            key={index}
+            url={url}
+            count={value}
+            rank={index + 1}
+            suffix={searchParams.based === 'post' ? username : ''}
+          />
         ))}
       </div>
     </div>
