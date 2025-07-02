@@ -26,15 +26,17 @@ export const Content = () => {
   });
 
   const data = useMemo(() => {
-    const value = (
-      searchParams.based === 'user' ? boards?.users : boards?.posts
-    ) as LeaderboardItemType[];
+    const isUserBased = searchParams.based === 'user';
+    const isViewBased = searchParams.sort === 'viewCount';
+
+    const value = (isUserBased ? boards?.users : boards?.posts) as LeaderboardItemType[];
+
     return (
       value.map(({ username, title, viewDiff, likeDiff, slug }) => ({
-        key: searchParams.based === 'user' ? username : title,
+        key: isUserBased ? username : title,
         username,
-        url: `${URLS.VELOG}/@${username}/${searchParams.based === 'user' ? 'posts' : `${slug}`}`,
-        value: searchParams.sort === 'viewCount' ? viewDiff : likeDiff,
+        url: URLS.VELOG + `/@${username}` + (isUserBased ? '/posts' : `/${slug}`),
+        value: isViewBased ? viewDiff : likeDiff,
       })) || []
     );
   }, [boards, searchParams.based, searchParams.sort]);
