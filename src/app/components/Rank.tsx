@@ -15,12 +15,12 @@ const colorTable = ['border-[#DAA520]', 'border-[#A9A9A9]', 'border-[#B87333]'];
 
 export const Rank = ({ name, rank, count, url, suffix }: IProp) => {
   return (
-    <div
+    <button
       className={twMerge(
         'min-w-[40%] group w-full p-[25px] bg-BG-SUB rounded-[4px] gap-3 justify-between flex cursor-pointer items-center',
         rank > 3 ? 'border-0' : `border-2 ${colorTable[rank - 1]}`,
       )}
-      onClick={() => window.open(url)}
+      onClick={() => window.open(url, '_blank', 'noopener,noreferrer')}
     >
       <div className="flex items-center gap-3">
         <span className="text-SUBTITLE-4 text-TEXT-ALT shrink-0 max-TBL:text-SUBTITLE-5 max-MBI:text-SUBTITLE-5">
@@ -42,6 +42,6 @@ export const Rank = ({ name, rank, count, url, suffix }: IProp) => {
       <span className="text-SUBTITLE-3 shrink-0 text-TEXT-SUB max-TBL:text-TITLE-4 max-MBI:text-SUBTITLE-4">
         {count}회
       </span>
-    </div>
+    </button>
   );
 };
