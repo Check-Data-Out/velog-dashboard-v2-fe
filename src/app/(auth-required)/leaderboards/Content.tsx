@@ -26,8 +26,8 @@ export const Content = () => {
   });
 
   const data = useMemo(() => {
-    const isUserBased = searchParams.based === 'user';
-    const isViewBased = searchParams.sort === 'viewCount';
+    const isUserBased = searchParams?.based === 'user';
+    const isViewBased = searchParams?.sort === 'viewCount';
 
     const value = ((isUserBased ? boards?.users : boards?.posts) || []) as LeaderboardItemType[];
 
@@ -37,7 +37,7 @@ export const Content = () => {
       url: URLS.VELOG + `/@${username}` + (isUserBased ? '/posts' : `/${slug}`),
       value: isViewBased ? viewDiff : likeDiff,
     }));
-  }, [boards, searchParams.based, searchParams.sort]);
+  }, [boards, searchParams?.based, searchParams?.sort]);
 
   const handleChange = (param: Partial<searchParamsType>) => {
     startHolyLoader();
