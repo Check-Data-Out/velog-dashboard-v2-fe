@@ -3,7 +3,7 @@ import returnFetch, { FetchArgs } from 'return-fetch';
 import { ENVS } from '@/constants';
 import { ServerNotRespondingError } from '@/errors';
 
-const ABORT_MS = 15 * 1000; // 타임아웃 시간이 너무 짧은건지..
+const ABORT_MS = 5000;
 
 type ErrorType = {
   code: string;
