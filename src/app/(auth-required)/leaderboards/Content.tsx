@@ -26,20 +26,18 @@ export const Content = () => {
   });
 
   const data = useMemo(() => {
-    const isUserBased = searchParams.based === 'user';
-    const isViewBased = searchParams.sort === 'viewCount';
+    const isUserBased = searchParams?.based === 'user';
+    const isViewBased = searchParams?.sort === 'viewCount';
 
-    const value = (isUserBased ? boards?.users : boards?.posts) as LeaderboardItemType[];
+    const value = ((isUserBased ? boards?.users : boards?.posts) || []) as LeaderboardItemType[];
 
-    return (
-      value.map(({ username, title, viewDiff, likeDiff, slug }) => ({
-        key: isUserBased ? username : title,
-        username,
-        url: URLS.VELOG + `/@${username}` + (isUserBased ? '/posts' : `/${slug}`),
-        value: isViewBased ? viewDiff : likeDiff,
-      })) || []
-    );
-  }, [boards, searchParams.based, searchParams.sort]);
+    return value.map(({ username, title, viewDiff, likeDiff, slug }) => ({
+      key: isUserBased ? username : title,
+      username,
+      url: URLS.VELOG + `/@${username}` + (isUserBased ? '/posts' : `/${slug}`),
+      value: isViewBased ? viewDiff : likeDiff,
+    }));
+  }, [boards, searchParams?.based, searchParams?.sort]);
 
   const handleChange = (param: Partial<searchParamsType>) => {
     startHolyLoader();

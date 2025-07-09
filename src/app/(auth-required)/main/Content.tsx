@@ -48,7 +48,7 @@ export const Content = () => {
     fetchNextPage();
   }, [inView]);
 
-  const joinedPosts = useMemo(() => posts?.pages.flatMap((i) => i.posts), [posts]);
+  const joinedPosts = useMemo(() => posts?.pages.flatMap((i) => i.posts) || [], [posts]);
 
   return (
     <div className="flex w-full h-full gap-[30px] max-MBI:flex-col max-TBL:gap-[20px] overflow-hidden">
