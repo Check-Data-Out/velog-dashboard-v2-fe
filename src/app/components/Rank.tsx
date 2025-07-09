@@ -27,12 +27,12 @@ export const Rank = ({ name, rank, count, url, suffix }: IProp) => {
           {rank + '위'}
         </span>
 
-        <div className=" flex flex-col gap-0">
-          <span className="group-hover:underline text-TITLE-3 text-TEXT-MAIN flex items-center gap-3 max-TBL:text-TITLE-4 max-MBI:text-SUBTITLE-4">
+        <div className="flex flex-col gap-0 items-start">
+          <span className="group-hover:underline break-words text-left text-TITLE-3 text-TEXT-MAIN flex items-center gap-3 max-TBL:text-TITLE-4 max-MBI:text-SUBTITLE-4">
             {name}
           </span>
           {suffix !== undefined && (
-            <span className="text-SUBTITLE-4 text-TEXT-ALT max-TBL:text-SUBTITLE-5 max-MBI:text-SUBTITLE-5">
+            <span className="text-SUBTITLE-4 w-fit text-TEXT-ALT max-TBL:text-SUBTITLE-5 max-MBI:text-SUBTITLE-5">
               {String(suffix)}
             </span>
           )}
