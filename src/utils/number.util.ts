@@ -5,5 +5,9 @@
  * @returns {string}
  */
 
-export const parseNumber = (item?: number) =>
-  item ? item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0';
+export const parseNumber = (item?: number) => {
+  if (item === undefined || Math.abs(item) === Infinity || isNaN(item)) return '0';
+  return Math.floor(item)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
