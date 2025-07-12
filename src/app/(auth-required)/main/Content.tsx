@@ -7,7 +7,7 @@ import { postList, postSummary } from '@/apis';
 import { Section, Summary } from '@/app/components';
 import { PATHS, SORT_TYPE } from '@/constants';
 import { useSearchParam } from '@/hooks';
-import { Button, Dropdown, Check } from '@/shared';
+import { Button, Dropdown, Check, EmptyState } from '@/shared';
 import { SortKey, SortValue } from '@/types';
 import { convertDateToKST } from '@/utils';
 
@@ -21,7 +21,11 @@ export const Content = () => {
 
   const { ref, inView } = useInView();
 
-  const { data: posts, fetchNextPage } = useInfiniteQuery({
+  const {
+    data: posts,
+    fetchNextPage,
+    isLoading,
+  } = useInfiniteQuery({
     queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]],
     queryFn: async ({ pageParam = '' }) =>
       await postList(
@@ -49,6 +53,9 @@ export const Content = () => {
   }, [inView]);
 
   const joinedPosts = useMemo(() => posts?.pages.flatMap((i) => i.posts), [posts]);
+
+  // 로딩 중이 아니고 게시물이 없는 경우
+  const isEmpty = !isLoading && (!joinedPosts || joinedPosts.length === 0);
 
   return (
     <div className="flex w-full h-full gap-[30px] max-MBI:flex-col max-TBL:gap-[20px] overflow-hidden">
@@ -91,9 +98,17 @@ export const Content = () => {
           </div>
         </div>
         <div className="w-full h-full flex flex-col gap-[30px] relative max-TBL:gap-[20px] overflow-auto">
-          {joinedPosts?.map((item, index, array) => (
-            <Section key={item.id} ref={index === array.length - 1 ? ref : undefined} {...item} />
-          ))}
+          {isEmpty ? (
+            <EmptyState
+              title="게시물이 없습니다"
+              description="아직 작성된 게시물이 없습니다. 첫 번째 게시물을 작성해보세요!"
+              icon="📝"
+            />
+          ) : (
+            joinedPosts?.map((item, index, array) => (
+              <Section key={item.id} ref={index === array.length - 1 ? ref : undefined} {...item} />
+            ))
+          )}
         </div>
       </div>
     </div>

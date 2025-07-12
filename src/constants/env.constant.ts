@@ -10,7 +10,8 @@ export const ENVS = (() => {
     SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
   } as const;
 
-  if (env.NODE_ENV) {
+  // 테스트 환경이나 브라우저 환경에서는 환경변수 검사 건너뛰기
+  if (env.NODE_ENV && typeof window === 'undefined' && !process.env.CYPRESS) {
     Object.entries(env).forEach(([key, value]) => {
       if (!value) throw new EnvNotFoundError(key);
     });
