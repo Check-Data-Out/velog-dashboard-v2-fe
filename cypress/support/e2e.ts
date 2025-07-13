@@ -1,13 +1,6 @@
-// ***********************************************************
-// Cypress E2E 지원 파일
-// ***********************************************************
-
-// Cypress 명령어 타입 정의
 import './commands';
 
-// Cypress에서는 cy.intercept를 사용하여 API 모킹
 beforeEach(() => {
-  // 로그인 API 모킹
   cy.intercept('POST', '**/api/login', (req) => {
     const body = req.body;
     if (body.accessToken === 'invalid_token' || body.refreshToken === 'invalid_token') {
@@ -40,7 +33,6 @@ beforeEach(() => {
     }
   }).as('loginAPI');
 
-  // 샘플 로그인 API 모킹
   cy.intercept('POST', '**/api/login-sample', {
     statusCode: 200,
     body: {
@@ -58,7 +50,6 @@ beforeEach(() => {
     },
   }).as('sampleLoginAPI');
 
-  // 사용자 정보 API 모킹
   cy.intercept('GET', '**/api/me', {
     statusCode: 200,
     body: {
@@ -76,14 +67,11 @@ beforeEach(() => {
     },
   }).as('meAPI');
 
-  // 게시물 목록 API 모킹 (첫 번째 페이지)
   cy.intercept('GET', '**/api/posts*', (req) => {
-    // URL에서 cursor 확인
     const url = new URL(req.url);
     const cursor = url.searchParams.get('cursor');
 
     if (!cursor) {
-      // 첫 번째 페이지 - nextCursor 포함
       req.reply({
         statusCode: 200,
         body: {
@@ -120,7 +108,6 @@ beforeEach(() => {
         },
       });
     } else {
-      // 두 번째 페이지 - nextCursor null로 무한 스크롤 종료
       req.reply({
         statusCode: 200,
         body: {
@@ -159,7 +146,6 @@ beforeEach(() => {
     }
   }).as('postsAPI');
 
-  // 게시물 통계 API 모킹
   cy.intercept('GET', '**/api/posts-stats', {
     statusCode: 200,
     body: {
@@ -179,7 +165,6 @@ beforeEach(() => {
     },
   }).as('postsStatsAPI');
 
-  // 사용자 리더보드 API 모킹
   cy.intercept('GET', '**/api/leaderboard/user*', {
     statusCode: 200,
     body: {
@@ -226,7 +211,6 @@ beforeEach(() => {
     },
   }).as('userLeaderboardAPI');
 
-  // 게시물 리더보드 API 모킹
   cy.intercept('GET', '**/api/leaderboard/post*', {
     statusCode: 200,
     body: {
@@ -273,7 +257,6 @@ beforeEach(() => {
     },
   }).as('postLeaderboardAPI');
 
-  // 전체 통계 API 모킹
   cy.intercept('GET', '**/api/total-stats*', {
     statusCode: 200,
     body: {
@@ -292,7 +275,6 @@ beforeEach(() => {
     },
   }).as('totalStatsAPI');
 
-  // 공지사항 API 모킹
   cy.intercept('GET', '**/api/notis', {
     statusCode: 200,
     body: {
@@ -320,7 +302,6 @@ beforeEach(() => {
     },
   }).as('notisAPI');
 
-  // 로그아웃 API 모킹
   cy.intercept('POST', '**/api/logout', {
     statusCode: 200,
     body: {
@@ -331,7 +312,6 @@ beforeEach(() => {
     },
   }).as('logoutAPI');
 
-  // 게시물 상세 차트 API 모킹 (차트 데이터용)
   cy.intercept('GET', '**/api/post/**', {
     statusCode: 200,
     body: {
@@ -353,24 +333,19 @@ beforeEach(() => {
   }).as('postDetailAPI');
 });
 
-// 전역 타입 선언
+/* eslint-disable @typescript-eslint/no-namespace */
 declare global {
   namespace Cypress {
     interface Chainable {
-      /**
-       * 인증 토큰을 쿠키에 설정하여 로그인 상태를 모킹합니다.
-       */
+      // 인증 토큰을 쿠키에 설정하여 로그인 상태를 모킹합니다.
       setAuthCookies(): Chainable<void>;
 
-      /**
-       * 인증 토큰을 쿠키에서 제거합니다.
-       */
+      // 인증 토큰을 쿠키에서 제거합니다.
       clearAuthCookies(): Chainable<void>;
 
-      /**
-       * 페이지 로드를 기다립니다.
-       */
+      // 페이지 로드를 기다립니다.
       waitForPageLoad(): Chainable<void>;
     }
   }
 }
+/* eslint-enable @typescript-eslint/no-namespace */
