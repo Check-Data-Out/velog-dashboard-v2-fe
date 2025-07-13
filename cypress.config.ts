@@ -15,10 +15,11 @@ export default defineConfig({
     env: {
       NEXT_PUBLIC_BASE_URL: 'http://localhost:3000',
       NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY: 'test_key',
-      NEXT_PUBLIC_GA_ID: 'test_ga_id',
+      NEXT_PUBLIC_GA_ID: '',
       NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'test_sentry_token',
       NEXT_PUBLIC_SENTRY_DSN: 'test_sentry_dsn',
     },
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     setupNodeEvents(_on, _config) {
       // implement node event listeners here
     },
