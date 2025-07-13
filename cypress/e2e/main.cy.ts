@@ -1,3 +1,5 @@
+import { BaseSuccess } from '../support';
+
 describe('메인 페이지', () => {
   beforeEach(() => {
     cy.setAuthCookies();
@@ -47,15 +49,11 @@ describe('메인 페이지', () => {
   });
 
   it('빈 데이터 상태를 올바르게 처리해야 한다', () => {
-    cy.intercept('GET', '**/api/posts*', {
-      statusCode: 200,
-      body: {
-        success: true,
-        message: '게시물 목록 조회에 성공하였습니다.',
-        data: { nextCursor: null, posts: [] },
-        error: null,
-      },
-    }).as('emptyPostsAPI');
+    cy.intercept(
+      'GET',
+      '**/api/posts*',
+      BaseSuccess({ nextCursor: null, posts: [] }, '게시물 목록 조회에 성공하였습니다.'),
+    ).as('emptyPostsAPI');
 
     cy.reload();
 

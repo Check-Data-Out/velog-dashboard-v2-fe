@@ -1,7 +1,5 @@
 describe('로그인 페이지', () => {
-  beforeEach(() => {
-    cy.visit('/');
-  });
+  beforeEach(() => cy.visit('/'));
 
   it('페이지가 정상적으로 로드되어야 한다', () => {
     cy.waitForPageLoad();

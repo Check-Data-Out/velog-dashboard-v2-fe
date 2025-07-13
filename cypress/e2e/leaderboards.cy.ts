@@ -1,3 +1,5 @@
+import { BaseSuccess } from '../support';
+
 describe('리더보드 페이지', () => {
   beforeEach(() => {
     cy.setAuthCookies();
@@ -59,29 +61,17 @@ describe('리더보드 페이지', () => {
   });
 
   it('빈 데이터 상태를 올바르게 처리해야 한다', () => {
-    cy.intercept('GET', '**/api/leaderboard/user*', {
-      statusCode: 200,
-      body: {
-        success: true,
-        message: '사용자 리더보드 조회에 성공하였습니다.',
-        data: {
-          users: [],
-        },
-        error: null,
-      },
-    }).as('emptyUserLeaderboardAPI');
+    cy.intercept(
+      'GET',
+      '**/api/leaderboard/user*',
+      BaseSuccess({ users: [] }, '사용자 리더보드 조회에 성공하였습니다.'),
+    ).as('emptyUserLeaderboardAPI');
 
-    cy.intercept('GET', '**/api/leaderboard/post*', {
-      statusCode: 200,
-      body: {
-        success: true,
-        message: '게시물 리더보드 조회에 성공하였습니다.',
-        data: {
-          posts: [],
-        },
-        error: null,
-      },
-    }).as('emptyPostLeaderboardAPI');
+    cy.intercept(
+      'GET',
+      '**/api/leaderboard/post*',
+      BaseSuccess({ posts: [] }, '게시물 리더보드 조회에 성공하였습니다.'),
+    ).as('emptyPostLeaderboardAPI');
 
     cy.reload();
 
