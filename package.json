@@ -13,13 +13,12 @@
     "build": "next build",
     "start": "next start",
     "autoBuild": "next build && cp -R public .next/standalone && mv .next/static .next/standalone/.next",
-    "eslint:lint": "next lint",
-    "eslint:lintTest": "eslint ./src/__test__",
-    "prettier:format": "prettier --check --ignore-path .gitignore --ignore-path pnpm-lock.yaml .",
     "jest:test": "jest",
+    "eslint:lint": "next lint",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "cypress:test": "cypress run --headless"
+    "cypress:test": "cypress run --headless",
+    "prettier:format": "prettier --check --ignore-path .gitignore --ignore-path pnpm-lock.yaml ."
   },
   "dependencies": {
     "@channel.io/channel-web-sdk-loader": "^2.0.0",
