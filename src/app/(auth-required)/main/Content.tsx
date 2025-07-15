@@ -52,7 +52,7 @@ export const Content = () => {
     fetchNextPage();
   }, [inView]);
 
-  const joinedPosts = useMemo(() => posts?.pages.flatMap((i) => i.posts), [posts]);
+  const joinedPosts = useMemo(() => posts?.pages.flatMap((i) => i.posts) || [], [posts]);
 
   // 로딩 중이 아니고 게시물이 없는 경우
   const isEmpty = !isLoading && (!joinedPosts || joinedPosts.length === 0);

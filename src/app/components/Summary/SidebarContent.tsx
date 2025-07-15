@@ -24,7 +24,7 @@ export const SidebarContent = ({ title, content, increasement, typeIsCount, id }
         <Inform.Title>{title}</Inform.Title>
         <Inform.Horizontal>
           <Inform.Content suffix={typeIsCount ? '회' : '개'}>{parseNumber(content)}</Inform.Content>
-          {increasement !== 0 && (
+          {increasement && (
             <Inform.Highlighted suffix="↑">{parseNumber(increasement)}</Inform.Highlighted>
           )}
         </Inform.Horizontal>

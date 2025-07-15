@@ -1,6 +1,7 @@
 type LeaderboardListUser = {
   id: string;
   email: string;
+  username: string;
   totalViews: string;
   totalLikes: string;
   totalPosts: string;
@@ -12,6 +13,7 @@ type LeaderboardListPost = {
   id: string;
   title: string;
   slug: string;
+  username: string;
   totalViews: number;
   totalLikes: number;
   viewDiff: number;

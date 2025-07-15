@@ -5,7 +5,7 @@ import { startHolyLoader } from 'holy-loader';
 import { useMemo } from 'react';
 import { leaderboardList } from '@/apis';
 import { Rank } from '@/app/components';
-import { PATHS } from '@/constants';
+import { PATHS, URLS } from '@/constants';
 import { useSearchParam } from '@/hooks';
 import { Dropdown, EmptyState } from '@/shared';
 import { LeaderboardItemType } from '@/types';
@@ -17,16 +17,15 @@ export type searchParamsType = {
   dateRange: string;
 };
 
+const defaultParams = {
+  based: 'user' as const,
+  sort: 'viewCount' as const,
+  limit: '10',
+  dateRange: '30',
+};
+
 export const Content = () => {
   const [searchParams, setSearchParams] = useSearchParam<searchParamsType>();
-
-  // 기본값 설정
-  const defaultParams = {
-    based: 'user' as const,
-    sort: 'viewCount' as const,
-    limit: '10',
-    dateRange: '30',
-  };
 
   const finalParams = {
     ...defaultParams,
@@ -39,16 +38,18 @@ export const Content = () => {
   });
 
   const data = useMemo(() => {
-    const value = (
-      finalParams.based === 'user' ? boards?.users : boards?.posts
-    ) as LeaderboardItemType[];
-    return (
-      value?.map((item) => ({
-        name: finalParams.based === 'user' ? item.email.split('@')[0] : item.title,
-        value: finalParams.sort === 'viewCount' ? item.viewDiff : item.likeDiff,
-      })) || []
-    );
-  }, [boards, finalParams.based, finalParams.sort]);
+    const isUserBased = finalParams?.based === 'user';
+    const isViewBased = finalParams?.sort === 'viewCount';
+
+    const value = ((isUserBased ? boards?.users : boards?.posts) || []) as LeaderboardItemType[];
+
+    return value.map(({ username, title, viewDiff, likeDiff, slug }) => ({
+      key: isUserBased ? username : title,
+      username,
+      url: URLS.VELOG + `/@${username}` + (isUserBased ? '/posts' : `/${slug}`),
+      value: isViewBased ? viewDiff : likeDiff,
+    }));
+  }, [boards, finalParams?.based, finalParams?.sort]);
 
   const handleChange = (param: Partial<searchParamsType>) => {
     startHolyLoader();
@@ -109,8 +110,15 @@ export const Content = () => {
             icon="📊"
           />
         ) : (
-          data?.map(({ name, value }, index) => (
-            <Rank name={name} key={index} count={value} rank={index + 1} />
+          data?.map(({ key, username, url, value }, index) => (
+            <Rank
+              name={key}
+              key={index}
+              url={url}
+              count={value}
+              rank={index + 1}
+              suffix={finalParams.based === 'post' ? username : ''}
+            />
           ))
         )}
       </div>
