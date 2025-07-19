@@ -11,12 +11,14 @@
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",
-    "autoBuild": "next build && cp -R public .next/standalone && mv .next/static .next/standalone/.next",
     "start": "next start",
-    "lint": "next lint",
-    "lintTest": "eslint ./src/__test__",
-    "format": "prettier --check --ignore-path .gitignore --ignore-path pnpm-lock.yaml .",
-    "test": "jest"
+    "autoBuild": "next build && cp -R public .next/standalone && mv .next/static .next/standalone/.next",
+    "jest:test": "jest",
+    "eslint:lint": "next lint",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:test": "cypress run --headless",
+    "prettier:format": "prettier --check --ignore-path .gitignore --ignore-path pnpm-lock.yaml ."
   },
   "dependencies": {
     "@channel.io/channel-web-sdk-loader": "^2.0.0",
@@ -43,6 +45,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^6.0.4",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.15.0",
     "@sentry/webpack-plugin": "^3.4.0",
@@ -61,6 +64,7 @@
     "@typescript-eslint/eslint-plugin": "^8.32.0",
     "@typescript-eslint/parser": "^8.33.0",
     "babel-plugin-inline-react-svg": "^2.0.2",
+    "cypress": "^14.5.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.18",
     "eslint-config-prettier": "^9.1.0",
@@ -74,10 +78,8 @@
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "jest-fetch-mock": "^3.0.3",
     "jest-fixed-jsdom": "^0.0.9",
     "lint-staged": "^15.5.0",
-    "msw": "^2.7.3",
     "postcss": "^8",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.1",

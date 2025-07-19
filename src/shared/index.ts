@@ -5,3 +5,4 @@ export * from './Input';
 export * from './Check';
 export * from './Modal';
 export * from './Icon';
+export * from './EmptyState';

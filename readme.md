@@ -1,19 +1,22 @@
 ![image](https://github.com/user-attachments/assets/e43ab765-f94e-41d8-8f57-bf05100606cd)
 
 ## Velog Dashboard
-- **📅 진행 기간** 2024. 11 ~ ONGOING  
+
+- **📅 진행 기간** 2024. 11 ~ ONGOING
 - **💻 서비스 URL** [https://velog-dashboard.kro.kr/](https://velog-dashboard.kro.kr/?utm_source=github&utm_medium=repo) (서비스 체험 가능!)
 
 ## INTRO
-통계 기능이 부실한 블로그 서비스들을 위한 **블로그 통계 대시보드 서비스**입니다.  
 
-현재는 Velog 게시물 통계 조회 기능을 제공하고 있으며, 추후 통계 리더보드 및 타 서비스와의 연동을 계획하고 있습니다.  
+통계 기능이 부실한 블로그 서비스들을 위한 **블로그 통계 대시보드 서비스**입니다.
 
-현재 <ins>**200+**</ins>명의 유저들이 서비스를 사용하고 있으며, <ins>**20000+**</ins>개의 게시물의 통계를 관리하고 있습니다.  
+현재는 Velog 게시물 통계 조회 기능을 제공하고 있으며, 추후 통계 리더보드 및 타 서비스와의 연동을 계획하고 있습니다.
 
-또한, 프로젝트 초기부터 배포까지의 [회고록](https://velog.io/@six-standard/series/Velog-Dashboard-%EC%B0%B8%EC%97%AC%EA%B8%B0)을 매주 작성하였습니다.  
+현재 <ins>**200+**</ins>명의 유저들이 서비스를 사용하고 있으며, <ins>**20000+**</ins>개의 게시물의 통계를 관리하고 있습니다.
+
+또한, 프로젝트 초기부터 배포까지의 [회고록](https://velog.io/@six-standard/series/Velog-Dashboard-%EC%B0%B8%EC%97%AC%EA%B8%B0)을 매주 작성하였습니다.
 
 ## SETUP DOCS
+
 ### 실행
 
 - `git clone https://github.com/Check-Data-Out/velog-dashboard-v2-fe.git`
@@ -24,13 +27,14 @@
 
 ### 린팅
 
-- `pnpm lint` (lint only pages)
-- `pnpm lintTest` (lint only tests)
-- `pnpm format` (prettier)
+- `pnpm eslint:lint` (lint only pages)
+- `pnpm prettier:format` (prettier)
 
 ### 테스팅
 
-- `pnpm test` (test all pages & components)
+- `pnpm jest:test` (unit test)
+- `pnpm cypress:open` (e2e test, with preview screen)
+- `pnpm cypress:test` (e2e test, without preview screen)
 
 ### local 에서 docker image 생성, 태깅, 푸시, 테스팅까지
 

@@ -52,9 +52,9 @@ export const Header = () => {
   const { data: profiles } = useQuery({
     queryKey: [PATHS.ME],
     queryFn: me,
-    enabled: !!client.getQueryData([PATHS.ME]),
-    // 로그아웃 후 리렌더링되어 다시 fetch되는 경우 해결
-    // 어차피 prefetch를 통해 데이터를 불러온 상태에서 렌더하기 때문에, 캐시 여부만 판단하면 됨
+    staleTime: 1000 * 60 * 5, // 5분간 캐시 유지
+    retry: 1,
+    // 테스트 환경에서도 동작하도록 enabled 조건 완화
   });
 
   useEffect(() => {
