@@ -3,7 +3,7 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { postList, postSummary } from '@/apis';
+import { postList, postSummary, totalStats } from '@/apis';
 import { Section, Summary } from '@/app/components';
 import { PATHS, SORT_TYPE } from '@/constants';
 import { useSearchParam } from '@/hooks';
@@ -42,6 +42,12 @@ export const Content = () => {
     queryFn: postSummary,
   });
 
+  const { data: yesterdayPostCount } = useQuery({
+    queryKey: [PATHS.TOTALSTATS],
+    queryFn: async () => totalStats('post'),
+    select: (data) => data.slice(1, 2)[0]?.value,
+  });
+
   useEffect(() => {
     const pages = posts?.pages;
     if (!pages?.length || !inView) return;
@@ -59,7 +65,7 @@ export const Content = () => {
 
   return (
     <div className="flex w-full h-full gap-[30px] max-MBI:flex-col max-TBL:gap-[20px] overflow-hidden">
-      {summaries && <Summary {...summaries} />}
+      {summaries && <Summary {...summaries} yesterdayPostCount={yesterdayPostCount} />}
 
       <div className="w-full flex flex-col gap-[30px] overflow-auto max-TBL:gap-[20px]">
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">

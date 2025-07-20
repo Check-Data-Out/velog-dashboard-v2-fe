@@ -6,7 +6,13 @@ import { PostSummaryDto } from '@/types';
 import { BarContent } from './BarContent';
 import { SidebarContent } from './SidebarContent';
 
-export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
+interface IProp {
+  totalPostCount: number;
+  yesterdayPostCount?: number;
+  stats: PostSummaryDto['stats'];
+}
+
+export const Summary = ({ totalPostCount, yesterdayPostCount, stats }: IProp) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,7 +34,12 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
           increasement={stats?.totalLikes - stats?.yesterdayLikes}
           id="like"
         />
-        <SidebarContent title="총 게시글 수" content={totalPostCount} id="post" />
+        <SidebarContent
+          title="총 게시글 수"
+          content={totalPostCount}
+          increasement={yesterdayPostCount ? totalPostCount - yesterdayPostCount : undefined}
+          id="post"
+        />
       </aside>
       <section
         className={`flex flex-col w-full px-5 bg-BG-SUB rounded-[4px] cursor-pointer MBI:hidden`}
@@ -51,7 +62,11 @@ export const Summary = ({ totalPostCount, stats }: PostSummaryDto) => {
               content={stats?.totalLikes}
               increasement={stats?.totalLikes - stats?.yesterdayLikes}
             />
-            <BarContent title="총 게시글 수" content={totalPostCount} />
+            <BarContent
+              title="총 게시글 수"
+              content={totalPostCount}
+              increasement={yesterdayPostCount ? totalPostCount - yesterdayPostCount : undefined}
+            />
           </div>
         )}
       </section>
