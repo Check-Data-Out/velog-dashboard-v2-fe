@@ -8,7 +8,7 @@ on:
       - feature/e2e-ci
 
 jobs:
-  build-and-push:
+  process-e2e-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,6 +27,7 @@ jobs:
 
       - name: Start application server
         run: |
+          pnpm build
           pnpm start
         env:
           CI: true
