@@ -27,8 +27,7 @@ jobs:
 
       - name: Start application server
         run: |
-          pnpm build
-          pnpm start
+          pnpm dev
         env:
           CI: true
 
