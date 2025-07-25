@@ -1,0 +1,59 @@
+name: Process E2E Testing
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - feature/e2e-ci
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Install dependencies
+        run: |
+          npm install -g pnpm
+          pnpm install --frozen-lockfile
+
+      - name: Start application server
+        run: |
+          pnpm start
+        env:
+          CI: true
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          headless: true
+          record: false
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+          install: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEXT_PUBLIC_BASE_URL: 'http://localhost:3000'
+          NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY: 'test_key'
+          NEXT_PUBLIC_GA_ID: ''
+          NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'test_sentry_token'
+          NEXT_PUBLIC_SENTRY_DSN: 'test_sentry_dsn'
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
