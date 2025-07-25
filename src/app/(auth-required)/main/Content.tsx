@@ -74,7 +74,7 @@ export const Content = () => {
             {convertDateToKST(summaries?.stats?.lastUpdatedDate)?.iso || '업데이트 중..'}
           </span>
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 max-MBI:hidden">
               <Button size="SMALL" disabled>
                 새로고침
               </Button>
