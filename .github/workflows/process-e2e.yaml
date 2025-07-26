@@ -35,12 +35,12 @@ jobs:
 
       - name: Start application server
         run: |
-          pnpm dev
+          pnpm dev &
         env:
           CI: true
 
       - name: Wait for server
-        run: npx wait-on http://localhost:3000
+        run: npx wait-on http://localhost:3000 --timeout 8000
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
