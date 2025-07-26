@@ -25,6 +25,14 @@ jobs:
           npm install -g pnpm
           pnpm install --frozen-lockfile
 
+      - name: Create .env file for Testing
+        run: |
+          echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" >> .env
+          echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_key" >> .env
+          echo "NEXT_PUBLIC_GA_ID=sample_id" >> .env
+          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_token" >> .env
+          echo "NEXT_PUBLIC_SENTRY_DSN=sample_dsn" >> .env
+
       - name: Start application server
         run: |
           pnpm dev
@@ -46,10 +54,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEXT_PUBLIC_BASE_URL: 'http://localhost:3000'
-          NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY: 'test_key'
-          NEXT_PUBLIC_GA_ID: ''
-          NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'test_sentry_token'
-          NEXT_PUBLIC_SENTRY_DSN: 'test_sentry_dsn'
+          NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY: 'sample_key'
+          NEXT_PUBLIC_GA_ID: 'sample_id'
+          NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'sample_token'
+          NEXT_PUBLIC_SENTRY_DSN: 'sample_dsn'
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
