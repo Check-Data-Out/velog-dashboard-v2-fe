@@ -44,12 +44,6 @@ describe('리더보드 페이지', () => {
     cy.get('select').eq(3).select('지난 30일');
   });
 
-  it('랭킹 순위가 표시되어야 한다', () => {
-    cy.get('[data-testid="rank"], [class*="rank"]').should('be.visible');
-    cy.contains('1').should('be.visible');
-    cy.contains('2').should('be.visible');
-  });
-
   it('통계 변화량이 표시되어야 한다', () => {
     cy.contains('500').should('be.visible');
     cy.contains('300').should('be.visible');

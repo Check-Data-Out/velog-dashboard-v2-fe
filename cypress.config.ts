@@ -14,10 +14,10 @@ export default defineConfig({
     responseTimeout: 10000,
     env: {
       NEXT_PUBLIC_BASE_URL: 'http://localhost:3000',
-      NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY: 'test_key',
-      NEXT_PUBLIC_GA_ID: '',
-      NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'test_sentry_token',
-      NEXT_PUBLIC_SENTRY_DSN: 'test_sentry_dsn',
+      NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY: 'sample_key',
+      NEXT_PUBLIC_GA_ID: 'sample_id',
+      NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'sample_token',
+      NEXT_PUBLIC_SENTRY_DSN: 'sample_dsn',
     },
     /* eslint-disable @typescript-eslint/no-unused-vars */
     setupNodeEvents(_on, _config) {
