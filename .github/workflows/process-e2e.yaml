@@ -24,7 +24,7 @@ jobs:
         run: |
           npm install -g pnpm
           pnpm install --frozen-lockfile
-          pnpm run cypress install
+          npx cypress install
 
       - name: Create .env file for Testing
         run: |
