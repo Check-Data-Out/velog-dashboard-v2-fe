@@ -69,16 +69,12 @@ export const Content = () => {
 
       <div className="w-full flex flex-col gap-[30px] overflow-auto max-TBL:gap-[20px]">
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">
-          <span className="text-TEXT-ALT text-SUBTITLE-5 MBI:hidden">
-            마지막 업데이트 :{' '}
-            {convertDateToKST(summaries?.stats?.lastUpdatedDate)?.iso || '업데이트 중..'}
-          </span>
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3 max-MBI:hidden">
               <Button size="SMALL" disabled>
                 새로고침
               </Button>
-              <span className="text-TEXT-ALT text-SUBTITLE-4 max-TBL:text-SUBTITLE-5 max-MBI:hidden">
+              <span className="text-TEXT-ALT text-SUBTITLE-4 max-TBL:text-SUBTITLE-5">
                 마지막 업데이트 :{' '}
                 {convertDateToKST(summaries?.stats?.lastUpdatedDate)?.iso || '업데이트 중..'}
               </span>
