@@ -95,7 +95,7 @@ export const Header = () => {
               width={35}
               height={35}
               className="rounded-full"
-              src={profiles?.profile.thumbnail || '/profile.jpg'}
+              src={profiles?.profile?.thumbnail || '/profile.jpg'}
               alt=""
             />
             <span className={`${textStyle} text-TEXT-ALT`} id="profile">
