@@ -70,12 +70,12 @@ jobs:
           path: cypress/screenshots
 
       - name: Send Slack Notification on Failure
-
         uses: slackapi/slack-github-action@v1.24.0
+
         with:
           payload: |
             {
-              "text": "* FE E2E CI Test *\n\n❌ *Status:* Failure\n📅 *Timestamp (KST):* ${{ env.KST_TIME }}\n🔗 *Workflow URL:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow>"
+              "text": "*FE E2E CI Test*\n\n✅ *Status:* Success\n\n📅 *Timestamp (KST):* ${{ env.KST_TIME }}\n\n🔗 *Workflow URL:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow>\n\n🔗 *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
