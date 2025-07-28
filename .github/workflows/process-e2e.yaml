@@ -75,7 +75,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "*❌ FE E2E CI Test was failed*\n\n📅 *Timestamp (KST):* ${{ env.KST_TIME }}\n\n🔗 *Workflow URL:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow>\n\n🔗 *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>"
+              "text": "*❌ FE E2E CI Test was failed*\n\n📅 *Timestamp (KST):* ${{ env.KST_TIME }}\n\n🔗 *Workflow URL:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow>\n\n🔗 *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\n\n📸 *Screenshots:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts|Download Screenshots>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
