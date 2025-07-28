@@ -66,7 +66,6 @@ jobs:
           path: cypress/screenshots
 
   slackNotify:
-    if: failure()
     runs-on: ubuntu-latest
 
     steps:
