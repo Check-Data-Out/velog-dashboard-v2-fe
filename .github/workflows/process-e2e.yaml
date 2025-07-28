@@ -64,3 +64,19 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots
+
+  slackNotify:
+    if: failure()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Notify message to slack
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+          SLACK_COLOR: ${{ job.status }} # 또는 'green', '#ff00ff' 처럼 직접 색상 지정
+          SLACK_USERNAME: Github
+          SLACK_ICON: https://cdn-icons-png.flaticon.com/512/25/25231.png
+          SLACK_TITLE: E2E Test
+          SLACK_MESSAGE: 'E2E CI 테스트가 실패했습니다. Artifact를 확인해주세요.'
