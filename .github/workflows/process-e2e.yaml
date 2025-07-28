@@ -58,6 +58,10 @@ jobs:
           NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'sample_token'
           NEXT_PUBLIC_SENTRY_DSN: 'sample_dsn'
 
+      # KST 시간을 GitHub Actions 환경 변수에 세팅
+      - name: Get Current KST Time
+        run: echo "KST_TIME=$(TZ=Asia/Seoul date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
         if: failure()
@@ -65,17 +69,13 @@ jobs:
           name: cypress-screenshots
           path: cypress/screenshots
 
-  slackNotify:
-    runs-on: ubuntu-latest
+      - name: Send Slack Notification on Failure
 
-    steps:
-      - name: Notify message to slack
-        uses: rtCamp/action-slack-notify@v2
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "* FE E2E CI Test *\n\n❌ *Status:* Failure\n📅 *Timestamp (KST):* ${{ env.KST_TIME }}\n🔗 *Workflow URL:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow>"
+            }
         env:
-          SLACK_WEBHOOK: ${{ secrets.GIT_ACTION_SLACK_WEBHOOK }}
-          SLACK_CHANNEL: ${{ secrets.GIT_ACTION_SLACK_CHANNEL }}
-          SLACK_COLOR: ${{ job.status }} # 또는 'green', '#ff00ff' 처럼 직접 색상 지정
-          SLACK_USERNAME: Github
-          SLACK_ICON: https://cdn-icons-png.flaticon.com/512/25/25231.png
-          SLACK_TITLE: E2E Test
-          SLACK_MESSAGE: 'E2E CI 테스트가 실패했습니다. Artifact를 확인해주세요.'
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
