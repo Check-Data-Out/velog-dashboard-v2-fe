@@ -73,8 +73,8 @@ jobs:
       - name: Notify message to slack
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+          SLACK_WEBHOOK: ${{ secrets.GIT_ACTION_SLACK_WEBHOOK }}
+          SLACK_CHANNEL: ${{ secrets.GIT_ACTION_SLACK_CHANNEL }}
           SLACK_COLOR: ${{ job.status }} # 또는 'green', '#ff00ff' 처럼 직접 색상 지정
           SLACK_USERNAME: Github
           SLACK_ICON: https://cdn-icons-png.flaticon.com/512/25/25231.png
