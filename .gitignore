@@ -49,12 +49,12 @@ Temporary Items
 ### NextJS ###
 # dependencies
 /node_modules
-/cypress/screenshots
 /.pnp
 .pnp.js
 
 # testing
 /coverage
+/cypress/screenshots
 
 # next.js
 /.next/
