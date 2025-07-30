@@ -54,6 +54,7 @@ Temporary Items
 
 # testing
 /coverage
+/cypress/screenshots
 
 # next.js
 /.next/
