@@ -108,7 +108,11 @@ export const Content = () => {
             />
           ) : (
             joinedPosts?.map((item, index, array) => (
-              <Section key={item.id} ref={index === array.length - 1 ? ref : undefined} {...item} />
+              <Section
+                key={item?.id ?? index}
+                ref={index === array.length - 1 ? ref : undefined}
+                {...item}
+              />
             ))
           )}
         </div>
