@@ -2,9 +2,12 @@ import * as Icons from './icons';
 export { default as SvgrMock } from './SvgrMock';
 
 export type NameType = keyof typeof Icons;
-type iconType = Record<NameType, React.JSXElementConstructor<React.SVGProps<SVGSVGElement>>>;
 
-interface IProp extends React.SVGProps<SVGSVGElement> {
+type SVGPropsWithTW = React.SVGProps<SVGSVGElement> & { tw?: string };
+
+type iconType = Record<NameType, React.JSXElementConstructor<SVGPropsWithTW>>;
+
+interface IProp extends SVGPropsWithTW {
   name: NameType;
   size?: number;
   color?: string;
@@ -27,10 +30,11 @@ export const Icon = ({ name, size = 30, color = '#ACACAC', rotate = 'up', ...res
   return (
     <Comp
       {...rest}
-      style={{ color }}
+      style={{ color, ...rest.style }}
       width={size}
       height={size}
       className={`transition-all duration-300 shrink-0 ${rotates[rotate]} ${rest.className}`}
+      tw={`transition-all duration-300 shrink-0 ${rotates[rotate]} ${rest.tw}`}
     />
   );
 };
