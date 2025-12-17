@@ -6,7 +6,7 @@ import { parseNumber } from '@/utils';
 import { fontStyle } from '../util';
 
 interface IProp {
-  assets: ('views' | 'likes' | 'posts')[];
+  assets?: ('views' | 'likes' | 'posts')[];
   totalViews: number;
   totalLikes: number;
   totalPosts: number;
@@ -22,7 +22,7 @@ export const Statistics = ({ assets, totalViews, totalLikes, totalPosts }: IProp
 
   return (
     <div style={{ gap: 18 }} tw="flex items-center">
-      {assets.map((item, index) => (
+      {assets?.map((item, index) => (
         <div tw="flex items-center" key={index}>
           <Icon
             name={nameTable[item] as NameType}

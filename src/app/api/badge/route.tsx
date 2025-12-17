@@ -47,14 +47,10 @@ const DATA = {
 
 export async function GET(request: Request) {
   const { origin, searchParams } = new URL(request.url);
-  const size = Number(searchParams.get('size')) || 1;
-  const username = searchParams.get('username') || 0;
+  const size = Number(searchParams.get('size')) || 2;
+  const username = searchParams.get('username') || '';
   const type = (searchParams.get('type') as 'default' | 'simple') || 'default';
-  const assets = (searchParams.get('assets')?.split(',') as ('views' | 'likes' | 'posts')[]) || [
-    'views',
-    'likes',
-    'posts',
-  ];
+  const assets = searchParams.get('assets')?.split(',') as ('views' | 'likes' | 'posts')[];
 
   if (!username) {
     return NextResponse.json({ error: "'username' parameter is required" }, { status: 400 });
