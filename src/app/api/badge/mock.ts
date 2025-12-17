@@ -1,0 +1,40 @@
+export const MOCK_DATA = {
+  username: 'six-standard',
+  totalViews: 12345,
+  totalLikes: 6789,
+  totalPosts: 123,
+  posts: [
+    {
+      id: '1',
+      title: '제목',
+      createdAt: '2025-12-16',
+      viewCount: 123,
+      viewDiff: 456,
+      likeCount: 789,
+    },
+    {
+      id: '2',
+      title: '제목',
+      createdAt: '2025-12-16',
+      viewCount: 123,
+      viewDiff: 456,
+      likeCount: 789,
+    },
+    {
+      id: '3',
+      title: '제목',
+      createdAt: '2025-12-16',
+      viewCount: 123,
+      viewDiff: 456,
+      likeCount: 789,
+    },
+    {
+      id: '4',
+      title: '제목',
+      createdAt: '2025-12-16',
+      viewCount: 123,
+      viewDiff: 456,
+      likeCount: 789,
+    },
+  ],
+};

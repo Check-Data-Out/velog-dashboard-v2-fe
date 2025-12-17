@@ -2,48 +2,8 @@
 
 import { NextResponse } from 'next/server';
 import { Posts, PoweredBy, Statistics, Title } from './components';
+import { MOCK_DATA } from './mock';
 import { createImageResponse } from './util';
-
-const DATA = {
-  username: 'six-standard',
-  totalViews: 12345,
-  totalLikes: 6789,
-  totalPosts: 123,
-  posts: [
-    {
-      id: '1',
-      title: '제목',
-      createdAt: '2025-12-16',
-      viewCount: 123,
-      viewDiff: 456,
-      likeCount: 789,
-    },
-    {
-      id: '1',
-      title: '제목',
-      createdAt: '2025-12-16',
-      viewCount: 123,
-      viewDiff: 456,
-      likeCount: 789,
-    },
-    {
-      id: '1',
-      title: '제목',
-      createdAt: '2025-12-16',
-      viewCount: 123,
-      viewDiff: 456,
-      likeCount: 789,
-    },
-    {
-      id: '1',
-      title: '제목',
-      createdAt: '2025-12-16',
-      viewCount: 123,
-      viewDiff: 456,
-      likeCount: 789,
-    },
-  ],
-};
 
 export async function GET(request: Request) {
   const { origin, searchParams } = new URL(request.url);
@@ -59,12 +19,12 @@ export async function GET(request: Request) {
   if (type === 'simple') {
     return await createImageResponse(
       <div style={{ gap: 12 }} tw="flex flex-col items-center w-full">
-        <Title username={DATA.username} origin={origin} />
+        <Title username={MOCK_DATA.username} origin={origin} />
         <Statistics
           assets={assets}
-          totalLikes={DATA.totalLikes}
-          totalPosts={DATA.totalPosts}
-          totalViews={DATA.totalViews}
+          totalLikes={MOCK_DATA.totalLikes}
+          totalPosts={MOCK_DATA.totalPosts}
+          totalViews={MOCK_DATA.totalViews}
         />
         <PoweredBy />
       </div>,
@@ -75,15 +35,15 @@ export async function GET(request: Request) {
   return await createImageResponse(
     <div style={{ gap: 16 }} tw="flex flex-col w-full">
       <div tw="flex items-center justify-between w-full">
-        <Title username={DATA.username} origin={origin} />
+        <Title username={MOCK_DATA.username} origin={origin} />
         <Statistics
           assets={assets}
-          totalLikes={DATA.totalLikes}
-          totalPosts={DATA.totalPosts}
-          totalViews={DATA.totalViews}
+          totalLikes={MOCK_DATA.totalLikes}
+          totalPosts={MOCK_DATA.totalPosts}
+          totalViews={MOCK_DATA.totalViews}
         />
       </div>
-      <Posts posts={DATA.posts} />
+      <Posts posts={MOCK_DATA.posts} />
       <PoweredBy />
     </div>,
     { origin, size, type: 'default' },
