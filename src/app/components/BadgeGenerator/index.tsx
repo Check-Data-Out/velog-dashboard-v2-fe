@@ -70,8 +70,17 @@ export const BadgeGenerator = () => {
           <div className="flex gap-2 flex-col">
             <span className="text-TEXT-MAIN text-TITLE-5">HTML 코드 </span>
             <CopyButton
+              // TODO: 임시 하드코딩 (추후 constant 등으로 옮길 계획)
               url={`<a href="https://velog.io/@${profiles?.username}">\n  <img src="http://localhost:3000/api/badge?username=${profiles?.username}&type=${type}${selectedAssets.length ? `&assets=${selectedAssets.join(',')}` : ''}" />\n</a>`}
               type="code"
+              className="max-w-[650px]"
+            />
+          </div>
+          <div className="flex gap-2 flex-col">
+            <span className="text-TEXT-MAIN text-TITLE-5">URL</span>
+            <CopyButton
+              // TODO: 임시 하드코딩 (추후 constant 등으로 옮길 계획)
+              url={`http://localhost:3000/api/badge?username=${profiles?.username}&type=${type}${selectedAssets.length ? `&assets=${selectedAssets.join(',')}` : ''}`}
               className="max-w-[650px]"
             />
           </div>
@@ -94,6 +103,7 @@ export const BadgeGenerator = () => {
             <Image
               fill
               key={type}
+              // TODO: 임시 하드코딩
               src={`http://localhost:3000/api/badge?username=${profiles?.username}&size=2&type=${type}&assets=${Object.entries(
                 assets,
               )
