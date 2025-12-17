@@ -19,7 +19,19 @@ export const fontStyle = <T extends keyof typeof FONTS>(
   };
 };
 
-export const loadFonts = async (url: string) => await (await fetch(new URL(url)))?.arrayBuffer();
+const loadFonts = async (url: string): Promise<ArrayBuffer> => {
+  try {
+    const response = await fetch(new URL(url));
+    if (!response.ok) {
+      throw new Error(`Failed to load font from ${url}: ${response.statusText}`);
+    }
+    return await response.arrayBuffer();
+  } catch (error) {
+    throw new Error(
+      `Font loading failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    );
+  }
+};
 
 const sizeTable = {
   default: [550, 350, 25],
@@ -37,6 +49,11 @@ export const createImageResponse = async (node: React.ReactNode, options: option
 
   const NotoBold = await loadFonts(origin + '/NotoSansKR-Bold.ttf');
   const NotoMedium = await loadFonts(origin + '/NotoSansKR-Medium.ttf');
+
+  if (!NotoBold || !NotoMedium) {
+    throw new Error('Failed to load required fonts');
+  }
+
   const [width, height, padding] = sizeTable[type];
 
   return new ImageResponse(
