@@ -7,9 +7,8 @@ import { twJoin } from 'tailwind-merge';
 import { createQRToken } from '@/apis';
 import { COLORS, ENVS, PATHS, SCREENS } from '@/constants';
 import { useResponsive } from '@/hooks';
-import { Inform, Modal as Layout } from '@/shared';
+import { Inform, Modal as Layout, CopyButton } from '@/shared';
 import { formatTimeToMMSS } from '@/utils';
-import { CopyButton } from './CopyButton';
 
 const TIMER_DURATION = 5 * 60; // 5분 = 300초
 
