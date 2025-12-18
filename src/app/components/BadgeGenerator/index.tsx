@@ -3,10 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { FormEvent, useState } from 'react';
-// import { ENVS } from '@/constants';
 import { twMerge } from 'tailwind-merge';
 import { me } from '@/apis';
-import { PATHS } from '@/constants';
+import { PATHS, ENVS } from '@/constants';
 import { Check, CopyButton, Dropdown, Modal as Layout } from '@/shared';
 
 export const BadgeGenerator = () => {
@@ -28,6 +27,8 @@ export const BadgeGenerator = () => {
   const selectedAssets = Object.entries(assets)
     .filter((value) => value[1])
     .map(([key]) => key);
+
+  const url = `${ENVS.CLIENT_BASE_URL}/api/badge?username=${profiles?.username}&type=${type}${selectedAssets.length ? `&assets=${selectedAssets.join(',')}` : ''}`;
 
   return (
     <Layout title="뱃지 생성기">
@@ -70,19 +71,14 @@ export const BadgeGenerator = () => {
           <div className="flex gap-2 flex-col">
             <span className="text-TEXT-MAIN text-TITLE-5">HTML 코드 </span>
             <CopyButton
-              // TODO: 임시 하드코딩 (추후 constant 등으로 옮길 계획)
-              url={`<a href="https://velog.io/@${profiles?.username}">\n  <img src="http://localhost:3000/api/badge?username=${profiles?.username}&type=${type}${selectedAssets.length ? `&assets=${selectedAssets.join(',')}` : ''}" />\n</a>`}
+              url={`<a href="https://velog.io/@${profiles?.username}">\n  <img src="${url}"/>\n</a>`}
               type="code"
               className="max-w-[650px]"
             />
           </div>
           <div className="flex gap-2 flex-col">
             <span className="text-TEXT-MAIN text-TITLE-5">URL</span>
-            <CopyButton
-              // TODO: 임시 하드코딩 (추후 constant 등으로 옮길 계획)
-              url={`http://localhost:3000/api/badge?username=${profiles?.username}&type=${type}${selectedAssets.length ? `&assets=${selectedAssets.join(',')}` : ''}`}
-              className="max-w-[650px]"
-            />
+            <CopyButton url={url} className="max-w-[650px]" />
           </div>
         </div>
         <div className="flex gap-2 flex-col">
@@ -95,23 +91,13 @@ export const BadgeGenerator = () => {
           <div
             className={twMerge(
               'shrink-0 relative max-MBI:w-full',
+              // TODO: 뱃지 디자인이 달라지는 경우에도 쉽게 맞출 수 있도록 개선 필요함
               type === 'default'
                 ? 'w-[550px] MBI:h-[350px] max-MBI:max-w-[550px]'
                 : 'w-[350px] MBI:h-[140px] max-MBI:max-w-[350px]',
             )}
           >
-            <Image
-              fill
-              key={type}
-              // TODO: 임시 하드코딩
-              src={`http://localhost:3000/api/badge?username=${profiles?.username}&size=2&type=${type}&assets=${Object.entries(
-                assets,
-              )
-                .filter((value) => value[1])
-                .map(([key]) => key)
-                .join(',')}`}
-              alt="Preview"
-            />
+            <Image fill key={type} src={url} alt="Preview" />
           </div>
         </div>
       </div>
