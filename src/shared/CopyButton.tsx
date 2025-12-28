@@ -34,34 +34,27 @@ export const CopyButton = ({ url, type = 'default', disabled, ...rest }: IProp) 
     }
   };
 
-  if (type === 'code') {
-    return (
-      <button
-        {...rest}
-        onClick={handleClick}
-        disabled={disabled}
-        className={twMerge(
-          `
-      relative bg-BG-MAIN w-fit max-w-full p-5 rounded-lg overflow-hidden transition-all duration-200
-      after:absolute after:inset-0 after:flex after:items-center after:justify-center
-      after:rounded-lg after:transition-all after:duration-300 after:font-medium after:pointer-events-none
-      ${
-        disabled
-          ? 'cursor-not-allowed bg-BG-ALT text-TEXT-SUB opacity-50'
-          : clicked
-            ? 'cursor-pointer bg-BG-MAIN text-TEXT-MAIN hover:shadow-lg after:content-["복사_완료!"] after:bg-PRIMARY-SUB after:text-BG-MAIN after:opacity-100 after:scale-100'
-            : 'cursor-pointer bg-BG-MAIN text-TEXT-MAIN hover:shadow-lg after:content-["클릭해서_복사하기"] after:bg-BG-MAIN after:text-TEXT-MAIN after:opacity-0 after:scale-95 hover:after:opacity-100 hover:after:scale-100'
-      }
-    `,
-          rest.className,
-        )}
-      >
-        <code className="block text-left break-words whitespace-pre-wrap w-fit text-TEXT-MAIN">
-          {url}
-        </code>
-      </button>
-    );
-  }
+  const baseStyle = `
+    relative block overflow-hidden rounded-lg
+    transition-all duration-200
+    after:absolute after:inset-0 after:flex after:items-center after:justify-center
+    after:rounded-lg after:transition-all after:duration-300 after:font-medium after:pointer-events-none
+    after:text-TEXT-MAIN
+  `;
+
+  const activeStyle = !disabled && 'cursor-pointer bg-BG-MAIN text-TEXT-MAIN hover:shadow-lg';
+
+  const disabledStyle = disabled && 'cursor-not-allowed bg-BG-ALT text-TEXT-SUB opacity-50';
+
+  const hoverStyle =
+    !disabled &&
+    `after:content-["클릭해서_복사하기"] after:bg-BG-MAIN after:opacity-0 after:scale-95 hover:after:opacity-100 hover:after:scale-100
+  `;
+
+  const clickedStyle =
+    clicked &&
+    `after:content-["복사_완료!"] after:bg-PRIMARY-SUB after:text-BG-MAIN after:opacity-100 after:scale-100
+  `;
 
   return (
     <button
@@ -69,22 +62,22 @@ export const CopyButton = ({ url, type = 'default', disabled, ...rest }: IProp) 
       onClick={handleClick}
       disabled={disabled}
       className={twMerge(
-        `
-        relative block p-4 rounded-lg leading-none overflow-hidden transition-all duration-200
-        after:absolute after:inset-0 after:flex after:items-center after:justify-center truncate
-        after:rounded-lg after:transition-all after:duration-300 after:font-medium after:pointer-events-none
-        ${
-          disabled
-            ? 'cursor-not-allowed bg-BG-ALT text-TEXT-SUB opacity-50'
-            : clicked
-              ? 'cursor-pointer bg-BG-MAIN text-TEXT-MAIN hover:shadow-lg after:content-["복사_완료!"] after:bg-PRIMARY-SUB after:text-BG-MAIN after:opacity-100 after:scale-100'
-              : 'cursor-pointer bg-BG-MAIN text-TEXT-MAIN hover:shadow-lg after:content-["클릭해서_복사하기"] after:bg-BG-MAIN after:text-TEXT-MAIN after:opacity-0 after:scale-95 hover:after:opacity-100 hover:after:scale-100'
-        }
-      `,
+        baseStyle,
+        activeStyle,
+        disabledStyle,
+        hoverStyle,
+        clickedStyle,
+        type === 'code' ? 'w-fit max-w-full p-5' : 'p-4 leading-none truncate',
         rest.className,
       )}
     >
-      {url}
+      {type === 'default' ? (
+        url
+      ) : (
+        <code className="block text-left break-words whitespace-pre-wrap w-fit text-TEXT-MAIN">
+          {url}
+        </code>
+      )}
     </button>
   );
 };
