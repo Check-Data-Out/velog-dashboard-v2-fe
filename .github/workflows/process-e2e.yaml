@@ -27,6 +27,7 @@ jobs:
       - name: Create .env file for Testing
         run: |
           echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" >> .env
+          echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env
           echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_key" >> .env
           echo "NEXT_PUBLIC_GA_ID=sample_id" >> .env
           echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_token" >> .env
@@ -34,8 +35,7 @@ jobs:
 
       - name: Start application server
         run: |
-          pnpm dev > dev-server.log 2>&1 &
-          echo $! > .server-pid
+          pnpm dev &
         env:
           CI: true
 
