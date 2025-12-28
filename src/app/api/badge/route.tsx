@@ -18,10 +18,14 @@ export async function GET(request: Request) {
 
   const badge = await badgeApi(username);
 
+  if (!badge) {
+    return NextResponse.json({ error: 'could not load data' }, { status: 500 });
+  }
+
   if (type === 'simple') {
     return await createImageResponse(
       <div style={{ gap: 12 }} tw="flex flex-col items-center w-full">
-        <Title username={badge?.user.username || ''} origin={origin} />
+        <Title username={badge.user.username} origin={origin} />
         <Statistics
           assets={assets}
           totalLikes={badge.user.totalLikes}
@@ -37,7 +41,7 @@ export async function GET(request: Request) {
   return await createImageResponse(
     <div style={{ gap: 16 }} tw="flex flex-col w-full">
       <div tw="flex items-center justify-between w-full">
-        <Title username={badge?.user.username} origin={origin} />
+        <Title username={badge.user.username} origin={origin} />
         <Statistics
           assets={assets}
           totalLikes={badge.user.totalLikes}
