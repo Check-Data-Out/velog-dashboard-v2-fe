@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 const ROLLBACK_AFTER_CLICK_MS = 1000;
 
-interface IProp extends HTMLProps<HTMLButtonElement> {
+interface IProp extends Exclude<HTMLProps<HTMLButtonElement>, 'type'> {
   type?: 'default' | 'code';
   url?: string;
   disabled?: boolean;
