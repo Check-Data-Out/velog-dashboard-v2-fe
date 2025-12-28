@@ -12,11 +12,11 @@ export async function GET(request: Request) {
   const type = (searchParams.get('type') as 'default' | 'simple') || 'default';
   const assets = searchParams.get('assets')?.split(',') as ('views' | 'likes' | 'posts')[];
 
-  const badge = await badgeApi(username);
-
   if (!username) {
     return NextResponse.json({ error: "'username' parameter is required" }, { status: 400 });
   }
+
+  const badge = await badgeApi(username);
 
   if (type === 'simple') {
     return await createImageResponse(
