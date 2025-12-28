@@ -9,7 +9,7 @@ interface IProp extends HTMLProps<HTMLButtonElement> {
   disabled?: boolean;
 }
 
-export const CopyButton = ({ url, type, disabled, ...rest }: IProp) => {
+export const CopyButton = ({ url, type = 'default', disabled, ...rest }: IProp) => {
   const [clicked, setClicked] = useState(false);
   const clickedRef = useRef<NodeJS.Timeout | null>(null);
 
