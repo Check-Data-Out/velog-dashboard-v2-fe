@@ -22,4 +22,4 @@ export const createQRToken = async () =>
   await instance<null, { token: string }>(PATHS.QRLOGIN, { method: 'POST' });
 
 export const badge = async (username: string) =>
-  await instance<null, BadgeDto>(`/${username}/badge`, { method: 'GET' });
+  await instance<null, BadgeDto>(`${PATHS.TOTALSTATS}/${username}/badge`, { method: 'GET' });
