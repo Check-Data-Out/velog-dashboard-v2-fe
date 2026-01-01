@@ -23,6 +23,9 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'velog.velcdn.com', pathname: '**' },
       { protocol: 'https', hostname: 'images.velog.io', pathname: '**' },
+      ...(process.env.NODE_ENV === 'development'
+        ? [{ protocol: 'http', hostname: 'localhost', pathname: '**' }]
+        : []),
     ],
   },
 };

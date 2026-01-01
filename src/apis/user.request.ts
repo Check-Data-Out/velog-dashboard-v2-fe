@@ -1,6 +1,6 @@
 import { PATHS } from '@/constants';
 import { NotFoundError } from '@/errors';
-import { LoginVo, UserDto } from '@/types';
+import { BadgeDto, LoginVo, UserDto } from '@/types';
 import { instance } from './instance.request';
 
 export const login = async (body: LoginVo) =>
@@ -20,3 +20,6 @@ export const sampleLogin = async () => await instance(PATHS.SAMPLELOGIN, { metho
 
 export const createQRToken = async () =>
   await instance<null, { token: string }>(PATHS.QRLOGIN, { method: 'POST' });
+
+export const badge = async (username: string) =>
+  await instance<null, BadgeDto>(`${PATHS.TOTALSTATS}/${username}/badge`, { method: 'GET' });

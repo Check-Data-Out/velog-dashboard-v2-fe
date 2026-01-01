@@ -27,6 +27,7 @@ jobs:
       - name: Create .env file for Testing
         run: |
           echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" >> .env
+          echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env
           echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_key" >> .env
           echo "NEXT_PUBLIC_GA_ID=sample_id" >> .env
           echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_token" >> .env
@@ -37,9 +38,6 @@ jobs:
           pnpm dev &
         env:
           CI: true
-
-      - name: Wait for server
-        run: npx wait-on http://localhost:3000 --timeout 60000
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6

@@ -3,7 +3,7 @@ import { twJoin } from 'tailwind-merge';
 interface IProp extends React.HTMLAttributes<HTMLInputElement> {
   checked: boolean;
   label?: string;
-  onChange: React.FormEventHandler<HTMLDivElement> | undefined;
+  onChange: React.FormEventHandler<HTMLInputElement> | undefined;
   direction?: 'left' | 'right';
 }
 
