@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unknown-property */
 
-import { BadgeGenerator } from '@/app/components/BadgeGenerator';
 import { BadgeDto } from '@/types';
 import { Posts, PoweredBy, Statistics, Title } from './components';
 import { createImageResponse } from './util';
