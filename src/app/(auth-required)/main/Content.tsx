@@ -1,9 +1,10 @@
 'use client';
 
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo } from 'react';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { postList, postSummary, totalStats } from '@/apis';
+import { toast } from 'react-toastify';
+import { postList, postSummary, refreshStats, totalStats } from '@/apis';
 import { Section, Summary } from '@/app/components';
 import { PATHS, SORT_TYPE } from '@/constants';
 import { useSearchParam } from '@/hooks';
@@ -18,6 +19,7 @@ export const Content = () => {
     asc: 'true' | 'false';
     sort: SortValue;
   }>();
+  const [refreshed, setRefreshed] = useState(false);
 
   const { ref, inView } = useInView();
 
@@ -48,6 +50,16 @@ export const Content = () => {
     select: (data) => data.slice(1, 2)[0]?.value,
   });
 
+  const { mutate: refresh } = useMutation({
+    mutationFn: refreshStats,
+    onSettled: () => {
+      setRefreshed(true);
+    },
+    onSuccess: () => {
+      toast.success('통계 새로고침 요청이 성공적으로 전송되었습니다');
+    },
+  });
+
   useEffect(() => {
     const pages = posts?.pages;
     if (!pages?.length || !inView) return;
@@ -71,7 +83,7 @@ export const Content = () => {
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3 max-MBI:hidden">
-              <Button size="SMALL" disabled>
+              <Button size="SMALL" onClick={() => refresh()} disabled={refreshed}>
                 새로고침
               </Button>
               <span className="text-TEXT-ALT text-SUBTITLE-4 max-TBL:text-SUBTITLE-5">
