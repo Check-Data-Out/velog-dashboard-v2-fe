@@ -2,6 +2,6 @@ import { CustomError } from './instance.error';
 
 export class UserNameNotFoundError extends CustomError {
   constructor() {
-    super('username not found', 'UserNameNotFound');
+    super('username not found', 'UserNameNotFound', 404, true);
   }
 }
