@@ -12,6 +12,8 @@ import { Button, Dropdown, Check, EmptyState } from '@/shared';
 import { SortKey, SortValue } from '@/types';
 import { convertDateToKST } from '@/utils';
 
+const REFRESH_TIME = 15 * 1000;
+
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
 
 export const Content = () => {
@@ -27,6 +29,7 @@ export const Content = () => {
     data: posts,
     fetchNextPage,
     isLoading,
+    refetch: refetchPosts,
   } = useInfiniteQuery({
     queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]],
     queryFn: async ({ pageParam = '' }) =>
@@ -39,12 +42,12 @@ export const Content = () => {
     initialPageParam: '',
   });
 
-  const { data: summaries } = useQuery({
+  const { data: summaries, refetch: refetchSummaries } = useQuery({
     queryKey: [PATHS.SUMMARY],
     queryFn: postSummary,
   });
 
-  const { data: yesterdayPostCount } = useQuery({
+  const { data: yesterdayPostCount, refetch: refetchYesterdayPostCount } = useQuery({
     queryKey: [PATHS.TOTALSTATS],
     queryFn: async () => totalStats('post'),
     select: (data) => data.slice(1, 2)[0]?.value,
@@ -54,6 +57,12 @@ export const Content = () => {
     mutationFn: refreshStats,
     onSettled: () => {
       setRefreshed(true);
+      setTimeout(() => {
+        setRefreshed(false);
+        refetchPosts();
+        refetchSummaries();
+        refetchYesterdayPostCount();
+      }, REFRESH_TIME);
     },
     onSuccess: () => {
       toast.success('통계 새로고침 요청이 성공적으로 전송되었습니다');
