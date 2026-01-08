@@ -2,6 +2,7 @@ import { captureException, setContext } from '@sentry/nextjs';
 import returnFetch, { FetchArgs } from 'return-fetch';
 import { ENVS } from '@/constants';
 import { ServerNotRespondingError } from '@/errors';
+import { CustomError } from '@/errors/instance.error';
 
 const ABORT_MS = 5000;
 
@@ -49,7 +50,7 @@ const fetch = returnFetch({
 export const instance = async <I, R>(
   input: URL | RequestInfo,
   init?: InitType<I>,
-  error?: Record<string, Error>,
+  error?: Record<string, CustomError>,
 ): Promise<R> => {
   let cookieHeader = '';
   if (typeof window === 'undefined') {
@@ -97,7 +98,10 @@ export const instance = async <I, R>(
         throw serverError;
       }
 
-      captureException(error[`${(err as Response).status}`]);
+      if (error[`${(err as Response).status}`].shouldCaptureException) {
+        captureException(error[`${(err as Response).status}`]);
+      }
+
       throw error[`${(err as Response).status}`];
     }
   }
