@@ -1,15 +1,18 @@
 'use client';
 
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo } from 'react';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { postList, postSummary, totalStats } from '@/apis';
+import { toast } from 'react-toastify';
+import { postList, postSummary, refreshStats, totalStats } from '@/apis';
 import { Section, Summary } from '@/app/components';
 import { PATHS, SORT_TYPE } from '@/constants';
 import { useSearchParam } from '@/hooks';
 import { Button, Dropdown, Check, EmptyState } from '@/shared';
 import { SortKey, SortValue } from '@/types';
 import { convertDateToKST } from '@/utils';
+
+const REFRESH_TIME = 15 * 1000;
 
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
 
@@ -18,6 +21,7 @@ export const Content = () => {
     asc: 'true' | 'false';
     sort: SortValue;
   }>();
+  const [refreshed, setRefreshed] = useState(false);
 
   const { ref, inView } = useInView();
 
@@ -25,6 +29,7 @@ export const Content = () => {
     data: posts,
     fetchNextPage,
     isLoading,
+    refetch: refetchPosts,
   } = useInfiniteQuery({
     queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]],
     queryFn: async ({ pageParam = '' }) =>
@@ -37,15 +42,31 @@ export const Content = () => {
     initialPageParam: '',
   });
 
-  const { data: summaries } = useQuery({
+  const { data: summaries, refetch: refetchSummaries } = useQuery({
     queryKey: [PATHS.SUMMARY],
     queryFn: postSummary,
   });
 
-  const { data: yesterdayPostCount } = useQuery({
+  const { data: yesterdayPostCount, refetch: refetchYesterdayPostCount } = useQuery({
     queryKey: [PATHS.TOTALSTATS],
     queryFn: async () => totalStats('post'),
     select: (data) => data.slice(1, 2)[0]?.value,
+  });
+
+  const { mutate: refresh } = useMutation({
+    mutationFn: refreshStats,
+    onSettled: () => {
+      setRefreshed(true);
+      setTimeout(() => {
+        setRefreshed(false);
+        refetchPosts();
+        refetchSummaries();
+        refetchYesterdayPostCount();
+      }, REFRESH_TIME);
+    },
+    onSuccess: () => {
+      toast.success('통계 새로고침 요청이 성공적으로 전송되었습니다');
+    },
   });
 
   useEffect(() => {
@@ -71,7 +92,7 @@ export const Content = () => {
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3 max-MBI:hidden">
-              <Button size="SMALL" disabled>
+              <Button size="SMALL" onClick={() => refresh()} disabled={refreshed}>
                 새로고침
               </Button>
               <span className="text-TEXT-ALT text-SUBTITLE-4 max-TBL:text-SUBTITLE-5">
