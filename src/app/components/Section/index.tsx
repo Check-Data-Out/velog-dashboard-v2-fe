@@ -52,7 +52,7 @@ export const Section = forwardRef<HTMLElement, PostType>((p, ref) => {
             <Icon
               name="Like"
               color={COLORS.PRIMARY.SUB}
-              className="w-[20px] max-TBL:w-[18px] max-MBI:w-[14px]"
+              className="w-[23px] max-TBL:w-[19px] max-MBI:w-[16px]"
             />
             <span>{parseNumber(p.likes)}</span>
             <Icon

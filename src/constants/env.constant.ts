@@ -4,7 +4,6 @@ export const ENVS = (() => {
   const env = {
     NODE_ENV: process.env.NODE_ENV,
     BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
-    CLIENT_BASE_URL: process.env.NEXT_PUBLIC_CLIENT_BASE_URL,
     CHANNELTALK_PLUGIN_KEY: process.env.NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY,
     GA_ID: process.env.NEXT_PUBLIC_GA_ID,
     SENTRY_AUTH_TOKEN: process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN,
