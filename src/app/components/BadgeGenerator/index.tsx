@@ -28,7 +28,7 @@ export const BadgeGenerator = () => {
     .filter((value) => value[1])
     .map(([key]) => key);
 
-  const url = `${ENVS.CLIENT_BASE_URL}/api/badge?username=${profiles?.username}&type=${type}${selectedAssets.length ? `&assets=${selectedAssets.join(',')}` : ''}`;
+  const url = `${ENVS.CLIENT_BASE_URL}/badge?username=${profiles?.username}&type=${type}${selectedAssets.length ? `&assets=${selectedAssets.join(',')}` : ''}`;
 
   return (
     <Layout title="뱃지 생성기">
