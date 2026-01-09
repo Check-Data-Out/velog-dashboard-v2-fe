@@ -3,7 +3,7 @@ import returnFetch, { FetchArgs } from 'return-fetch';
 import { ENVS } from '@/constants';
 import { ServerNotRespondingError } from '@/errors';
 
-const ABORT_MS = 5000;
+const ABORT_MS = 60 * 1000;
 
 type ErrorType = {
   code: string;

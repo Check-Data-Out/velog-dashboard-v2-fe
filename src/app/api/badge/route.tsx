@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { badge as badgeApi } from '@/apis';
 import { defaultBadgeGenerator, simpleBadgeGenerator } from './badges';
 
+export const maxDuration = 60;
+
 export async function GET(request: Request) {
   const { origin, searchParams } = new URL(request.url);
   const size = Number(searchParams.get('size')) || 2;
