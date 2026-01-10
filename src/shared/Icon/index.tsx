@@ -30,11 +30,22 @@ export const Icon = ({ name, size = 30, color = '#ACACAC', rotate = 'up', ...res
   return (
     <Comp
       {...rest}
-      style={{ color, ...rest.style }}
+      style={{
+        color,
+        ...(rest.tw
+          ? {
+              transition: 'all',
+              transitionDuration: '300',
+              flexShrink: '0',
+              translate: rotates[rotate].match(/\d+deg/)?.[0],
+            }
+          : {}),
+        ...rest.style,
+      }}
       width={size}
       height={size}
       className={`transition-all duration-300 shrink-0 ${rotates[rotate]} ${rest.className}`}
-      tw={`transition-all duration-300 shrink-0 ${rotates[rotate]} ${rest.tw}`}
+      tw={rest.tw ? rest.tw : ''}
     />
   );
 };

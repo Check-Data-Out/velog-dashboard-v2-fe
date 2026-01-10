@@ -25,14 +25,14 @@ export const Posts = ({ posts }: IProps) => {
               textOverflow: 'ellipsis',
               overflowWrap: 'break-word',
             }}
-            tw={fontStyle('TITLE', '5', COLORS.TEXT.MAIN, 'max-w-[225px] w-fit overflow-hidden').tw}
+            tw={fontStyle('TITLE', '5', COLORS.TEXT.MAIN, 'max-w-[225px] overflow-hidden').tw}
           >
             {item.title}
           </span>
           <span {...fontStyle('SUBTITLE', '5', COLORS.TEXT.ALT, 'ml-[10px]')}>
             {convertDateToKST(item.releasedAt)?.short}
           </span>
-          <div tw="ml-auto w-fit flex items-center">
+          <div tw="ml-auto flex items-center">
             <span {...fontStyle('SUBTITLE', '5', COLORS.TEXT.ALT, `mr-[4px]`)}>
               {item.viewCount} / {item.viewDiff}{' '}
               <span tw={`text-[${COLORS.PRIMARY.SUB}] ml-[2px] mr-[4px]`}>⬆</span> /{' '}
