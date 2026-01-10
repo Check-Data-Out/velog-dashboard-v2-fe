@@ -17,7 +17,7 @@ export const BadgeGenerator = () => {
     setAssets((prev) => ({ ...prev, [id]: checked }));
   };
 
-  const { data: profiles } = useQuery({
+  const { data: profiles, isFetching } = useQuery({
     queryKey: [PATHS.ME],
     queryFn: me,
     staleTime: 1000 * 60 * 5,
@@ -97,7 +97,11 @@ export const BadgeGenerator = () => {
                 : 'w-[350px] MBI:h-[140px] max-MBI:max-w-[350px]',
             )}
           >
-            <Image fill key={type} src={url} alt="Preview" />
+            {isFetching ? (
+              <div className="w-full h-[350px] bg-BG-SUB" />
+            ) : (
+              <Image fill key={type} src={url} alt="Preview" />
+            )}
           </div>
         </div>
       </div>
