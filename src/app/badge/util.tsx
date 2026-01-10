@@ -20,17 +20,11 @@ export const fontStyle = <T extends keyof typeof FONTS>(
 };
 
 const loadFonts = async (url: string): Promise<ArrayBuffer> => {
-  try {
-    const response = await fetch(new URL(url));
-    if (!response.ok) {
-      throw new Error(`Failed to load font from ${url}: ${response.statusText}`);
-    }
-    return await response.arrayBuffer();
-  } catch (error) {
-    throw new Error(
-      `Font loading failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-    );
+  const response = await fetch(new URL(url));
+  if (!response.ok) {
+    throw new Error(`Failed to load font from ${url}: ${response.statusText}`);
   }
+  return await response.arrayBuffer();
 };
 
 const sizeTable = {
@@ -46,42 +40,63 @@ interface options {
 
 export const createImageResponse = async (node: React.ReactNode, options: options) => {
   const { origin, type, size } = options;
-
-  const NotoBold = await loadFonts(origin + '/NotoSansKR-Bold.ttf');
-  const NotoMedium = await loadFonts(origin + '/NotoSansKR-Medium.ttf');
-
-  if (!NotoBold || !NotoMedium) {
-    throw new Error('Failed to load required fonts');
-  }
-
   const [width, height, padding] = sizeTable[type];
 
-  return new ImageResponse(
-    (
-      <div
-        style={{ width: width * size, height: height * size }}
-        tw="flex items-center justify-center"
-      >
+  try {
+    const NotoBold = await loadFonts(origin + '/NotoSansKR-Bold.ttf');
+    const NotoMedium = await loadFonts(origin + '/NotoSansKR-Medium.ttf');
+
+    return new ImageResponse(
+      (
         <div
-          style={{
-            width,
-            height,
-            padding: `${padding - 5}px ${padding}px`,
-            transform: `scale(${size})`,
-          }}
-          tw={`flex bg-[${COLORS.BG.MAIN}]`}
+          style={{ width: width * size, height: height * size }}
+          tw="flex items-center justify-center"
         >
-          {node}
+          <div
+            style={{
+              width,
+              height,
+              padding: `${padding - 5}px ${padding}px`,
+              transform: `scale(${size})`,
+            }}
+            tw={`flex bg-[${COLORS.BG.MAIN}]`}
+          >
+            {node}
+          </div>
         </div>
-      </div>
-    ),
-    {
-      width: width * size,
-      height: height * size,
-      fonts: [
-        { data: NotoMedium, name: 'Noto500', weight: 500 },
-        { data: NotoBold, name: 'Noto700', weight: 700 },
-      ],
-    },
-  );
+      ),
+      {
+        width: width * size,
+        height: height * size,
+        fonts: [
+          { data: NotoMedium, name: 'Noto500', weight: 500 },
+          { data: NotoBold, name: 'Noto700', weight: 700 },
+        ],
+      },
+    );
+  } catch {
+    const [width, height, padding] = sizeTable[type];
+
+    return new ImageResponse(
+      (
+        <div
+          style={{ width: width * size, height: height * size }}
+          tw="flex items-center justify-center"
+        >
+          <div
+            style={{
+              width,
+              height,
+              padding: `${padding - 5}px ${padding}px`,
+              transform: `scale(${size})`,
+            }}
+            tw={`flex bg-[${COLORS.BG.MAIN}]`}
+          >
+            <span>오류가 발생했습니다</span>
+          </div>
+        </div>
+      ),
+      { width: width * size, height: height * size },
+    );
+  }
 };
