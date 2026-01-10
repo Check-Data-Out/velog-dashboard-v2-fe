@@ -7,3 +7,6 @@ export { default as Close } from './Close.svg';
 export { default as Loudspeaker } from './Loudspeaker.svg';
 export { default as Door } from './Door.svg';
 export { default as Video } from './Video.svg';
+export { default as Post } from './Post.svg';
+export { default as View } from './View.svg';
+export { default as Logo } from './Logo.svg';

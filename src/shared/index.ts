@@ -6,3 +6,4 @@ export * from './Check';
 export * from './Modal';
 export * from './Icon';
 export * from './EmptyState';
+export * from './CopyButton';

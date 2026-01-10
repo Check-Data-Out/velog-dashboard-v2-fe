@@ -11,6 +11,7 @@ import { useResponsive, useModal } from '@/hooks';
 import { Icon, NameType } from '@/shared';
 import { revalidate } from '@/utils';
 import { defaultStyle, Section, textStyle } from './Section';
+import { BadgeGenerator } from '../BadgeGenerator';
 import { Modal } from '../Notice/Modal';
 import { QRCode } from '../QRCode';
 
@@ -123,6 +124,15 @@ export const Header = () => {
                   }}
                 >
                   QR 로그인
+                </button>
+                <button
+                  className="text-TEXT-MAIN text-INPUT-3 p-5 max-MBI:p-4 flex items-center justify-center whitespace-nowrap w-full hover:bg-BG-ALT"
+                  onClick={() => {
+                    setOpen(false);
+                    ModalOpen(<BadgeGenerator />);
+                  }}
+                >
+                  뱃지 생성기
                 </button>
               </div>
             </div>

@@ -11,3 +11,24 @@ export type UserDto = {
     thumbnail?: string;
   };
 };
+
+export type recentPosts = {
+  title: string;
+  releasedAt: string;
+  viewCount: number;
+  likeCount: number;
+  viewDiff: number;
+};
+
+export type BadgeDto = {
+  user: {
+    username: string;
+    totalViews: number;
+    totalLikes: number;
+    totalPosts: number;
+    viewDiff: number;
+    likeDiff: number;
+    postDiff: number;
+  };
+  recentPosts: recentPosts[];
+};
