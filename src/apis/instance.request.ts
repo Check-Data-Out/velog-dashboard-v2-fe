@@ -4,7 +4,7 @@ import { ENVS } from '@/constants';
 import { ServerNotRespondingError } from '@/errors';
 import { CustomError } from '@/errors/instance.error';
 
-const ABORT_MS = 5000;
+const ABORT_MS = 30000;
 
 type ErrorType = {
   code: string;

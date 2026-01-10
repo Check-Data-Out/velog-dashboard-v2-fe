@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import { NextResponse } from 'next/server';
 import { badge as badgeApi } from '@/apis';
 import { defaultBadgeGenerator, simpleBadgeGenerator } from './badges';
@@ -22,8 +23,9 @@ export async function GET(request: Request) {
 
     return await defaultBadgeGenerator({ assets, origin, badge, size });
   } catch (e) {
-    console.log(e); // 추후 오류가 발생할 경우 어떤 오류인지 확인하기 위한 용도
-    // TODO: 어떤 오류인지 확인 후 captureException으로 개선
+    Sentry.captureException(e);
+    await Sentry.flush(2000);
+    console.error('[Badge Route Error]', e);
     return NextResponse.json({ error: 'An error had been occured' }, { status: 500 });
   }
 }
