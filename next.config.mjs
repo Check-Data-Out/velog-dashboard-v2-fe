@@ -24,6 +24,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'velog.velcdn.com', pathname: '**' },
       { protocol: 'https', hostname: 'images.velog.io', pathname: '**' },
       { protocol: 'https', hostname: 'velog-dashboard.kro.kr', pathname: '**' },
+      { protocol: 'http', hostname: 'localhost', pathname: '**' },
     ],
   },
 };
