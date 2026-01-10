@@ -15,7 +15,7 @@ export const fontStyle = <T extends keyof typeof FONTS>(
 
   return {
     style: { fontFamily: `Noto${fontWeight}` },
-    tw: `text-[${parseInt(size)}px] leading-[${parseInt(lineHeight)}px] text-[${color}] ${tw}`,
+    tw: `text-[${parseInt(size)}px] leading-[${parseFloat(lineHeight)}px] text-[${color}] ${tw}`,
   };
 };
 
