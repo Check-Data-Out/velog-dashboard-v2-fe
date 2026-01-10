@@ -1,4 +1,5 @@
 import { PATHS, SidebarIdType } from '@/constants';
+import { StatsAlreadyRefreshedError } from '@/errors';
 import { PostDetailDto, PostListDto, PostSummaryDto, TotalStatsDto } from '@/types';
 
 import { instance } from './instance.request';
@@ -22,3 +23,10 @@ export const postDetail = async (path: string, start: string, end: string) =>
 
 export const totalStats = async (type: SidebarIdType, period: number = 7) =>
   await instance<null, TotalStatsDto>(`${PATHS.TOTALSTATS}?period=${period}&type=${type}`);
+
+export const refreshStats = async () =>
+  await instance<null, null>(
+    PATHS.REFRESHSTATS,
+    { method: 'POST' },
+    { '409': new StatsAlreadyRefreshedError() },
+  );

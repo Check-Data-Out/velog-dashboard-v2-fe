@@ -12,4 +12,5 @@ export const PATHS = {
   DETAIL: '/post',
   TOTALSTATS: '/total-stats',
   LEADERBOARD: '/leaderboard',
+  REFRESHSTATS: '/stats-refresh',
 };
