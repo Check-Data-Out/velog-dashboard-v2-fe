@@ -27,6 +27,7 @@ jobs:
       - name: Create .env file
         run: |
           echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env
+          echo "NEXT_PUBLIC_CLIENT_BASE_URL=https://velog-dashboard.kro.kr" >> .env
           echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=${{ secrets.NEXT_PUBLIC_SENTRY_AUTH_TOKEN }}" >> .env
           echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=${{ secrets.NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY }}" >> .env
           echo "NEXT_PUBLIC_GA_ID=${{ secrets.NEXT_PUBLIC_GA_ID }}" >> .env
