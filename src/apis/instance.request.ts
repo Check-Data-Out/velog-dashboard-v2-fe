@@ -88,14 +88,14 @@ export const instance = async <I, R>(
       if (errAsResponse.status === 401) {
         if (location) window.location.replace('/');
         return {} as never;
-      } else if (errAsResponse.status === 429 && (await errAsResponse.json()).retryLater) {
+      } else if (errAsResponse?.status === 429 && errResponse?.retryLater) {
         throw new ExceededRateLimitError();
       }
     }
 
     toast.error(`${errResponse?.message} (${errResponse?.status || -1})`);
 
-    withScope(async (scope) => {
+    withScope((scope) => {
       scope.setContext('Request', {
         url: '/api' + input,
         method: init?.method,
@@ -103,7 +103,6 @@ export const instance = async <I, R>(
       });
       scope.setContext('Detailed Information', {
         name: errAsError.name,
-        message: (await errAsResponse.json()).message,
         cause: errAsError.cause,
         status: errAsResponse.status,
       });
