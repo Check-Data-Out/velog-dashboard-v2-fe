@@ -79,7 +79,7 @@ export const instance = async <I, R>(
     const errAsResponse = err as Response;
     const errAsError = err as Error;
     const customError = errorTypes?.[errAsResponse.status];
-    let response: unknown;
+    let response: unknown = undefined;
 
     if (!errAsResponse.ok && errAsResponse.status === 401) {
       if (location) window.location.replace('/');
@@ -107,7 +107,10 @@ export const instance = async <I, R>(
       } else if (customError.shouldCaptureException) {
         response = customError;
       }
-      captureException(response);
+
+      if (response) {
+        captureException(response);
+      }
     });
 
     throw response;
