@@ -77,12 +77,39 @@ export const instance = async <I, R>(
 
     return (data.body as unknown as SuccessType<R>).data;
   } catch (err: unknown) {
-    const errAsResponse = err as Response;
-    const errAsError = err as Error;
+    const errAsError = err instanceof Error ? err : new Error(String(err));
+    const isResponseError = err instanceof Response;
+
+    // Response가 아닌 에러(Timeout/Abort/Network 등) 처리
+    if (!isResponseError) {
+      const response =
+        errAsError.name === 'TimeoutError' ? new ServerNotRespondingError() : errAsError;
+
+      toast.error(response instanceof Error ? response.message : '알 수 없는 오류가 발생했습니다.');
+      withScope((scope) => {
+        scope.setContext('Request', {
+          url: '/api' + input,
+          method: init?.method,
+          body: init?.body,
+        });
+        scope.setContext('Detailed Information', {
+          name: errAsError.name,
+          message: errAsError.message,
+          cause: errAsError.cause,
+        });
+      });
+      // 필요 시 capture 정책 적용(아래 코멘트 참고)
+      captureException(response);
+      throw response;
+    }
+
+    const errAsResponse = err;
+    const errResponse = await errAsResponse
+      .clone()
+      .json()
+      .catch(() => ({}) as unknown);
     const customError = errorTypes?.[errAsResponse.status];
     let response: unknown = undefined;
-
-    const errResponse = await errAsResponse.json();
 
     if (!errAsResponse.ok) {
       if (errAsResponse.status === 401) {
