@@ -18,8 +18,13 @@ export class NotFoundError extends CustomError {
   }
 }
 
+export class ExceededRateLimitError extends CustomError {
+  constructor() {
+    super('최대 실행 횟수를 초과하였습니다', 'ExceededRateLimitError', 429, false);
+  }
+}
 export class EnvNotFoundError extends CustomError {
   constructor(message: string) {
-    super(`${message}이(가) ENV에서 설정되지 않았습니다`, 'EnvNotFoundError', 500);
+    super(`${message}이(가) ENV에서 설정되지 않았습니다`, 'EnvNotFoundError', 500, false);
   }
 }

@@ -1,7 +1,7 @@
 import { captureException, withScope } from '@sentry/nextjs';
 import returnFetch, { FetchArgs } from 'return-fetch';
 import { ENVS } from '@/constants';
-import { ServerNotRespondingError } from '@/errors';
+import { ExceededRateLimitError, ServerNotRespondingError } from '@/errors';
 import { CustomError } from '@/errors/instance.error';
 
 const ABORT_MS = 30000;
@@ -81,9 +81,13 @@ export const instance = async <I, R>(
     const customError = errorTypes?.[errAsResponse.status];
     let response: unknown = undefined;
 
-    if (!errAsResponse.ok && errAsResponse.status === 401) {
-      if (location) window.location.replace('/');
-      return {} as never;
+    if (!errAsResponse.ok) {
+      if (errAsResponse.status === 401) {
+        if (location) window.location.replace('/');
+        return {} as never;
+      } else if (errAsResponse.status === 429) {
+        throw new ExceededRateLimitError();
+      }
     }
 
     withScope((scope) => {
