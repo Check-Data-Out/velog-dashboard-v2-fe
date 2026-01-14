@@ -86,7 +86,7 @@ export const instance = async <I, R>(
 
     if (!errAsResponse.ok) {
       if (errAsResponse.status === 401) {
-        if (location) window.location.replace('/');
+        if (typeof window !== 'undefined') window.location.replace('/');
         return {} as never;
       } else if (errAsResponse?.status === 429 && errResponse?.retryLater) {
         throw new ExceededRateLimitError();
