@@ -28,5 +28,5 @@ export const refreshStats = async () =>
   await instance<null, null>(
     PATHS.REFRESHSTATS,
     { method: 'POST' },
-    { '409': new StatsAlreadyRefreshedError() },
+    { 409: new StatsAlreadyRefreshedError() },
   );

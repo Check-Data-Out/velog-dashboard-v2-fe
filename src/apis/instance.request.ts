@@ -51,7 +51,7 @@ const fetch = returnFetch({
 export const instance = async <I, R>(
   input: URL | RequestInfo,
   init?: InitType<I>,
-  errorTypes?: Record<string, CustomError>,
+  errorTypes?: Record<number, CustomError>,
 ): Promise<R> => {
   let cookieHeader = '';
   if (typeof window === 'undefined') {
