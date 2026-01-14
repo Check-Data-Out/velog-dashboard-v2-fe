@@ -1,7 +1,8 @@
-import { captureException, setContext } from '@sentry/nextjs';
+import { captureException, withScope } from '@sentry/nextjs';
+import { toast } from 'react-toastify';
 import returnFetch, { FetchArgs } from 'return-fetch';
 import { ENVS } from '@/constants';
-import { ServerNotRespondingError } from '@/errors';
+import { ExceededRateLimitError, ServerNotRespondingError } from '@/errors';
 import { CustomError } from '@/errors/instance.error';
 
 const ABORT_MS = 30000;
@@ -50,7 +51,7 @@ const fetch = returnFetch({
 export const instance = async <I, R>(
   input: URL | RequestInfo,
   init?: InitType<I>,
-  error?: Record<string, CustomError>,
+  errorTypes?: Record<number, CustomError>,
 ): Promise<R> => {
   let cookieHeader = '';
   if (typeof window === 'undefined') {
@@ -76,33 +77,77 @@ export const instance = async <I, R>(
 
     return (data.body as unknown as SuccessType<R>).data;
   } catch (err: unknown) {
-    const context = err as Response;
-    if (!context.ok && context.status === 401) {
-      if (location) window.location.replace('/');
-      return {} as never;
+    const errAsError = err instanceof Error ? err : new Error(String(err));
+    const isResponseError = err instanceof Response;
+
+    // Response가 아닌 에러(Timeout/Abort/Network 등) 처리
+    if (!isResponseError) {
+      const response =
+        errAsError.name === 'TimeoutError' ? new ServerNotRespondingError() : errAsError;
+
+      toast.error(response instanceof Error ? response.message : '알 수 없는 오류가 발생했습니다.');
+      withScope((scope) => {
+        scope.setContext('Request', {
+          url: '/api' + input,
+          method: init?.method,
+          body: init?.body,
+        });
+        scope.setContext('Detailed Information', {
+          name: errAsError.name,
+          message: errAsError.message,
+          cause: errAsError.cause,
+        });
+        captureException(response);
+      });
+      throw response;
     }
 
-    setContext('Request', {
-      path: context.url,
-      status: context.status,
-    });
-    if ((err as Error).name === 'TimeoutError') {
-      captureException(new ServerNotRespondingError());
-      throw new ServerNotRespondingError();
-    } else {
-      if (!error?.[`${(err as Response).status}`]) {
-        const serverError = new Error(
-          `서버에서 예기치 않은 오류가 발생했습니다. (${(err as Error).name})`,
+    const errAsResponse = err;
+    const errResponse = await errAsResponse
+      .clone()
+      .json()
+      .catch(() => ({}) as unknown);
+    const customError = errorTypes?.[errAsResponse.status];
+    let response: unknown = undefined;
+
+    if (!errAsResponse.ok) {
+      if (errAsResponse.status === 401) {
+        if (typeof window !== 'undefined') window.location.replace('/');
+        return {} as never;
+      } else if (errAsResponse?.status === 429 && errResponse?.retryLater) {
+        throw new ExceededRateLimitError();
+      }
+    }
+
+    toast.error(`${errResponse?.message} (${errResponse?.status || -1})`);
+
+    withScope((scope) => {
+      scope.setContext('Request', {
+        url: '/api' + input,
+        method: init?.method,
+        body: init?.body,
+      });
+      scope.setContext('Detailed Information', {
+        name: errAsError.name,
+        cause: errAsError.cause,
+        status: errAsResponse.status,
+      });
+
+      if (errAsError.name === 'TimeoutError') {
+        // Timeout 오류는 별도의 status값이 없는 것으로 보여 이런 형태로 처리합니다
+        response = new ServerNotRespondingError();
+      } else if (customError?.shouldCaptureException) {
+        response = customError;
+      } else {
+        response = new Error(
+          `서버에서 예기치 않은 오류가 발생했습니다: ${errAsError.name} (${errResponse?.status})`,
         );
-        captureException(serverError);
-        throw serverError;
       }
 
-      if (error[`${(err as Response).status}`].shouldCaptureException) {
-        captureException(error[`${(err as Response).status}`]);
+      if (customError?.shouldCaptureException) {
+        captureException(response);
       }
-
-      throw error[`${(err as Response).status}`];
-    }
+    });
+    throw response;
   }
 };

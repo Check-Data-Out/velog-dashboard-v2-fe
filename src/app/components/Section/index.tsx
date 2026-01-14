@@ -33,7 +33,7 @@ export const Section = forwardRef<HTMLElement, PostType>((p, ref) => {
             <span
               className={`text-TITLE-3 text-TEXT-MAIN hover:underline max-TBL:after:text-SUBTITLE-5 max-TBL:text-TITLE-4 max-MBI:text-SUBTITLE-4`}
             >
-              {p.title.length > 30 ? p.title.slice(0, 29).trim() + '..' : p.title}
+              {p?.title?.length > 30 ? p.title.slice(0, 29).trim() + '..' : p.title}
             </span>
           </div>
 
