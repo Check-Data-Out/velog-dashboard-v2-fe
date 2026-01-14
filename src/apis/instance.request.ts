@@ -97,9 +97,8 @@ export const instance = async <I, R>(
           message: errAsError.message,
           cause: errAsError.cause,
         });
+        captureException(response);
       });
-      // 필요 시 capture 정책 적용(아래 코멘트 참고)
-      captureException(response);
       throw response;
     }
 
