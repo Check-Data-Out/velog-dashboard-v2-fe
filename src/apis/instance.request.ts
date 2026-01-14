@@ -1,4 +1,5 @@
 import { captureException, withScope } from '@sentry/nextjs';
+import { toast } from 'react-toastify';
 import returnFetch, { FetchArgs } from 'return-fetch';
 import { ENVS } from '@/constants';
 import { ExceededRateLimitError, ServerNotRespondingError } from '@/errors';
@@ -81,16 +82,20 @@ export const instance = async <I, R>(
     const customError = errorTypes?.[errAsResponse.status];
     let response: unknown = undefined;
 
+    const errResponse = await errAsResponse.json();
+
     if (!errAsResponse.ok) {
       if (errAsResponse.status === 401) {
         if (location) window.location.replace('/');
         return {} as never;
-      } else if (errAsResponse.status === 429) {
+      } else if (errAsResponse.status === 429 && (await errAsResponse.json()).retryLater) {
         throw new ExceededRateLimitError();
       }
     }
 
-    withScope((scope) => {
+    toast.error(`${errResponse?.message} (${errResponse?.status || -1})`);
+
+    withScope(async (scope) => {
       scope.setContext('Request', {
         url: '/api' + input,
         method: init?.method,
@@ -98,7 +103,7 @@ export const instance = async <I, R>(
       });
       scope.setContext('Detailed Information', {
         name: errAsError.name,
-        message: errAsError.message,
+        message: (await errAsResponse.json()).message,
         cause: errAsError.cause,
         status: errAsResponse.status,
       });
@@ -106,17 +111,18 @@ export const instance = async <I, R>(
       if (errAsError.name === 'TimeoutError') {
         // Timeout 오류는 별도의 status값이 없는 것으로 보여 이런 형태로 처리합니다
         response = new ServerNotRespondingError();
-      } else if (!customError) {
-        response = new Error(`서버에서 예기치 않은 오류가 발생했습니다. (${errAsError.name})`);
-      } else if (customError.shouldCaptureException) {
+      } else if (customError?.shouldCaptureException) {
         response = customError;
+      } else {
+        response = new Error(
+          `서버에서 예기치 않은 오류가 발생했습니다: ${errAsError.name} (${errResponse?.status})`,
+        );
       }
 
-      if (response) {
+      if (customError?.shouldCaptureException) {
         captureException(response);
       }
     });
-
     throw response;
   }
 };
