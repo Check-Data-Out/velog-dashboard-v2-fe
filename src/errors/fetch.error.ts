@@ -20,7 +20,12 @@ export class NotFoundError extends CustomError {
 
 export class ExceededRateLimitError extends CustomError {
   constructor() {
-    super('최대 실행 횟수를 초과하였습니다', 'ExceededRateLimitError', 429, false);
+    super(
+      '비정상적 접근이 감지되었습니다. 잠시 후 다시 시도해주세요.',
+      'ExceededRateLimitError',
+      429,
+      false,
+    );
   }
 }
 export class EnvNotFoundError extends CustomError {
