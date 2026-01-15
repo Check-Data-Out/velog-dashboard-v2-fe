@@ -11,16 +11,15 @@ export const errorHandler = (error: unknown) => {
   if (error instanceof FetchResponseError || error instanceof FetchError) {
     if (error.shouldCaptureException) {
       withScope((scope) => {
-        scope.setContext('Handler Data', { name: error.name, cause: error.cause });
         if (error instanceof FetchResponseError) {
           scope.setContext('API Data', error.options);
         }
+        scope.setContext('Handler Data', { name: error.name, cause: error.cause });
         captureException(error);
       });
     }
     queueMicrotask(() => toast.error(error.getToastMessage(), { toastId: Date.now() }));
     return false;
-  } else {
-    return true;
   }
+  return true;
 };
