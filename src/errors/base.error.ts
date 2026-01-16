@@ -1,7 +1,3 @@
-export interface IBaseError {
-  getToastMessage: () => string;
-}
-
 interface IBaseProp {
   message: string;
   shouldCaptureException?: boolean;

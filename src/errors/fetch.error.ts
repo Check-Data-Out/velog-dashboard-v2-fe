@@ -1,4 +1,4 @@
-import { BaseError, IBaseError } from './base.error';
+import { BaseError } from './base.error';
 
 export type fetchOptions = {
   url: string;
@@ -12,7 +12,7 @@ interface IFetchResponseProp {
   code: number;
 }
 
-export class FetchResponseError extends BaseError implements IBaseError {
+export class FetchResponseError extends BaseError {
   options: fetchOptions;
   code: number;
 
@@ -32,7 +32,7 @@ interface IFetchProp {
   shouldCaptureException?: boolean;
 }
 
-export class FetchError extends BaseError implements IBaseError {
+export class FetchError extends BaseError {
   constructor({ message, shouldCaptureException = false }: IFetchProp) {
     super({ message, shouldCaptureException });
   }
