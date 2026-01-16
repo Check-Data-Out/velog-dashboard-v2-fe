@@ -18,7 +18,7 @@ export const errorHandler = (error: unknown) => {
         captureException(error);
       });
     }
-    queueMicrotask(() => toast.error(error.getToastMessage(), { toastId: Date.now() }));
+    queueMicrotask(() => window && toast.error(error.getToastMessage(), { toastId: Date.now() }));
     return false;
   }
   return true;
