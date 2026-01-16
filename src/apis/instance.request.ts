@@ -78,9 +78,9 @@ export const instance = async <I, R>(
 
     const data = {
       url: '/api' + input,
-      method: init?.method,
+      method: init?.method || 'UNKNOWN',
       body: await err.json(),
-    } as fetchOptions;
+    };
 
     const customError = errorTypes?.[err.status] || null;
     let response: unknown = undefined;

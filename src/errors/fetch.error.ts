@@ -2,7 +2,7 @@ import { BaseError } from './base.error';
 
 export type fetchOptions = {
   url: string;
-  method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+  method: string;
   body: Record<string, unknown>;
 };
 
