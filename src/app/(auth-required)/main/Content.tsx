@@ -4,10 +4,11 @@ import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { toast } from 'react-toastify';
+import { useStore } from 'zustand';
 import { postList, postSummary, refreshStats, totalStats } from '@/apis';
 import { Section, Summary } from '@/app/components';
 import { PATHS, SORT_TYPE } from '@/constants';
-import { useSearchParam } from '@/hooks';
+import { useSearchParam, useStatsRefresh } from '@/hooks';
 import { Button, Dropdown, Check, EmptyState } from '@/shared';
 import { SortKey, SortValue } from '@/types';
 import { convertDateToKST } from '@/utils';
@@ -22,6 +23,7 @@ export const Content = () => {
     sort: SortValue;
   }>();
   const [refreshed, setRefreshed] = useState(false);
+  const { status, setStatus, init } = useStore(useStatsRefresh);
 
   const { ref, inView } = useInView();
 
@@ -68,6 +70,8 @@ export const Content = () => {
       toast.success('통계 새로고침 요청이 성공적으로 전송되었습니다');
     },
   });
+
+  useEffect(() => init(), []);
 
   useEffect(() => {
     const pages = posts?.pages;
