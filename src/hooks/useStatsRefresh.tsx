@@ -5,7 +5,7 @@ import { create } from 'zustand';
 interface StatsRefreshType {
   status: boolean;
   setStatus: (value: boolean) => void;
-  init: () => void;
+  init: () => boolean;
 }
 
 export const useStatsRefresh = create<StatsRefreshType>((set) => ({
@@ -16,9 +16,12 @@ export const useStatsRefresh = create<StatsRefreshType>((set) => ({
   },
   init: () => {
     const value = localStorage.getItem('statsRefresh');
-    if (value === undefined) localStorage.setItem('statsRefresh', 'false');
-    else {
-      set(() => ({ status: JSON.parse(localStorage.getItem('statsRefresh') as string) }));
+    if (value === undefined) {
+      localStorage.setItem('statsRefresh', 'false');
+      return false;
+    } else {
+      set(() => ({ status: JSON.parse(value as string) }));
+      return JSON.parse(value as string);
     }
   },
 }));

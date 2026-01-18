@@ -1,7 +1,7 @@
 'use client';
 
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { toast } from 'react-toastify';
 import { useStore } from 'zustand';
@@ -9,11 +9,9 @@ import { postList, postSummary, refreshStats, totalStats } from '@/apis';
 import { Section, Summary } from '@/app/components';
 import { PATHS, SORT_TYPE } from '@/constants';
 import { useSearchParam, useStatsRefresh } from '@/hooks';
-import { Button, Dropdown, Check, EmptyState } from '@/shared';
+import { Button, Dropdown, Check, EmptyState, Loading } from '@/shared';
 import { SortKey, SortValue } from '@/types';
 import { convertDateToKST } from '@/utils';
-
-const REFRESH_TIME = 15 * 1000;
 
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
 
@@ -22,7 +20,6 @@ export const Content = () => {
     asc: 'true' | 'false';
     sort: SortValue;
   }>();
-  const [refreshed, setRefreshed] = useState(false);
   const { status, setStatus, init } = useStore(useStatsRefresh);
 
   const { ref, inView } = useInView();
@@ -57,21 +54,27 @@ export const Content = () => {
 
   const { mutate: refresh } = useMutation({
     mutationFn: refreshStats,
-    onSettled: () => {
-      setRefreshed(true);
-      setTimeout(() => {
-        setRefreshed(false);
+    onSuccess: (data) => {
+      if (!data?.lastUpdatedAt) {
+        setStatus(true);
+        refresh();
+        toast.success('통계 새로고침 요청이 성공적으로 전송되었습니다');
+      } else {
         refetchPosts();
         refetchSummaries();
         refetchYesterdayPostCount();
-      }, REFRESH_TIME);
+        setStatus(false);
+      }
     },
-    onSuccess: () => {
-      toast.success('통계 새로고침 요청이 성공적으로 전송되었습니다');
-    },
+    retryDelay: 1000 * 5,
   });
 
-  useEffect(() => init(), []);
+  useEffect(() => {
+    const status = init();
+    if (status) {
+      refresh();
+    }
+  }, []);
 
   useEffect(() => {
     const pages = posts?.pages;
@@ -96,12 +99,17 @@ export const Content = () => {
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3 max-MBI:hidden">
-              <Button size="SMALL" onClick={() => refresh()} disabled={refreshed}>
+              <Button size="SMALL" onClick={() => refresh()} disabled={status}>
                 새로고침
               </Button>
               <span className="text-TEXT-ALT text-SUBTITLE-4 max-TBL:text-SUBTITLE-5">
                 마지막 업데이트 :{' '}
-                {convertDateToKST(summaries?.stats?.lastUpdatedDate)?.iso || '업데이트 중..'}
+                {status ? (
+                  <Loading />
+                ) : (
+                  convertDateToKST(summaries?.stats?.lastUpdatedDate)?.iso ||
+                  '새로고침 버튼을 눌러주세요'
+                )}
               </span>
             </div>
             <div className="flex items-center gap-3">
