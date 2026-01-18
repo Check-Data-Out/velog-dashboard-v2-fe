@@ -1,9 +1,13 @@
-import { captureException, withScope } from '@sentry/nextjs';
-import { toast } from 'react-toastify';
 import returnFetch, { FetchArgs } from 'return-fetch';
 import { ENVS } from '@/constants';
-import { ExceededRateLimitError, ServerNotRespondingError } from '@/errors';
-import { CustomError } from '@/errors/instance.error';
+import {
+  AuthRequiredError,
+  ExceededRateLimitError,
+  fetchOptions,
+  FetchResponseError,
+  TimeoutError,
+  UnknownError,
+} from '@/errors';
 
 const ABORT_MS = 30000;
 
@@ -31,15 +35,10 @@ const abortPolyfill = (ms: number) => {
 
 const fetch = returnFetch({
   baseUrl: ENVS.BASE_URL,
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
+  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   interceptors: {
     response: async (response) => {
-      if (!response.ok) {
-        throw response;
-      }
+      if (!response.ok) throw response;
       return {
         ...response,
         body: response?.text ? JSON.parse(await response?.text()) : {},
@@ -51,7 +50,7 @@ const fetch = returnFetch({
 export const instance = async <I, R>(
   input: URL | RequestInfo,
   init?: InitType<I>,
-  errorTypes?: Record<number, CustomError>,
+  errorTypes?: Record<number, new (options: fetchOptions) => FetchResponseError>,
 ): Promise<R> => {
   let cookieHeader = '';
   if (typeof window === 'undefined') {
@@ -61,16 +60,9 @@ export const instance = async <I, R>(
   try {
     const data = await fetch('/api' + input, {
       ...init,
-      headers: cookieHeader
-        ? {
-            ...init?.headers,
-            Cookie: cookieHeader,
-          }
-        : init?.headers,
+      headers: cookieHeader ? { ...init?.headers, Cookie: cookieHeader } : init?.headers,
       body: init?.body ? JSON.stringify(init.body) : undefined,
-      signal: AbortSignal.timeout
-        ? AbortSignal.timeout(Number(ABORT_MS))
-        : abortPolyfill(Number(ABORT_MS)),
+      signal: AbortSignal.timeout?.(Number(ABORT_MS)) ?? abortPolyfill(Number(ABORT_MS)),
       credentials: 'include',
       cache: 'no-store',
     });
@@ -78,76 +70,46 @@ export const instance = async <I, R>(
     return (data.body as unknown as SuccessType<R>).data;
   } catch (err: unknown) {
     const errAsError = err instanceof Error ? err : new Error(String(err));
-    const isResponseError = err instanceof Response;
 
-    // Response가 아닌 에러(Timeout/Abort/Network 등) 처리
-    if (!isResponseError) {
-      const response =
-        errAsError.name === 'TimeoutError' ? new ServerNotRespondingError() : errAsError;
-
-      toast.error(response instanceof Error ? response.message : '알 수 없는 오류가 발생했습니다.');
-      withScope((scope) => {
-        scope.setContext('Request', {
-          url: '/api' + input,
-          method: init?.method,
-          body: init?.body,
-        });
-        scope.setContext('Detailed Information', {
-          name: errAsError.name,
-          message: errAsError.message,
-          cause: errAsError.cause,
-        });
-        captureException(response);
-      });
+    if (!(err instanceof Response)) {
+      const response = errAsError.name === 'TimeoutError' ? new TimeoutError() : errAsError;
       throw response;
     }
 
-    const errAsResponse = err;
-    const errResponse = await errAsResponse
-      .clone()
-      .json()
-      .catch(() => ({}) as unknown);
-    const customError = errorTypes?.[errAsResponse.status];
-    let response: unknown = undefined;
-
-    if (!errAsResponse.ok) {
-      if (errAsResponse.status === 401) {
-        if (typeof window !== 'undefined') window.location.replace('/');
-        return {} as never;
-      } else if (errAsResponse?.status === 429 && errResponse?.retryLater) {
-        throw new ExceededRateLimitError();
-      }
+    let body;
+    try {
+      body = await err.json();
+    } catch {
+      // JSON 파싱 실패 시 기본값 제공
+      body = {
+        success: false,
+        message: 'JSON 파싱에 실패했습니다',
+        data: null,
+        error: {
+          code: 'FailedJsonParsing',
+          statusCode: 500,
+        },
+      };
     }
 
-    toast.error(`${errResponse?.message} (${errResponse?.status || -1})`);
+    const data = {
+      url: '/api' + input,
+      method: init?.method || 'UNKNOWN',
+      body,
+    };
 
-    withScope((scope) => {
-      scope.setContext('Request', {
-        url: '/api' + input,
-        method: init?.method,
-        body: init?.body,
-      });
-      scope.setContext('Detailed Information', {
-        name: errAsError.name,
-        cause: errAsError.cause,
-        status: errAsResponse.status,
-      });
+    const customError = errorTypes?.[err.status] || null;
+    let response: unknown = undefined;
 
-      if (errAsError.name === 'TimeoutError') {
-        // Timeout 오류는 별도의 status값이 없는 것으로 보여 이런 형태로 처리합니다
-        response = new ServerNotRespondingError();
-      } else if (customError?.shouldCaptureException) {
-        response = customError;
-      } else {
-        response = new Error(
-          `서버에서 예기치 않은 오류가 발생했습니다: ${errAsError.name} (${errResponse?.status})`,
-        );
-      }
-
-      if (customError?.shouldCaptureException) {
-        captureException(response);
-      }
-    });
+    if (err.status === 401) {
+      response = new AuthRequiredError(data);
+    } else if (err?.status === 429) {
+      response = new ExceededRateLimitError(data);
+    } else if (customError) {
+      response = new customError(data);
+    } else {
+      response = new UnknownError(data, err.status);
+    }
     throw response;
   }
 };
