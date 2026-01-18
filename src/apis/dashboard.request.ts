@@ -25,7 +25,8 @@ export const totalStats = async (type: SidebarIdType, period: number = 7) =>
   await instance<null, TotalStatsDto>(`${PATHS.TOTALSTATS}?period=${period}&type=${type}`);
 
 export const refreshStats = async () =>
-  await instance<null, null>(
+  // TODO: 이 하드코딩 코드 개선하기
+  await instance<null, { lastUpdatedAt?: boolean }>(
     PATHS.REFRESHSTATS,
     { method: 'POST' },
     { 409: StatsAlreadyRefreshedError },
