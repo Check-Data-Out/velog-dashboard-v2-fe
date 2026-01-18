@@ -3,7 +3,7 @@ import { BaseError } from './base.error';
 export type fetchOptions = {
   url: string;
   method: string;
-  body: Record<string, unknown>;
+  body?: Record<string, unknown>; // GET/DELETE 메서드의 경우 body가 없을 수도 있음
 };
 
 interface IFetchResponseProp {

@@ -82,10 +82,26 @@ export const instance = async <I, R>(
       throw response;
     }
 
+    let body;
+    try {
+      body = await err.json();
+    } catch {
+      // JSON 파싱 실패 시 기본값 제공
+      body = {
+        success: false,
+        message: 'JSON 파싱에 실패했습니다',
+        data: null,
+        error: {
+          code: 'FailedJsonParsing',
+          statusCode: 500,
+        },
+      };
+    }
+
     const data = {
       url: '/api' + input,
       method: init?.method || 'UNKNOWN',
-      body: await err.json(),
+      body,
     };
 
     const customError = errorTypes?.[err.status] || null;
