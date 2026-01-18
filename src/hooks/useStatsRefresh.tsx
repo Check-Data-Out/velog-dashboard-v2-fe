@@ -16,7 +16,7 @@ export const useStatsRefresh = create<StatsRefreshType>((set) => ({
   },
   init: () => {
     const value = localStorage.getItem('statsRefresh');
-    if (value === undefined) {
+    if (value === null) {
       localStorage.setItem('statsRefresh', 'false');
       return false;
     } else {
