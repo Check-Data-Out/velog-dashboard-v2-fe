@@ -66,6 +66,7 @@ export const Content = () => {
         setStatus(false);
       }
     },
+    retry: true,
     retryDelay: 1000 * 5,
   });
 
