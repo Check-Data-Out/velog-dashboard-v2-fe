@@ -18,10 +18,21 @@ export async function GET(request: Request) {
     }
 
     const badge = await badgeApi(username);
+    let badgeBuffer = null;
 
-    if (type === 'simple') return await simpleBadgeGenerator({ assets, origin, badge, size });
+    if (type === 'simple')
+      badgeBuffer = await simpleBadgeGenerator({ assets, origin, badge, size });
+    else badgeBuffer = await defaultBadgeGenerator({ assets, origin, badge, size });
 
-    return await defaultBadgeGenerator({ assets, origin, badge, size });
+    // TODO: 여기 타입 이슈 해결하기
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return new NextResponse(badgeBuffer as any, {
+      status: 200,
+      headers: {
+        'Content-Type': 'image/png',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    });
   } catch (e) {
     Sentry.captureException(e);
     await Sentry.flush(2000);
