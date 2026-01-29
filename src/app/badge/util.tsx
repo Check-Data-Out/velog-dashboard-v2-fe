@@ -84,7 +84,7 @@ export const createImageResponse = async (node: React.ReactNode, options: option
     return await sharp(Buffer.from(svg)).png().toBuffer();
   } catch (error) {
     console.error('Satori/Sharp Error:', error);
-    const fallbackSvg = `<svg>...</svg>`;
+    const fallbackSvg = `<svg>뱃지 생성 중 오류가 발생했습니다.</svg>`;
     return await sharp(Buffer.from(fallbackSvg)).png().toBuffer();
   }
 };
