@@ -1,6 +1,12 @@
 import { PATHS, SidebarIdType } from '@/constants';
 import { StatsAlreadyRefreshedError } from '@/errors';
-import { PostDetailDto, PostListDto, PostSummaryDto, TotalStatsDto } from '@/types';
+import {
+  PostDetailDto,
+  PostListDto,
+  PostSummaryDto,
+  RefreshStatsDto,
+  TotalStatsDto,
+} from '@/types';
 
 import { instance } from './instance.request';
 
@@ -25,8 +31,7 @@ export const totalStats = async (type: SidebarIdType, period: number = 7) =>
   await instance<null, TotalStatsDto>(`${PATHS.TOTALSTATS}?period=${period}&type=${type}`);
 
 export const refreshStats = async () =>
-  // TODO: 이 하드코딩 코드 개선하기
-  await instance<null, { lastUpdatedAt?: boolean }>(
+  await instance<null, RefreshStatsDto>(
     PATHS.REFRESHSTATS,
     { method: 'POST' },
     { 409: StatsAlreadyRefreshedError },
