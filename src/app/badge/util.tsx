@@ -1,6 +1,9 @@
 /* eslint-disable react/no-unknown-property */
 
-import { ImageResponse } from '@vercel/og';
+// TODO: 해당 타입이 있는데도 불구하고 문제가 생김..
+// eslint-disable-next-line import/named
+import satori, { SatoriOptions } from 'satori';
+import sharp from 'sharp';
 import { COLORS, FONTS } from '@/constants';
 
 type fontType = [string, { lineHeight: string; fontWeight: string }];
@@ -43,60 +46,45 @@ export const createImageResponse = async (node: React.ReactNode, options: option
   const [width, height, padding] = sizeTable[type];
 
   try {
-    const NotoBold = await loadFonts(origin + '/NotoSansKR-Bold.ttf');
-    const NotoMedium = await loadFonts(origin + '/NotoSansKR-Medium.ttf');
+    // 폰트 로드는 병렬로 처리하여 속도 개선
+    const [NotoMedium, NotoBold] = await Promise.all([
+      loadFonts(origin + '/NotoSansKR-Medium.ttf'),
+      loadFonts(origin + '/NotoSansKR-Bold.ttf'),
+    ]);
 
-    return new ImageResponse(
-      (
-        <div
-          style={{ width: width * size, height: height * size }}
-          tw="flex items-center justify-center"
-        >
-          <div
-            style={{
-              width,
-              height,
-              padding: `${padding - 5}px ${padding}px`,
-              transform: `scale(${size})`,
-            }}
-            tw={`flex bg-[${COLORS.BG.MAIN}]`}
-          >
-            {node}
-          </div>
-        </div>
-      ),
-      {
-        width: width * size,
-        height: height * size,
-        fonts: [
-          { data: NotoMedium, name: 'Noto500', weight: 500 },
-          { data: NotoBold, name: 'Noto700', weight: 700 },
-        ],
-      },
-    );
-  } catch {
-    const [width, height, padding] = sizeTable[type];
+    const satoriOptions: SatoriOptions = {
+      width: width * size,
+      height: height * size,
+      fonts: [
+        { data: NotoMedium, name: 'Noto500', weight: 500 },
+        { data: NotoBold, name: 'Noto700', weight: 700 },
+      ],
+    };
 
-    return new ImageResponse(
-      (
+    const svg = await satori(
+      <div
+        style={{ width: width * size, height: height * size }}
+        tw="flex items-center justify-center"
+      >
         <div
-          style={{ width: width * size, height: height * size }}
-          tw="flex items-center justify-center"
+          style={{
+            width,
+            height,
+            padding: `${padding - 5}px ${padding}px`,
+            transform: `scale(${size})`,
+          }}
+          tw={`flex bg-[${COLORS.BG.MAIN}]`}
         >
-          <div
-            style={{
-              width,
-              height,
-              padding: `${padding - 5}px ${padding}px`,
-              transform: `scale(${size})`,
-            }}
-            tw={`flex bg-[${COLORS.BG.MAIN}]`}
-          >
-            <span>오류가 발생했습니다</span>
-          </div>
+          {node}
         </div>
-      ),
-      { width: width * size, height: height * size },
+      </div>,
+      satoriOptions,
     );
+
+    return await sharp(Buffer.from(svg)).png().toBuffer();
+  } catch (error) {
+    console.error('Satori/Sharp Error:', error);
+    const fallbackSvg = `<svg>뱃지 생성 중 오류가 발생했습니다.</svg>`;
+    return await sharp(Buffer.from(fallbackSvg)).png().toBuffer();
   }
 };

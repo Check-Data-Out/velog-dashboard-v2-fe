@@ -3,7 +3,7 @@ import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  experimental: { forceSwcTransforms: true },
+  experimental: { forceSwcTransforms: true, workerThreads: false, cpus: 1 },
   output: 'standalone',
   productionBrowserSourceMaps: true,
   webpack: (config, options) => {
