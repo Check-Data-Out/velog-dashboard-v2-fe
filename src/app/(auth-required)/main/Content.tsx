@@ -58,7 +58,7 @@ export const Content = () => {
       if (!data?.lastUpdatedAt) {
         setStatus(true);
         refresh();
-        toast.success('통계 새로고침 요청이 성공적으로 전송되었습니다');
+        toast.success('통계 새로고침이 시작되었습니다!');
       } else {
         refetchPosts();
         refetchSummaries();
