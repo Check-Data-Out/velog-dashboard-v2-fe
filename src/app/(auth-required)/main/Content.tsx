@@ -67,7 +67,7 @@ export const Content = () => {
       }
     },
     retry: (_, error: FetchResponseError) => {
-      if ((error.options.body?.data as RefreshStatsDto)?.lastUpdatedAt && status) {
+      if (!(error.options.body?.data as RefreshStatsDto)?.lastUpdatedAt && status) {
         return true;
       }
       return false;
