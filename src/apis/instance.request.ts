@@ -40,12 +40,6 @@ const fetch = returnFetch({
     response: async (response) => {
       const body = JSON.parse(await response?.clone().text());
       if (!response.ok) {
-        // useMutation을 사용해서 자동으로 반복 refresh(폴링) 시키는 상태에서 그나마 처리하기 쉬운 방식으로 구현
-        // 이게 아니라면 useMutation 말고 useState로 돌아가던지 이 코드를 한 번 갈아엎은 인스턴스 쪽 오류 핸들러에 넣던지 해야 할 것 같아요 (그나마 제가 떠올릴 수 있는 최선)
-        // TODO: 이 하드코딩 코드 개선하기 (솔직히 SSE 썼으면 좋겠습니다)
-        if (response.status === 409 && body?.data?.lastUpdatedAt) {
-          return { ...response, body };
-        }
         throw response;
       }
       return { ...response, body };
@@ -86,15 +80,11 @@ export const instance = async <I, R>(
     try {
       body = await err.json();
     } catch {
-      // JSON 파싱 실패 시 기본값 제공
       body = {
         success: false,
         message: 'JSON 파싱에 실패했습니다',
         data: null,
-        error: {
-          code: 'FailedJsonParsing',
-          statusCode: 500,
-        },
+        error: { code: 'FailedJsonParsing', statusCode: 500 },
       };
     }
 

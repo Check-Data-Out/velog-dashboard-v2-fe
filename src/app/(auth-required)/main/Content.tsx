@@ -1,17 +1,17 @@
 'use client';
 
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { toast } from 'react-toastify';
-import { useStore } from 'zustand';
 import { postList, postSummary, refreshStats, totalStats } from '@/apis';
 import { Section, Summary } from '@/app/components';
 import { PATHS, SORT_TYPE } from '@/constants';
-import { useSearchParam, useStatsRefresh } from '@/hooks';
+import { useSearchParam } from '@/hooks';
 import { Button, Dropdown, Check, EmptyState, Loading } from '@/shared';
-import { SortKey, SortValue } from '@/types';
+import { RefreshStatsDto, SortKey, SortValue } from '@/types';
 import { convertDateToKST } from '@/utils';
+import { FetchResponseError } from '@/errors';
 
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
 
@@ -20,7 +20,7 @@ export const Content = () => {
     asc: 'true' | 'false';
     sort: SortValue;
   }>();
-  const { status, setStatus, init } = useStore(useStatsRefresh);
+  const [status, setStatus] = useState(false);
 
   const { ref, inView } = useInView();
 
@@ -60,22 +60,20 @@ export const Content = () => {
         refresh();
         toast.success('통계 새로고침이 시작되었습니다!');
       } else {
+        setStatus(false);
         refetchPosts();
         refetchSummaries();
         refetchYesterdayPostCount();
-        setStatus(false);
       }
     },
-    retry: true,
+    retry: (_, error: FetchResponseError) => {
+      if ((error.options.body?.data as RefreshStatsDto)?.lastUpdatedAt && status) {
+        return true;
+      }
+      return false;
+    },
     retryDelay: 1000 * 5,
   });
-
-  useEffect(() => {
-    const status = init();
-    if (status) {
-      refresh();
-    }
-  }, []);
 
   useEffect(() => {
     const pages = posts?.pages;
