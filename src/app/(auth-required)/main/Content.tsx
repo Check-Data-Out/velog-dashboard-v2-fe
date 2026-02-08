@@ -54,20 +54,23 @@ export const Content = () => {
 
   const { mutate: refresh } = useMutation({
     mutationFn: refreshStats,
-    onSuccess: (data) => {
-      if (!data?.lastUpdatedAt) {
-        setStatus(true);
-        refresh();
-        toast.success('통계 새로고침이 시작되었습니다!');
-      } else {
+    onSuccess: () => {
+      setStatus(true);
+      refresh();
+      toast.success('통계 새로고침이 시작되었습니다!');
+    },
+    onError: () => {
+      if (status) {
         setStatus(false);
+        toast.success('새로고침이 완료되었습니다!');
         refetchPosts();
         refetchSummaries();
         refetchYesterdayPostCount();
+        return;
       }
     },
     retry: (_, error: FetchResponseError) => {
-      if (!(error.options.body?.data as RefreshStatsDto)?.lastUpdatedAt || status) {
+      if (!(error.options.body?.data as RefreshStatsDto)?.lastUpdatedAt) {
         return true;
       }
       return false;
