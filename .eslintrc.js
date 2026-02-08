@@ -2,7 +2,11 @@ module.exports = {
   root: true,
   env: { browser: true, node: true, jest: true },
   parser: '@typescript-eslint/parser',
-  parserOptions: { ecmaVersion: 2022, sourceType: 'module', project: './tsconfig.json' },
+  parserOptions: {
+    ecmaVersion: 2022,
+    sourceType: 'module',
+    tsconfigRootDir: __dirname,
+  },
   globals: { React: true, NodeJS: true },
   plugins: [
     '@typescript-eslint',
