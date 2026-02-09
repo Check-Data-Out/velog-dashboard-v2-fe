@@ -13,6 +13,8 @@ import { RefreshStatsDto, SortKey, SortValue } from '@/types';
 import { convertDateToKST } from '@/utils';
 import { FetchResponseError } from '@/errors';
 
+const REFRESH_WAIT_TIME = 1000 * 5;
+
 const sorts: Array<[SortKey, SortValue]> = Object.entries(SORT_TYPE) as Array<[SortKey, SortValue]>;
 
 export const Content = () => {
@@ -56,8 +58,8 @@ export const Content = () => {
     mutationFn: refreshStats,
     onSuccess: () => {
       setStatus(true);
-      refresh();
       toast.success('통계 새로고침이 시작되었습니다!');
+      setTimeout(() => refresh(), REFRESH_WAIT_TIME);
     },
     onError: () => {
       if (status) {
