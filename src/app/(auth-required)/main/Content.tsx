@@ -57,9 +57,11 @@ export const Content = () => {
   const { mutate: refresh } = useMutation({
     mutationFn: refreshStats,
     onSuccess: () => {
-      setStatus(true);
-      toast.success('통계 새로고침이 시작되었습니다!');
-      setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+      if (!status) {
+        setStatus(true);
+        toast.success('통계 새로고침이 시작되었습니다!');
+        setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+      }
     },
     onError: () => {
       if (status) {
