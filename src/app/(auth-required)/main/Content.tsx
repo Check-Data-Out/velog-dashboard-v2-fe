@@ -7,11 +7,11 @@ import { toast } from 'react-toastify';
 import { postList, postSummary, refreshStats, totalStats } from '@/apis';
 import { Section, Summary } from '@/app/components';
 import { PATHS, SORT_TYPE } from '@/constants';
+import { FetchResponseError } from '@/errors';
 import { useSearchParam } from '@/hooks';
 import { Button, Dropdown, Check, EmptyState, Loading } from '@/shared';
 import { RefreshStatsDto, SortKey, SortValue } from '@/types';
 import { convertDateToKST } from '@/utils';
-import { FetchResponseError } from '@/errors';
 
 const REFRESH_WAIT_TIME = 1000 * 5;
 

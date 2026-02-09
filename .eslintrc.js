@@ -5,6 +5,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
+    project: true,
     tsconfigRootDir: __dirname,
   },
   globals: { React: true, NodeJS: true },
