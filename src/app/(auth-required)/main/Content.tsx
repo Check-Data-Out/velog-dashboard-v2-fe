@@ -10,7 +10,7 @@ import { PATHS, SORT_TYPE } from '@/constants';
 import { FetchResponseError } from '@/errors';
 import { useSearchParam } from '@/hooks';
 import { Button, Dropdown, Check, EmptyState, Loading } from '@/shared';
-import { RefreshStatsDto, SortKey, SortValue } from '@/types';
+import { SortKey, SortValue } from '@/types';
 import { convertDateToKST } from '@/utils';
 
 const REFRESH_WAIT_TIME = 1000 * 5;
@@ -63,23 +63,29 @@ export const Content = () => {
         setTimeout(() => refresh(), REFRESH_WAIT_TIME);
       }
     },
-    onError: () => {
-      if (status) {
-        setStatus(false);
+    throwOnError: false,
+    onError: (error: FetchResponseError) => {
+      const isLastUpdated = (error.options.body?.data as { lastUpdatedAt?: string })?.lastUpdatedAt;
+      if (!status && isLastUpdated)
+        // lastUpdatedAt 값이 넘어온 경우 (이미 새로고침 완료)
+        toast.error(error.getToastMessage()); // TODO: 이 하드코딩 개선하기 (당장의 토스트 오류 해결을 위해 어쩔 수 없음)
+      else if (status && isLastUpdated) {
+        // 새로고침 실행 중이었고, lastUpdatedAt 값이 넘어온 경우 (새로고침 완료)
         toast.success('새로고침이 완료되었습니다!');
         refetchPosts();
         refetchSummaries();
         refetchYesterdayPostCount();
-        return;
+        setStatus(false);
+      } else if (status) {
+        // 새로고침 실행중인 경우 (업데이트중)
+        setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+      } else {
+        // 페이지 리프레시 이후에도 새로고침 실행중인 경우
+        toast.success('새로고침 실행 상태를 동기화하였습니다');
+        setStatus(true);
+        setTimeout(() => refresh(), REFRESH_WAIT_TIME);
       }
     },
-    retry: (_, error: FetchResponseError) => {
-      if (!(error.options.body?.data as RefreshStatsDto)?.lastUpdatedAt) {
-        return true;
-      }
-      return false;
-    },
-    retryDelay: 1000 * 5,
   });
 
   useEffect(() => {
