@@ -37,3 +37,7 @@ export type PostDetailDto = {
 };
 
 export type TotalStatsDto = Array<{ date: string; value: number }>;
+
+export type RefreshStatsDto = {
+  lastUpdatedAt?: string;
+};

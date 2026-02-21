@@ -38,11 +38,11 @@ const fetch = returnFetch({
   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   interceptors: {
     response: async (response) => {
-      if (!response.ok) throw response;
-      return {
-        ...response,
-        body: response?.text ? JSON.parse(await response?.text()) : {},
-      };
+      const body = JSON.parse(await response?.clone().text());
+      if (!response.ok) {
+        throw response;
+      }
+      return { ...response, body };
     },
   },
 });
@@ -80,15 +80,11 @@ export const instance = async <I, R>(
     try {
       body = await err.json();
     } catch {
-      // JSON 파싱 실패 시 기본값 제공
       body = {
         success: false,
         message: 'JSON 파싱에 실패했습니다',
         data: null,
-        error: {
-          code: 'FailedJsonParsing',
-          statusCode: 500,
-        },
+        error: { code: 'FailedJsonParsing', statusCode: 500 },
       };
     }
 

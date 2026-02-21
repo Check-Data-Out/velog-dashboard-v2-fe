@@ -2,6 +2,7 @@ import { withSentryConfig } from '@sentry/nextjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // TODO: reactStrictMode false 없이도 오류 토스트가 정상적으로 표시되도록 개선
   reactStrictMode: false,
   experimental: { forceSwcTransforms: true, workerThreads: false, cpus: 1 },
   output: 'standalone',

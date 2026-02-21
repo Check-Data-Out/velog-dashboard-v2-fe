@@ -7,3 +7,4 @@ export * from './Modal';
 export * from './Icon';
 export * from './EmptyState';
 export * from './CopyButton';
+export * from './Loading';
