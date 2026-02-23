@@ -33,11 +33,9 @@ export const Posts = ({ posts }: IProps) => {
             {convertDateToKST(item.releasedAt)?.short}
           </span>
           <div tw="ml-auto flex items-center">
-            <span {...fontStyle('SUBTITLE', '5', COLORS.TEXT.ALT, `mr-[4px]`)}>
-              {item.viewCount} / {item.viewDiff}{' '}
-              <span tw={`text-[${COLORS.PRIMARY.SUB}] ml-[2px] mr-[4px]`}>⬆</span> /{' '}
-            </span>
-            <Icon name="Like" size={14} color={COLORS.TEXT.ALT} tw="mr-[6px]" />
+            <span {...fontStyle('SUBTITLE', '5', COLORS.TEXT.ALT)}>{item.viewCount}</span>
+            <span {...fontStyle('SUBTITLE', '5', COLORS.TEXT.ALT, 'ml-[4px]')}>/</span>
+            <Icon name="Like" size={14} color={COLORS.TEXT.ALT} tw="ml-[6px] mr-[6px]" />
             <span {...fontStyle('SUBTITLE', '5', COLORS.TEXT.ALT)}>{item.likeCount}</span>
           </div>
         </div>
