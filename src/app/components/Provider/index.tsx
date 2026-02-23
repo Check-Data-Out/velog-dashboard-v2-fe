@@ -3,6 +3,7 @@
 import * as ChannelService from '@channel.io/channel-web-sdk-loader';
 import { ErrorBoundary } from '@sentry/nextjs';
 import HolyLoader, { HolyLoaderProps } from 'holy-loader';
+import { useRouter } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 import { COLORS, ENVS } from '@/constants';
@@ -26,6 +27,17 @@ const ChannelTalkServiceLoader = () => {
 
 export const Provider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => ChannelTalkServiceLoader(), []);
+  const router = useRouter();
+
+  // TODO: 커스텀 이벤트 관련 로직 더 사용하고 공통 로직으로 분리하기
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      router.push('/');
+    };
+
+    window.addEventListener('unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('unauthorized', handleUnauthorized);
+  }, [router]);
 
   return (
     <ErrorBoundary>
