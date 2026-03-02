@@ -98,7 +98,7 @@ export const instance = async <I, R>(
     let response: unknown = undefined;
 
     if (err.status === 401) {
-      window.dispatchEvent(new CustomEvent('unauthorized'));
+      location.replace('/');
       throw new AuthRequiredError(data);
     } else if (err?.status === 429) {
       response = new ExceededRateLimitError(data);
