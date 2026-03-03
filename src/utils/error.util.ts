@@ -18,7 +18,11 @@ export const errorHandler = (error: unknown) => {
         captureException(error);
       });
     }
-    queueMicrotask(() => typeof window !== 'undefined' && toast.error(error.getToastMessage()));
+    queueMicrotask(
+      () =>
+        typeof window !== 'undefined' &&
+        toast.error(error.getToastMessage(), { toastId: error.name }),
+    );
     return false;
   }
   return true;
