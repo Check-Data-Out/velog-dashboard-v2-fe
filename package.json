@@ -2,6 +2,7 @@
   "name": "velog-dashboard-v2-fe",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "lint-staged": {
     "*.{ts,tsx}": [
       "next lint --file",

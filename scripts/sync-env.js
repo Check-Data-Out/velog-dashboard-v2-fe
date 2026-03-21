@@ -1,5 +1,8 @@
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const ROOT = path.join(__dirname, '..');
 const ENV_PROD = path.join(ROOT, '.env.production');
@@ -65,7 +68,7 @@ function syncDockerWorkflow(keys) {
   const newLines = keys.map((k) => `echo "${k}=\${{ secrets.${k} }}" >> .env.production`);
   content = replaceSyncSection(content, newLines, DOCKER_WORKFLOW);
   fs.writeFileSync(DOCKER_WORKFLOW, content, 'utf-8');
-  console.log(`  ✅ docker-publish.yaml 업데이트 (${keys.length}개 키)`);
+  console.log(`updated docker-publish.yaml (${keys.length} keys)`);
 }
 
 function syncE2eWorkflow(entries) {
@@ -79,12 +82,12 @@ function syncE2eWorkflow(entries) {
 
   content = replaceSyncSection(content, newLines, E2E_WORKFLOW);
   fs.writeFileSync(E2E_WORKFLOW, content, 'utf-8');
-  console.log(`  ✅ process-e2e.yaml 업데이트 (${entries.length}개 키)`);
+  console.log(`updated process-e2e.yaml (${entries.length} keys)`);
 }
 
 if (!fs.existsSync(ENV_PROD)) {
-  console.error('❌ .env.production 파일이 없습니다. 먼저 생성해 주세요.');
-  console.error(`   예상 경로: ${ENV_PROD}`);
+  console.error('.env.production not found.');
+  console.error(`expected: ${ENV_PROD}`);
   process.exit(1);
 }
 
@@ -92,16 +95,13 @@ const entries = parseEnvFile(ENV_PROD);
 const keys = entries.map((e) => e.key);
 
 if (keys.length === 0) {
-  console.error('❌ .env.production 에서 유효한 키를 찾지 못했습니다.');
+  console.error('no valid keys found in .env.production.');
   process.exit(1);
 }
 
-console.log(`\n📋 .env.production 에서 감지된 키 (${keys.length}개): ${keys.join(', ')}\n`);
+console.log(`keys (${keys.length}): ${keys.join(', ')}`);
 
 syncDockerWorkflow(keys);
 syncE2eWorkflow(entries);
 
-console.log('\n🎉 동기화 완료! 변경된 워크플로우 파일을 확인 후 커밋하세요.');
-console.log(
-  '   ⚠️  GitHub Secrets 에 해당 키가 등록되어 있는지도 확인하세요: Settings → Secrets and variables → Actions',
-);
+console.log('done.');

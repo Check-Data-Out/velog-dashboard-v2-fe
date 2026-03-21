@@ -49,4 +49,10 @@ module.exports = {
     'import/resolver': { typescript: { project: './tsconfig.json' }, node: true },
     react: { version: 'detect' },
   },
+  overrides: [
+    {
+      files: ['scripts/**/*.js'],
+      parserOptions: { project: false },
+    },
+  ],
 };
