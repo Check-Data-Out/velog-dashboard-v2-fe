@@ -24,14 +24,18 @@ jobs:
           pnpm install --frozen-lockfile
           npx cypress install
 
-      - name: Create .env file for Testing
+      # .env.production 변경 시 `pnpm sync-env` 를 실행하면 이 구간이 자동 업데이트됩니다.
+      # 테스트용 목(mock) 값은 아래에서 직접 관리하세요.
+      - name: Create .env.production file for Testing
         run: |
-          echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" >> .env
-          echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env
-          echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_key" >> .env
-          echo "NEXT_PUBLIC_GA_ID=sample_id" >> .env
-          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_token" >> .env
-          echo "NEXT_PUBLIC_SENTRY_DSN=sample_dsn" >> .env
+          # BEGIN_ENV_SYNC
+          echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" >> .env.production
+          echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env.production
+          echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_key" >> .env.production
+          echo "NEXT_PUBLIC_GA_ID=sample_id" >> .env.production
+          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_token" >> .env.production
+          echo "NEXT_PUBLIC_SENTRY_DSN=sample_dsn" >> .env.production
+          # END_ENV_SYNC
 
       - name: Start application server
         run: |
