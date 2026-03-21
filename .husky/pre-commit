@@ -1,1 +1,3 @@
+pnpm sync-env
+git add .github/workflows/docker-publish.yaml .github/workflows/process-e2e.yaml
 pnpm lint-staged
