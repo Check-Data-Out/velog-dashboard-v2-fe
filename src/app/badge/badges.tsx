@@ -39,10 +39,10 @@ export const defaultBadgeGenerator = async ({ badge, assets, size, origin }: Bad
           totalViews={badge.user.totalViews}
         />
       </div>
-      <div tw="absolute w-full" style={{ top: 46 }}>
+      <div tw="absolute flex w-full" style={{ top: 46 }}>
         <Posts posts={badge.recentPosts} />
       </div>
-      <div tw="absolute bottom-0">
+      <div tw="absolute flex bottom-0">
         <PoweredBy />
       </div>
     </div>,
