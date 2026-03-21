@@ -97,8 +97,8 @@ export const BadgeGenerator = () => {
               'shrink-0 relative max-MBI:w-full',
               // TODO: 뱃지 디자인이 달라지는 경우에도 쉽게 맞출 수 있도록 개선 필요함
               type === 'default'
-                ? 'w-[550px] MBI:h-[350px] max-MBI:max-w-[550px]'
-                : 'w-[350px] MBI:h-[140px] max-MBI:max-w-[350px]',
+                ? 'w-[550px] MBI:h-[350px] max-MBI:max-w-[550px] max-MBI:aspect-[11/7]'
+                : 'w-[350px] MBI:h-[140px] max-MBI:max-w-[350px] max-MBI:aspect-[5/2]',
             )}
           >
             {isFetching || isError ? (
