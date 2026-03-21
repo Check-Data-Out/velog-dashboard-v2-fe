@@ -51,7 +51,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['scripts/**/*.js'],
+      files: ['scripts/**/*.mjs'],
       parserOptions: { project: false },
     },
   ],
