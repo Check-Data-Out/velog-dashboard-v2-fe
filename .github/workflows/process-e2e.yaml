@@ -29,12 +29,12 @@ jobs:
       - name: Create .env.production file for Testing
         run: |
           # BEGIN_ENV_SYNC
-          echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" >> .env.production
-          echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env.production
-          echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_key" >> .env.production
-          echo "NEXT_PUBLIC_GA_ID=sample_id" >> .env.production
-          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_token" >> .env.production
-          echo "NEXT_PUBLIC_SENTRY_DSN=sample_dsn" >> .env.production
+          echo "NEXT_PUBLIC_BASE_URL=sample_value" >> .env.production
+          echo "NEXT_PUBLIC_CLIENT_BASE_URL=sample_value" >> .env.production
+          echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_value" >> .env.production
+          echo "NEXT_PUBLIC_GA_ID=sample_value" >> .env.production
+          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_value" >> .env.production
+          echo "NEXT_PUBLIC_SENTRY_DSN=sample_value" >> .env.production
           # END_ENV_SYNC
 
       - name: Start application server
