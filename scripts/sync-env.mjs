@@ -24,20 +24,6 @@ function parseEnvFile(filePath) {
   return entries;
 }
 
-function parseExistingMocks(content) {
-  const mocks = {};
-  const beginIdx = content.indexOf(BEGIN_MARKER);
-  const endIdx = content.indexOf(END_MARKER);
-  if (beginIdx === -1 || endIdx === -1) return mocks;
-
-  const section = content.slice(beginIdx + BEGIN_MARKER.length, endIdx);
-  for (const line of section.split('\n')) {
-    const m = line.match(/echo\s+"([^=]+)=([^"]*)" >> \.env\.production/);
-    if (m) mocks[m[1]] = m[2];
-  }
-  return mocks;
-}
-
 function replaceSyncSection(content, newLines, filePath) {
   const beginIdx = content.indexOf(BEGIN_MARKER);
   const endIdx = content.indexOf(END_MARKER);
@@ -66,20 +52,6 @@ function syncDockerWorkflow(keys) {
   console.log(`updated docker-publish.yaml (${keys.length} keys)`);
 }
 
-function syncE2eWorkflow(entries) {
-  let content = fs.readFileSync(E2E_WORKFLOW, 'utf-8');
-  const existingMocks = parseExistingMocks(content);
-
-  const newLines = entries.map(({ key }) => {
-    const val = Object.hasOwn(existingMocks, key) ? existingMocks[key] : 'sample_value';
-    return `echo "${key}=${val}" >> .env.production`;
-  });
-
-  content = replaceSyncSection(content, newLines, E2E_WORKFLOW);
-  fs.writeFileSync(E2E_WORKFLOW, content, 'utf-8');
-  console.log(`updated process-e2e.yaml (${entries.length} keys)`);
-}
-
 if (!fs.existsSync(ENV_PROD)) {
   console.error('.env.production not found.');
   console.error(`expected: ${ENV_PROD}`);
@@ -97,6 +69,5 @@ if (keys.length === 0) {
 console.log(`keys (${keys.length}): ${keys.join(', ')}`);
 
 syncDockerWorkflow(keys);
-syncE2eWorkflow(entries);
 
 console.log('done.');
