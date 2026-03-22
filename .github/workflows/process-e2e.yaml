@@ -27,8 +27,8 @@ jobs:
       - name: Create .env.production file for Testing
         run: |
           # BEGIN_ENV_SYNC
-          echo "NEXT_PUBLIC_BASE_URL=sample_value" >> .env
-          echo "NEXT_PUBLIC_CLIENT_BASE_URL=sample_value" >> .env
+          echo "NEXT_PUBLIC_BASE_URL=http://localhost:8080/api" >> .env
+          echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env
           echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_value" >> .env
           echo "NEXT_PUBLIC_GA_ID=sample_value" >> .env
           echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_value" >> .env

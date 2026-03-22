@@ -6,6 +6,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const ROOT = path.join(__dirname, '..');
 const ENV_PROD = path.join(ROOT, '.env.production');
+const ENV_LOCAL = path.join(ROOT, '.env.local');
+const ENV_BASE = path.join(ROOT, '.env');
 const DOCKER_WORKFLOW = path.join(ROOT, '.github', 'workflows', 'docker-publish.yaml');
 const E2E_WORKFLOW = path.join(ROOT, '.github', 'workflows', 'process-e2e.yaml');
 
@@ -44,6 +46,29 @@ function replaceSyncSection(content, newLines, filePath) {
   return content.slice(0, beginIdx) + newSection + content.slice(endIdx + END_MARKER.length);
 }
 
+function loadLocalEnv() {
+  const envPath = fs.existsSync(ENV_LOCAL) ? ENV_LOCAL : ENV_BASE;
+  if (!fs.existsSync(envPath)) {
+    console.warn('warning: .env.local and .env not found, e2e sync will use empty values.');
+    return {};
+  }
+  const label = fs.existsSync(ENV_LOCAL) ? '.env.local' : '.env';
+  console.log(`e2e: reading values from ${label}`);
+  return Object.fromEntries(parseEnvFile(envPath).map(({ key, value }) => [key, value]));
+}
+
+function syncE2eWorkflow(keys) {
+  const localEnv = loadLocalEnv();
+  let content = fs.readFileSync(E2E_WORKFLOW, 'utf-8');
+  const newLines = keys.map((k) => {
+    const value = localEnv[k] ?? '';
+    return `echo "${k}=${value}" >> .env`;
+  });
+  content = replaceSyncSection(content, newLines, E2E_WORKFLOW);
+  fs.writeFileSync(E2E_WORKFLOW, content, 'utf-8');
+  console.log(`updated process-e2e.yaml (${keys.length} keys)`);
+}
+
 function syncDockerWorkflow(keys) {
   let content = fs.readFileSync(DOCKER_WORKFLOW, 'utf-8');
   const newLines = keys.map((k) => `echo "${k}=\${{ secrets.${k} }}" >> .env.production`);
@@ -69,5 +94,6 @@ if (keys.length === 0) {
 console.log(`keys (${keys.length}): ${keys.join(', ')}`);
 
 syncDockerWorkflow(keys);
+syncE2eWorkflow(keys);
 
 console.log('done.');
