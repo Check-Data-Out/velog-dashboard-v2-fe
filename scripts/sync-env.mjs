@@ -53,12 +53,7 @@ function replaceSyncSection(content, newLines, filePath) {
   const indent = linesBefore[linesBefore.length - 1];
 
   const newSection =
-    BEGIN_MARKER +
-    '\n' +
-    newLines.map((l) => indent + l).join('\n') +
-    '\n' +
-    indent +
-    END_MARKER;
+    BEGIN_MARKER + '\n' + newLines.map((l) => indent + l).join('\n') + '\n' + indent + END_MARKER;
 
   return content.slice(0, beginIdx) + newSection + content.slice(endIdx + END_MARKER.length);
 }
