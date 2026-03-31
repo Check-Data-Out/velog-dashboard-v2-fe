@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
-export const useResponsive = (): number => {
-  let timer: undefined | NodeJS.Timeout = undefined;
-  const [width, setWidth] = useState<number>(1024);
+const listeners = new Set<() => void>();
+const notify = () => listeners.forEach((fn) => fn());
 
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return () => window.removeEventListener('resize', () => null);
+const subscribe = (cb: () => void) => {
+  if (listeners.size === 0 && typeof window !== 'undefined') {
+    window.addEventListener('resize', notify);
+  }
+  listeners.add(cb);
+  return () => {
+    listeners.delete(cb);
+    if (listeners.size === 0 && typeof window !== 'undefined') {
+      window.removeEventListener('resize', notify);
     }
-
-    setWidth(window.innerWidth);
-
-    const handleResize = () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => setWidth(window.innerWidth), 10);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return width;
+  };
 };
+
+export const useResponsive = (): number =>
+  useSyncExternalStore(
+    subscribe,
+    () => window.innerWidth,
+    () => 1024,
+  );
