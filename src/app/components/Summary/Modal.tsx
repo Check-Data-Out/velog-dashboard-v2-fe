@@ -11,10 +11,13 @@ import {
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Line } from 'react-chartjs-2';
-import { totalStats } from '@/apis';
-import { COLORS, PATHS, sidebarId, SidebarIdType, GRAPH_OPTIONS } from '@/constants';
-import { Modal as Layout } from '@/shared';
-import { convertDateToKST } from '@/utils';
+import { totalStats } from '@/lib/apis/dashboard.request';
+import { GRAPH_OPTIONS } from '@/lib/constants/graph.constant';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { sidebarId, SidebarIdType } from '@/lib/constants/sidebar.constant';
+import { COLORS } from '@/lib/constants/styles.constant';
+import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { Modal as Layout } from '@/shared/Modal';
 
 ChartJS.register(
   CategoryScale,
@@ -45,7 +48,7 @@ const defaultData = {
 
 export const Modal = ({ name }: { name: SidebarIdType }) => {
   const { data } = useQuery({
-    queryKey: [PATHS.TOTALSTATS, name],
+    queryKey: queryKeys.totalStats(name),
     queryFn: async () => await totalStats(name),
     select: (res) => ({
       labels: res.map((i) => convertDateToKST(i.date)?.short),

@@ -5,15 +5,14 @@ import { startHolyLoader } from 'holy-loader';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { logout, me } from '@/apis';
-import { PATHS, SCREENS } from '@/constants';
-import { useResponsive, useModal } from '@/hooks';
-import { Icon, NameType } from '@/shared';
-import { revalidate } from '@/utils';
+import { useModal } from '@/hooks/useModal';
+import { useResponsive } from '@/hooks/useResponsive';
+import { logout, me } from '@/lib/apis/user.request';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { SCREENS } from '@/lib/constants/styles.constant';
+import { revalidate } from '@/lib/utils/cache.util';
+import { Icon, NameType } from '@/shared/Icon';
 import { defaultStyle, Section, textStyle } from './Section';
-import { BadgeGenerator } from '../BadgeGenerator';
-import { Modal } from '../Notice/Modal';
-import { QRCode } from '../QRCode';
 
 const PARAMS = {
   MAIN: '?asc=false&sort=',
@@ -31,10 +30,9 @@ const layouts: Array<{ icon: NameType; title: string; path: string }> = [
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
-  const { open: ModalOpen } = useModal();
+  const { open: openModal } = useModal();
   const menu = useRef<HTMLDivElement | null>(null);
   const path = usePathname();
-  const { replace } = useRouter();
   const { replace: replaceWithoutLoading } = useRouter();
   const width = useResponsive();
   const barWidth = width < SCREENS.MBI ? 65 : 180;
@@ -43,19 +41,17 @@ export const Header = () => {
   const { mutate: out } = useMutation({
     mutationFn: logout,
     onSuccess: async () => {
-      await revalidate();
       client.clear();
       startHolyLoader();
-      replace('/');
+      await revalidate();
     },
   });
 
   const { data: profiles } = useQuery({
-    queryKey: [PATHS.ME],
+    queryKey: queryKeys.me(),
     queryFn: me,
-    staleTime: 1000 * 60 * 5, // 5분간 캐시 유지
+    staleTime: 1000 * 60 * 5,
     retry: 1,
-    // 테스트 환경에서도 동작하도록 enabled 조건 완화
   });
 
   useEffect(() => {
@@ -86,7 +82,7 @@ export const Header = () => {
             </Section>
           ))}
         </div>
-        <Section clickType="function" action={() => ModalOpen(<Modal />)}>
+        <Section clickType="function" action={() => openModal({ type: 'notice' })}>
           <Icon name="Loudspeaker" size={25} />
           <span className={`${textStyle} text-TEXT-ALT`}>공지사항</span>
         </Section>
@@ -97,7 +93,7 @@ export const Header = () => {
               height={35}
               className="rounded-full"
               src={profiles?.profile?.thumbnail || '/profile.jpg'}
-              alt=""
+              alt={profiles?.username ? `${profiles.username}의 프로필 이미지` : '프로필 이미지'}
             />
             <span className={`${textStyle} text-TEXT-ALT`} id="profile">
               {profiles?.username || 'NULL'}
@@ -120,7 +116,7 @@ export const Header = () => {
                   className="text-TEXT-MAIN text-INPUT-3 p-5 max-MBI:p-4 flex items-center justify-center whitespace-nowrap w-full hover:bg-BG-ALT"
                   onClick={() => {
                     setOpen(false);
-                    ModalOpen(<QRCode />);
+                    openModal({ type: 'qrcode' });
                   }}
                 >
                   QR 로그인
@@ -129,7 +125,7 @@ export const Header = () => {
                   className="text-TEXT-MAIN text-INPUT-3 p-5 max-MBI:p-4 flex items-center justify-center whitespace-nowrap w-full hover:bg-BG-ALT"
                   onClick={() => {
                     setOpen(false);
-                    ModalOpen(<BadgeGenerator />);
+                    openModal({ type: 'badge' });
                   }}
                 >
                   뱃지 생성기

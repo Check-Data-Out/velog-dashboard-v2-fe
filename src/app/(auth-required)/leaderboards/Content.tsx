@@ -3,12 +3,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { startHolyLoader } from 'holy-loader';
 import { useMemo } from 'react';
-import { leaderboardList } from '@/apis';
-import { Rank } from '@/app/components';
-import { PATHS, URLS } from '@/constants';
-import { useSearchParam } from '@/hooks';
-import { Dropdown, EmptyState } from '@/shared';
-import { LeaderboardItemType } from '@/types';
+import { Rank } from '@/app/components/Rank';
+import { useSearchParam } from '@/hooks/useSearchParam';
+import { leaderboardList } from '@/lib/apis/leaderboard.request';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { URLS } from '@/lib/constants/urls.constant';
+import { LeaderboardItemType, LeaderboardListPost } from '@/lib/types/leaderboard.type';
+import { Dropdown } from '@/shared/Dropdown';
+import { EmptyState } from '@/shared/EmptyState';
 
 export type searchParamsType = {
   based: 'user' | 'post';
@@ -33,7 +35,7 @@ export const Content = () => {
   };
 
   const { data: boards, isLoading } = useQuery({
-    queryKey: [PATHS.LEADERBOARD, finalParams],
+    queryKey: queryKeys.leaderboard(finalParams),
     queryFn: async () => await leaderboardList(finalParams),
   });
 
@@ -43,12 +45,15 @@ export const Content = () => {
 
     const value = ((isUserBased ? boards?.users : boards?.posts) || []) as LeaderboardItemType[];
 
-    return value.map(({ username, title, viewDiff, likeDiff, slug }) => ({
-      key: isUserBased ? username : title,
-      username,
-      url: URLS.VELOG + `/@${username}` + (isUserBased ? '/posts' : `/${slug}`),
-      value: isViewBased ? viewDiff : likeDiff,
-    }));
+    return value.map((item) => {
+      const post = item as LeaderboardListPost;
+      return {
+        key: isUserBased ? item.username : post.title,
+        username: item.username,
+        url: URLS.VELOG + `/@${item.username}` + (isUserBased ? '/posts' : `/${post.slug}`),
+        value: isViewBased ? item.viewDiff : item.likeDiff,
+      };
+    });
   }, [boards, finalParams?.based, finalParams?.sort]);
 
   const handleChange = (param: Partial<searchParamsType>) => {
@@ -113,7 +118,7 @@ export const Content = () => {
           data?.map(({ key, username, url, value }, index) => (
             <Rank
               name={key}
-              key={index}
+              key={url}
               url={url}
               count={value}
               rank={index + 1}

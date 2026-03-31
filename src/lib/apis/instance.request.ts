@@ -1,13 +1,12 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
-import { ENVS } from '@/constants';
+import { ENVS } from '@/lib/constants/env.constant';
 import {
-  AuthRequiredError,
   ExceededRateLimitError,
   fetchOptions,
   FetchResponseError,
   TimeoutError,
   UnknownError,
-} from '@/errors';
+} from '@/lib/errors/fetch.error';
 
 const ABORT_MS = 30000;
 
@@ -98,8 +97,12 @@ export const instance = async <I, R>(
     let response: unknown = undefined;
 
     if (err.status === 401) {
+      if (typeof window === 'undefined') {
+        const { redirect } = await import('next/navigation');
+        redirect('/');
+      }
       location.replace('/');
-      throw new AuthRequiredError(data);
+      return undefined as never;
     } else if (err?.status === 429) {
       response = new ExceededRateLimitError(data);
     } else if (customError) {

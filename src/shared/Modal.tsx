@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { useModal } from '@/hooks';
+import { useModal } from '@/hooks/useModal';
 import { Icon } from './Icon';
 
 interface IProp extends React.HTMLAttributes<HTMLDivElement> {
@@ -19,6 +19,13 @@ export const Modal = ({ title, children, ...rest }: IProp) => {
     window.addEventListener('keydown', handleClose);
     return () => window.removeEventListener('keydown', handleClose);
   }, [close]);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -39,7 +46,13 @@ export const Modal = ({ title, children, ...rest }: IProp) => {
           <h2 className="text-TEXT-MAIN items-cenetr gap-3 text-TITLE-3 max-MBI:text-TITLE-4">
             {title}
           </h2>
-          <Icon name="Close" onClick={close} className="cursor-pointer" />
+          <Icon
+            name="Close"
+            onClick={close}
+            className="cursor-pointer"
+            aria-label="닫기"
+            role="button"
+          />
         </div>
         {children}
       </div>

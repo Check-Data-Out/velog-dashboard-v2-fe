@@ -1,8 +1,7 @@
-import { SidebarIdType } from '@/constants';
-import { useModal } from '@/hooks';
-import { Inform } from '@/shared';
-import { parseNumber } from '@/utils';
-import { Modal } from './Modal';
+import { useModal } from '@/hooks/useModal';
+import { SidebarIdType } from '@/lib/constants/sidebar.constant';
+import { parseNumber } from '@/lib/utils/number.util';
+import { Inform } from '@/shared/Inform';
 
 interface IProp {
   title: string;
@@ -17,7 +16,7 @@ export const SidebarContent = ({ title, content, increasement, typeIsCount, id }
 
   return (
     <div
-      onClick={() => open(<Modal name={id} />)}
+      onClick={() => open({ type: 'stats', name: id })}
       className="flex flex-col items-center justify-center gap-3 bg-BG-SUB w-[375px] hover:bg-BG-ALT cursor-pointer transition-all duration-300 p-4 rounded-[4px] h-full max-TBL:w-[280px]"
     >
       <Inform>

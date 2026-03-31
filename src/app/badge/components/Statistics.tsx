@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unknown-property */
 
-import { COLORS } from '@/constants';
+import { COLORS } from '@/lib/constants/styles.constant';
+import { parseNumber } from '@/lib/utils/number.util';
 import { Icon, NameType } from '@/shared/Icon';
-import { parseNumber } from '@/utils';
 import { fontStyle } from '../util';
 
 interface IProp {

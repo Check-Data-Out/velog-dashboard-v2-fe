@@ -5,7 +5,8 @@ import { ErrorBoundary } from '@sentry/nextjs';
 import HolyLoader, { HolyLoaderProps } from 'holy-loader';
 import { Suspense, useEffect } from 'react';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { COLORS, ENVS } from '@/constants';
+import { ENVS } from '@/lib/constants/env.constant';
+import { COLORS } from '@/lib/constants/styles.constant';
 import { ModalContainer } from './ModalContainer';
 import { QueryProvider } from './QueryProvider';
 import { TermsOfService } from './TermsOfService';
@@ -29,10 +30,10 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ErrorBoundary>
+      <HolyLoader {...HolyLoaderOptions} />
+      <ToastContainer {...ToastContainerOptions} />
       <QueryProvider>
         <Suspense>
-          <HolyLoader {...HolyLoaderOptions} />
-          <ToastContainer {...ToastContainerOptions} />
           <ModalContainer />
           <TermsOfService />
           {children}

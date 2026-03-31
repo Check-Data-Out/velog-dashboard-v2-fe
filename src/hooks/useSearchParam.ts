@@ -15,7 +15,7 @@ export const useSearchParam = <T extends Record<string, string>>() => {
   };
 
   const setSearchParams = (newParams: Partial<T>, isReplace: boolean = false) => {
-    if (isReplace) router.replace(`${pathname}?${setNewParams(newParams)}`);
+    if (isReplace) return router.replace(`${pathname}?${setNewParams(newParams)}`);
 
     return router.push(`${pathname}?${setNewParams(newParams)}`);
   };

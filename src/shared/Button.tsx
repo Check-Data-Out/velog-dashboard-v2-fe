@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { SIZES } from '@/constants';
+import { SIZES } from '@/lib/constants/styles.constant';
 
 interface IProp extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   form?: keyof typeof FORMS;

@@ -24,8 +24,8 @@ export const Dropdown = ({ options, onChange, defaultValue, disabled, ...rest }:
         defaultValue={typeof defaultValue === 'object' ? defaultValue[0] : defaultValue}
         className="w-full bg-TRANSPARENT text-INPUT-2 max-TBL:text-INPUT-4 text-TEXT-MAIN cursor-pointer z-40"
       >
-        {options.map((i, j) => (
-          <option key={j} className="bg-BG-SUB">
+        {options.map((i) => (
+          <option key={typeof i === 'object' ? i[0] : i} className="bg-BG-SUB">
             {typeof i === 'object' ? i[0] : i}
           </option>
         ))}

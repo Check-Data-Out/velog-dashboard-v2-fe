@@ -1,5 +1,5 @@
-import { PATHS } from '@/constants';
-import { BadgeDto, LoginVo, UserDto } from '@/types';
+import { PATHS } from '@/lib/constants/paths.constant';
+import { BadgeDto, LoginVo, UserDto } from '@/lib/types/user.type';
 import { instance } from './instance.request';
 
 export const login = async (body: LoginVo) => await instance(PATHS.LOGIN, { method: 'POST', body });

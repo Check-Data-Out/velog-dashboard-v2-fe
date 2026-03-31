@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Icon } from '@/shared';
-import { PostSummaryDto } from '@/types';
+import { PostSummaryDto } from '@/lib/types/dashboard.type';
+import { Icon } from '@/shared/Icon';
 import { BarContent } from './BarContent';
 import { SidebarContent } from './SidebarContent';
 
@@ -24,14 +24,22 @@ export const Summary = ({ totalPostCount, yesterdayPostCount, stats }: IProp) =>
         <SidebarContent
           title="전체 조회수"
           content={stats?.totalViews}
-          increasement={stats?.totalViews - stats?.yesterdayViews}
+          increasement={
+            stats?.totalViews !== undefined && stats?.yesterdayViews !== undefined
+              ? stats.totalViews - stats.yesterdayViews
+              : undefined
+          }
           id="view"
           typeIsCount
         />
         <SidebarContent
           title="전체 좋아요 수"
           content={stats?.totalLikes}
-          increasement={stats?.totalLikes - stats?.yesterdayLikes}
+          increasement={
+            stats?.totalLikes !== undefined && stats?.yesterdayLikes !== undefined
+              ? stats.totalLikes - stats.yesterdayLikes
+              : undefined
+          }
           id="like"
         />
         <SidebarContent
@@ -46,7 +54,7 @@ export const Summary = ({ totalPostCount, yesterdayPostCount, stats }: IProp) =>
         onClick={() => setOpen((prev) => !prev)}
       >
         <div className="text-TEXT-ALT flex items-center justify-center text-SUBTITLE-5 w-full h-[52px] gap-[10px] shrink-0">
-          <span>요약 정보 {open ? '펼치기' : '접기'}</span>
+          <span>요약 정보 {open ? '접기' : '펼치기'}</span>
           <Icon name="Arrow" size={17} rotate={open ? 'up' : 'down'} />
         </div>
         {open && (
@@ -55,12 +63,20 @@ export const Summary = ({ totalPostCount, yesterdayPostCount, stats }: IProp) =>
               title="전체 조회수"
               content={stats?.totalViews}
               prefix="회"
-              increasement={stats?.totalViews - stats?.yesterdayViews}
+              increasement={
+                stats?.totalViews !== undefined && stats?.yesterdayViews !== undefined
+                  ? stats.totalViews - stats.yesterdayViews
+                  : undefined
+              }
             />
             <BarContent
               title="전체 좋아요 수"
               content={stats?.totalLikes}
-              increasement={stats?.totalLikes - stats?.yesterdayLikes}
+              increasement={
+                stats?.totalLikes !== undefined && stats?.yesterdayLikes !== undefined
+                  ? stats.totalLikes - stats.yesterdayLikes
+                  : undefined
+              }
             />
             <BarContent
               title="총 게시글 수"

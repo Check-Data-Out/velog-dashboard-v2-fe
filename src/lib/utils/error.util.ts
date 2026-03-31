@@ -1,6 +1,6 @@
 import { captureException, withScope } from '@sentry/nextjs';
 import { toast } from 'react-toastify';
-import { FetchError, FetchResponseError } from '@/errors';
+import { AuthRequiredError, FetchError, FetchResponseError } from '@/lib/errors/fetch.error';
 
 /**
  * QueryClient에서 에러 핸들링에 사용, true/false 값 반환
@@ -9,6 +9,7 @@ import { FetchError, FetchResponseError } from '@/errors';
  */
 export const errorHandler = (error: unknown) => {
   if (error instanceof FetchResponseError || error instanceof FetchError) {
+    if (error instanceof AuthRequiredError) return false;
     if (error.shouldCaptureException) {
       withScope((scope) => {
         if (error instanceof FetchResponseError) {

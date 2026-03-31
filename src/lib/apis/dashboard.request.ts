@@ -1,12 +1,13 @@
-import { PATHS, SidebarIdType } from '@/constants';
-import { StatsAlreadyRefreshedError } from '@/errors';
+import { PATHS } from '@/lib/constants/paths.constant';
+import { SidebarIdType } from '@/lib/constants/sidebar.constant';
+import { StatsAlreadyRefreshedError } from '@/lib/errors/api.error';
 import {
   PostDetailDto,
   PostListDto,
   PostSummaryDto,
   RefreshStatsDto,
   TotalStatsDto,
-} from '@/types';
+} from '@/lib/types/dashboard.type';
 
 import { instance } from './instance.request';
 

@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   root: true,
   env: { browser: true, node: true, jest: true },
@@ -44,9 +46,15 @@ module.exports = {
     '@typescript-eslint/promise-function-async': 'error',
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/naming-convention': 'off',
+    '@typescript-eslint/no-require-imports': 'off',
   },
   settings: {
-    'import/resolver': { typescript: { project: './tsconfig.json' }, node: true },
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: path.resolve(__dirname, './tsconfig.json'),
+      },
+    },
     react: { version: 'detect' },
   },
 };

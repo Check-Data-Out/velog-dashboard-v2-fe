@@ -1,8 +1,8 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
-import { leaderboardList } from '@/apis';
-import { PATHS } from '@/constants';
-import { getQueryClient } from '@/utils';
+import { leaderboardList } from '@/lib/apis/leaderboard.request';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { getQueryClient } from '@/lib/utils/query.util';
 import { Content, searchParamsType } from './Content';
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default async function Page({ searchParams }: { searchParams: searchParam
   const client = getQueryClient();
 
   await client.prefetchQuery({
-    queryKey: [PATHS.LEADERBOARD, searchParams],
+    queryKey: queryKeys.leaderboard(searchParams),
     queryFn: async () => await leaderboardList(searchParams),
   });
 

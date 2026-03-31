@@ -2,11 +2,10 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { notiList } from '@/apis';
-import { PATHS } from '@/constants';
-import { useModal } from '@/hooks';
-import { convertDateToKST } from '@/utils';
-import { Modal } from './Modal';
+import { useModal } from '@/hooks/useModal';
+import { notiList } from '@/lib/apis/notice.request';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { convertDateToKST } from '@/lib/utils/datetime.util';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 const TTL = DAY_IN_MS * 2;
@@ -14,7 +13,7 @@ const RECENT_POST_THRESHOLD_DAYS = 4;
 const NOTIFICATION_STORAGE_KEY = 'noti_expiry';
 
 export const Notice = () => {
-  const { data } = useQuery({ queryKey: [PATHS.NOTIS], queryFn: notiList });
+  const { data } = useQuery({ queryKey: queryKeys.notis(), queryFn: notiList });
   const [show, setShow] = useState(false);
   const { open } = useModal();
 
@@ -22,9 +21,10 @@ export const Notice = () => {
     try {
       if (!data?.posts?.length) return;
 
-      const lastUpdated = new Date(
-        convertDateToKST(data?.posts[0].created_at)?.short as string,
-      ).getTime();
+      const short = convertDateToKST(data?.posts[0].created_at)?.short;
+      if (!short) return;
+      const lastUpdated = new Date(short).getTime();
+      if (isNaN(lastUpdated)) return;
       const daysSinceUpdate = Math.ceil((new Date().getTime() - lastUpdated) / DAY_IN_MS);
 
       if (daysSinceUpdate > RECENT_POST_THRESHOLD_DAYS) return;
@@ -53,7 +53,7 @@ export const Notice = () => {
             window.gtag('event', 'click_event', { target: '공지사항 버튼' });
             localStorage.setItem('noti_expiry', JSON.stringify(new Date().getTime() + TTL));
 
-            open(<Modal />);
+            open({ type: 'notice' });
           }}
         >
           확인하기

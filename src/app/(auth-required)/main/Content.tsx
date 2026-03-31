@@ -1,17 +1,24 @@
 'use client';
 
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { toast } from 'react-toastify';
-import { postList, postSummary, refreshStats, totalStats } from '@/apis';
-import { Section, Summary } from '@/app/components';
-import { PATHS, SORT_TYPE } from '@/constants';
-import { FetchResponseError } from '@/errors';
-import { useSearchParam } from '@/hooks';
-import { Button, Dropdown, Check, EmptyState, Loading } from '@/shared';
-import { SortKey, SortValue } from '@/types';
-import { convertDateToKST } from '@/utils';
+import { Section } from '@/app/components/Section';
+import { Summary } from '@/app/components/Summary';
+import { useSearchParam } from '@/hooks/useSearchParam';
+import { postList, postSummary, refreshStats, totalStats } from '@/lib/apis/dashboard.request';
+import { me } from '@/lib/apis/user.request';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { SORT_TYPE } from '@/lib/constants/searchParams.constant';
+import { FetchError, FetchResponseError } from '@/lib/errors/fetch.error';
+import { SortKey, SortValue } from '@/lib/types/searchParams.type';
+import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { Button } from '@/shared/Button';
+import { Check } from '@/shared/Check';
+import { Dropdown } from '@/shared/Dropdown';
+import { EmptyState } from '@/shared/EmptyState';
+import { Loading } from '@/shared/Loading';
 
 const REFRESH_WAIT_TIME = 1000 * 5;
 
@@ -23,16 +30,17 @@ export const Content = () => {
     sort: SortValue;
   }>();
   const [status, setStatus] = useState(false);
+  const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { ref, inView } = useInView();
+  const queryClient = useQueryClient();
 
   const {
     data: posts,
     fetchNextPage,
     isLoading,
-    refetch: refetchPosts,
   } = useInfiniteQuery({
-    queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]],
+    queryKey: queryKeys.posts({ asc: searchParams.asc, sort: searchParams.sort || '' }),
     queryFn: async ({ pageParam = '' }) =>
       await postList(
         { asc: searchParams.asc === 'true', sort: searchParams.sort || '' },
@@ -43,15 +51,24 @@ export const Content = () => {
     initialPageParam: '',
   });
 
-  const { data: summaries, refetch: refetchSummaries } = useQuery({
-    queryKey: [PATHS.SUMMARY],
+  const { data: summaries } = useQuery({
+    queryKey: queryKeys.summary(),
     queryFn: postSummary,
   });
 
-  const { data: yesterdayPostCount, refetch: refetchYesterdayPostCount } = useQuery({
-    queryKey: [PATHS.TOTALSTATS],
+  const { data: yesterdayPostCount } = useQuery({
+    queryKey: queryKeys.totalStats('post'),
     queryFn: async () => totalStats('post'),
-    select: (data) => data.slice(1, 2)[0]?.value,
+    select: (data) => {
+      const yesterdayKST = convertDateToKST(new Date(Date.now() - 86400000).toISOString())?.short;
+      return data.find((i) => convertDateToKST(i.date)?.short === yesterdayKST)?.value;
+    },
+  });
+
+  const { data: user } = useQuery({
+    queryKey: queryKeys.me(),
+    queryFn: me,
+    staleTime: Infinity,
   });
 
   const { mutate: refresh } = useMutation({
@@ -60,33 +77,40 @@ export const Content = () => {
       if (!status) {
         setStatus(true);
         toast.success('통계 새로고침이 시작되었습니다!');
-        setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+        refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
       }
     },
     throwOnError: false,
-    onError: (error: FetchResponseError) => {
+    onError: (error: FetchResponseError | FetchError) => {
+      if (!(error instanceof FetchResponseError)) return;
       const isLastUpdated = (error.options.body?.data as { lastUpdatedAt?: string })?.lastUpdatedAt;
-      if (!status && isLastUpdated)
+      if (!status && isLastUpdated) {
         // lastUpdatedAt 값이 넘어온 경우 (이미 새로고침 완료)
-        toast.error(error.getToastMessage()); // TODO: 이 하드코딩 개선하기 (당장의 토스트 오류 해결을 위해 어쩔 수 없음)
-      else if (status && isLastUpdated) {
+        toast.error(error.getToastMessage());
+      } else if (status && isLastUpdated) {
         // 새로고침 실행 중이었고, lastUpdatedAt 값이 넘어온 경우 (새로고침 완료)
         toast.success('새로고침이 완료되었습니다!');
-        refetchPosts();
-        refetchSummaries();
-        refetchYesterdayPostCount();
+        queryClient.invalidateQueries({ queryKey: queryKeys.posts() });
+        queryClient.invalidateQueries({ queryKey: queryKeys.summary() });
+        queryClient.invalidateQueries({ queryKey: queryKeys.totalStats() });
         setStatus(false);
       } else if (status) {
         // 새로고침 실행중인 경우 (업데이트중)
-        setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+        refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
       } else {
         // 페이지 리프레시 이후에도 새로고침 실행중인 경우
         toast.success('새로고침 실행 상태를 동기화하였습니다');
         setStatus(true);
-        setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+        refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
       }
     },
   });
+
+  useEffect(() => {
+    return () => {
+      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const pages = posts?.pages;
@@ -100,7 +124,6 @@ export const Content = () => {
 
   const joinedPosts = useMemo(() => posts?.pages.flatMap((i) => i.posts) || [], [posts]);
 
-  // 로딩 중이 아니고 게시물이 없는 경우
   const isEmpty = !isLoading && (!joinedPosts || joinedPosts.length === 0);
 
   return (
@@ -156,6 +179,7 @@ export const Content = () => {
               <Section
                 key={item?.id ?? index}
                 ref={index === array.length - 1 ? ref : undefined}
+                username={user?.username ?? ''}
                 {...item}
               />
             ))
