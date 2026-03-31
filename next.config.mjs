@@ -6,7 +6,7 @@ const nextConfig = {
   reactStrictMode: false,
   experimental: { forceSwcTransforms: true, workerThreads: false, cpus: 1 },
   output: 'standalone',
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   webpack: (config, options) => {
     config.module.rules.push({
       test: /\.svg$/i,
