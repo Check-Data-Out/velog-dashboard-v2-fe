@@ -59,10 +59,7 @@ export const Content = () => {
   const { data: yesterdayPostCount } = useQuery({
     queryKey: queryKeys.totalStats('post'),
     queryFn: async () => totalStats('post'),
-    select: (data) => {
-      const yesterdayKST = convertDateToKST(new Date(Date.now() - 86400000).toISOString())?.short;
-      return data.find((i) => convertDateToKST(i.date)?.short === yesterdayKST)?.value;
-    },
+    select: (data) => data.slice(1, 2)[0]?.value,
   });
 
   const { data: user } = useQuery({
