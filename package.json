@@ -18,7 +18,8 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "cypress:test": "cypress run --headless",
-    "prettier:format": "prettier --check --ignore-path .gitignore --ignore-path pnpm-lock.yaml ."
+    "prettier:format": "prettier --check --ignore-path .gitignore --ignore-path pnpm-lock.yaml .",
+    "sync-env": "node scripts/sync-env.mjs"
   },
   "dependencies": {
     "@channel.io/channel-web-sdk-loader": "^2.0.0",

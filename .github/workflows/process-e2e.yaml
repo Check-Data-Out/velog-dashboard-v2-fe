@@ -24,14 +24,16 @@ jobs:
           pnpm install --frozen-lockfile
           npx cypress install
 
-      - name: Create .env file for Testing
+      - name: Create .env.production file for Testing
         run: |
-          echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" >> .env
+          # BEGIN_ENV_SYNC
+          echo "NEXT_PUBLIC_BASE_URL=http://localhost:8080/api" >> .env
           echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env
-          echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_key" >> .env
-          echo "NEXT_PUBLIC_GA_ID=sample_id" >> .env
-          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_token" >> .env
-          echo "NEXT_PUBLIC_SENTRY_DSN=sample_dsn" >> .env
+          echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_value" >> .env
+          echo "NEXT_PUBLIC_GA_ID=sample_value" >> .env
+          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_value" >> .env
+          echo "NEXT_PUBLIC_SENTRY_DSN=sample_value" >> .env
+          # END_ENV_SYNC
 
       - name: Start application server
         run: |
@@ -50,6 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEXT_PUBLIC_BASE_URL: 'http://localhost:3000'
+          NEXT_PUBLIC_CLIENT_BASE_URL: 'http://localhost:3000'
           NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY: 'sample_key'
           NEXT_PUBLIC_GA_ID: 'sample_id'
           NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'sample_token'

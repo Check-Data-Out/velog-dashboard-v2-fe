@@ -9,7 +9,6 @@ COPY next.config.mjs ecosystem.config.js ./
 COPY .next/standalone ./
 COPY .next/static ./.next/static
 COPY public ./public
-COPY .env ./.env
 COPY .env.production ./.env.production
 
 # 프로덕션 의존성만 설치
