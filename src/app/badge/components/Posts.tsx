@@ -13,7 +13,7 @@ interface IProps {
 export const Posts = ({ posts }: IProps) => {
   return (
     <div style={{ gap: 14 }} tw="flex flex-col w-full h-[218px]">
-      {posts?.map((item, index) => (
+      {posts?.slice(0, 4)?.map((item, index) => (
         <div
           key={index}
           tw={`flex items-center w-full h-[43px] rounded-[4px] p-[12px] bg-[${COLORS.BG.SUB}]`}

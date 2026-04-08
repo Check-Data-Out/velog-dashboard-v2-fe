@@ -29,7 +29,7 @@ export const simpleBadgeGenerator = async ({ badge, assets, size, origin }: Badg
 
 export const defaultBadgeGenerator = async ({ badge, assets, size, origin }: BadgeGenerator) => {
   return await createImageResponse(
-    <div style={{ gap: 16 }} tw="flex flex-col w-full">
+    <div tw="flex flex-col w-full h-full relative">
       <div tw="flex items-center justify-between w-full">
         <Title username={badge.user.username} origin={origin} />
         <Statistics
@@ -39,8 +39,12 @@ export const defaultBadgeGenerator = async ({ badge, assets, size, origin }: Bad
           totalViews={badge.user.totalViews}
         />
       </div>
-      <Posts posts={badge.recentPosts} />
-      <PoweredBy />
+      <div tw="absolute flex w-full" style={{ top: 46 }}>
+        <Posts posts={badge.recentPosts} />
+      </div>
+      <div tw="absolute flex bottom-0">
+        <PoweredBy />
+      </div>
     </div>,
     { origin, size, type: 'default' },
   );
