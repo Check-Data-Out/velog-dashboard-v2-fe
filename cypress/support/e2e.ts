@@ -1,32 +1,63 @@
 import { BaseError, BaseSuccess } from './base';
 import {
+  MOCK_ACCESS_TOKEN,
   notificationsResponseData,
   postLeaderboardResponseData,
   postsFirstData,
   postsGraphData,
   postsSecondData,
   postsStatsResponseData,
+  qrTokenResponseData,
   totalStatsResponseData,
   userLeaderboardResponseData,
   userResponseData,
 } from './mock';
 import './commands';
 
+// forceNetworkError 사용 시 앱 코드에서 발생하는 'Failed to fetch' 예외를 무시.
+// 실제 네트워크 단절 시나리오에서 앱이 어떻게 UI를 처리하는지 검증하기 위함.
+Cypress.on('uncaught:exception', (err) => {
+  if (err.message.includes('Failed to fetch')) return false;
+  return true;
+});
+
 beforeEach(() => {
+  // middleware.ts 는 access_token 쿠키를 검사하므로,
+  // 로그인 성공 응답에 Set-Cookie 헤더를 포함해야 /main 으로 정상 이동 가능
   cy.intercept('POST', '**/api/login', (req) => {
     const body = req.body;
     if (body.accessToken === 'invalid_token' || body.refreshToken === 'invalid_token') {
       req.reply(BaseError(401, '유효하지 않은 토큰입니다.'));
     } else {
-      req.reply(BaseSuccess(userResponseData, '로그인에 성공하였습니다.'));
+      req.reply({
+        statusCode: 200,
+        headers: {
+          'Set-Cookie': `access_token=${MOCK_ACCESS_TOKEN}; Path=/; HttpOnly; SameSite=Strict`,
+        },
+        body: {
+          success: true,
+          message: '로그인에 성공하였습니다.',
+          data: userResponseData,
+          error: null,
+        },
+      });
     }
   }).as('loginAPI');
 
-  cy.intercept(
-    'POST',
-    '**/api/login-sample',
-    BaseSuccess(userResponseData, '샘플 로그인에 성공하였습니다.'),
-  ).as('sampleLoginAPI');
+  cy.intercept('POST', '**/api/login-sample', (req) => {
+    req.reply({
+      statusCode: 200,
+      headers: {
+        'Set-Cookie': `access_token=${MOCK_ACCESS_TOKEN}; Path=/; HttpOnly; SameSite=Strict`,
+      },
+      body: {
+        success: true,
+        message: '샘플 로그인에 성공하였습니다.',
+        data: userResponseData,
+        error: null,
+      },
+    });
+  }).as('sampleLoginAPI');
 
   cy.intercept(
     'GET',
@@ -82,6 +113,18 @@ beforeEach(() => {
     '**/api/post/**',
     BaseSuccess(postsGraphData, '게시물 상세 정보 조회에 성공하였습니다.'),
   ).as('postDetailAPI');
+
+  cy.intercept(
+    'POST',
+    '**/api/qr-login',
+    BaseSuccess(qrTokenResponseData, 'QR 토큰이 발급되었습니다.'),
+  ).as('qrLoginAPI');
+
+  cy.intercept(
+    'POST',
+    '**/api/stats-refresh',
+    BaseSuccess({}, '통계 새로고침이 시작되었습니다.'),
+  ).as('statsRefreshAPI');
 });
 
 /* eslint-disable @typescript-eslint/no-namespace */

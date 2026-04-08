@@ -1,11 +1,10 @@
-import { login, me, logout, sampleLogin, createQRToken, badge } from '../user.request';
 import { PATHS } from '@/lib/constants/paths.constant';
+import { instance } from '../instance.request';
+import { login, me, logout, sampleLogin, createQRToken, badge } from '../user.request';
 
 jest.mock('../instance.request', () => ({
   instance: jest.fn(),
 }));
-
-import { instance } from '../instance.request';
 
 const mockInstance = instance as jest.Mock;
 
