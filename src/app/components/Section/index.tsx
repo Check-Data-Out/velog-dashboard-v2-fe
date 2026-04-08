@@ -14,7 +14,7 @@ type SectionProps = PostType & { username: string };
 export const Section = forwardRef<HTMLElement, SectionProps>((p, ref) => {
   const [open, setOpen] = useState(false);
 
-  const url = `${URLS.VELOG}/@${p.username}/${p.slug}`;
+  const url = p.username ? `${URLS.VELOG}/@${p.username}/${p.slug}` : null;
 
   return (
     <section className="flex flex-col w-full h-fit relative" ref={ref}>
@@ -28,6 +28,7 @@ export const Section = forwardRef<HTMLElement, SectionProps>((p, ref) => {
             title="해당 글로 바로가기"
             onClick={(e) => {
               e.stopPropagation();
+              if (!url) return;
               window.open(url, '_blank', 'noopener,noreferrer');
             }}
           >

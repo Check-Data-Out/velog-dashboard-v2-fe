@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 
     const type = VALID_TYPES.has(rawType) ? (rawType as 'default' | 'simple') : 'default';
     const size =
-      Number.isFinite(rawSize) && rawSize >= MIN_SIZE && rawSize <= MAX_SIZE ? rawSize : 2;
+      Number.isInteger(rawSize) && rawSize >= MIN_SIZE && rawSize <= MAX_SIZE ? rawSize : 2;
     const assets = rawAssets.filter((a) => VALID_ASSETS.has(a)) as ('views' | 'likes' | 'posts')[];
 
     const badge = await badgeApi(username);

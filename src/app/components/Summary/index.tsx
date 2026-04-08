@@ -45,7 +45,9 @@ export const Summary = ({ totalPostCount, yesterdayPostCount, stats }: IProp) =>
         <SidebarContent
           title="총 게시글 수"
           content={totalPostCount}
-          increasement={yesterdayPostCount ? totalPostCount - yesterdayPostCount : undefined}
+          increasement={
+            yesterdayPostCount !== undefined ? totalPostCount - yesterdayPostCount : undefined
+          }
           id="post"
         />
       </aside>
@@ -81,7 +83,9 @@ export const Summary = ({ totalPostCount, yesterdayPostCount, stats }: IProp) =>
             <BarContent
               title="총 게시글 수"
               content={totalPostCount}
-              increasement={yesterdayPostCount ? totalPostCount - yesterdayPostCount : undefined}
+              increasement={
+                yesterdayPostCount !== undefined ? totalPostCount - yesterdayPostCount : undefined
+              }
             />
           </div>
         )}

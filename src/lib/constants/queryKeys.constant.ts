@@ -1,7 +1,7 @@
 import { PATHS } from './paths.constant';
 import { SidebarIdType } from './sidebar.constant';
 
-type SortParams = { asc: string; sort: string };
+type SortParams = { asc: boolean; sort: string };
 type DetailParams = { start: string; end: string; type: string };
 type LeaderboardParams = { based: string; sort: string; dateRange: string; limit: string };
 
