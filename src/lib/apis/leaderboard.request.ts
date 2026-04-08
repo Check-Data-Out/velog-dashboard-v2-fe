@@ -1,5 +1,5 @@
-import { PATHS } from '@/constants';
-import { LeaderboardListDto } from '@/types/leaderboard.type';
+import { PATHS } from '@/lib/constants/paths.constant';
+import { LeaderboardListDto } from '@/lib/types/leaderboard.type';
 import { instance } from './instance.request';
 
 export const leaderboardList = async ({

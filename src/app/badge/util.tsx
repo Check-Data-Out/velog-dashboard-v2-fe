@@ -1,10 +1,8 @@
 /* eslint-disable react/no-unknown-property */
 
-// TODO: 해당 타입이 있는데도 불구하고 문제가 생김..
-// eslint-disable-next-line import/named
 import satori, { SatoriOptions } from 'satori';
 import sharp from 'sharp';
-import { COLORS, FONTS } from '@/constants';
+import { COLORS, FONTS } from '@/lib/constants/styles.constant';
 
 type fontType = [string, { lineHeight: string; fontWeight: string }];
 

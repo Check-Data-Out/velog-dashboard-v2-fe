@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unknown-property */
 
-import { COLORS } from '@/constants';
+import { COLORS } from '@/lib/constants/styles.constant';
+import { recentPosts } from '@/lib/types/user.type';
+import { convertDateToKST } from '@/lib/utils/datetime.util';
 import { Icon } from '@/shared/Icon';
-import { recentPosts } from '@/types';
-import { convertDateToKST } from '@/utils';
 import { fontStyle } from '../util';
 
 interface IProps {

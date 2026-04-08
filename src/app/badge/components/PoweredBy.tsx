@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 
-import { COLORS } from '@/constants';
+import { COLORS } from '@/lib/constants/styles.constant';
 import { Icon } from '@/shared/Icon';
 import { fontStyle } from '../util';
 

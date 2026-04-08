@@ -5,7 +5,7 @@
  * @returns {string}
  */
 
-export const parseNumber = (item?: number) => {
+export const parseNumber = (item?: number): string => {
   if (item === undefined || Math.abs(item) === Infinity || isNaN(item)) return '0';
   return Math.floor(item)
     .toString()

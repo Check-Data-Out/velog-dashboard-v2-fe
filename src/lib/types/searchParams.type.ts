@@ -1,4 +1,4 @@
-import { SORT_TYPE } from '@/constants';
+import { SORT_TYPE } from '@/lib/constants/searchParams.constant';
 
 export type SortKey = '작성일순' | '조회순' | '조회변동순' | '좋아요순';
 export type SortValue = (typeof SORT_TYPE)[keyof typeof SORT_TYPE];

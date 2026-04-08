@@ -1,7 +1,10 @@
 /* eslint-disable react/no-unknown-property */
 
-import { BadgeDto } from '@/types';
-import { Posts, PoweredBy, Statistics, Title } from './components';
+import { BadgeDto } from '@/lib/types/user.type';
+import { Posts } from './components/Posts';
+import { PoweredBy } from './components/PoweredBy';
+import { Statistics } from './components/Statistics';
+import { Title } from './components/Title';
 import { createImageResponse } from './util';
 
 interface BadgeGenerator {

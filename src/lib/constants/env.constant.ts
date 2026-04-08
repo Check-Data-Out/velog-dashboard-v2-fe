@@ -1,4 +1,4 @@
-import { EnvNotFoundError } from '../errors';
+import { EnvNotFoundError } from '@/lib/errors/dev.error';
 
 export const ENVS = (() => {
   const env = {

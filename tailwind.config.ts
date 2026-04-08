@@ -1,6 +1,11 @@
 import typograhpy from '@tailwindcss/typography';
 import type { Config } from 'tailwindcss';
-import { COLORS, SIZES, SCREENS as CUSTOMSCREENS, FONTS as CUSTOMFONTS } from './src/constants';
+import {
+  COLORS,
+  SIZES,
+  SCREENS as CUSTOMSCREENS,
+  FONTS as CUSTOMFONTS,
+} from './src/lib/constants/styles.constant';
 
 const SCREENS: Record<string, string> = {};
 const FONTS: Record<string, [string, { lineHeight: string; fontWeight: number }]> = {};
