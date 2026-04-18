@@ -9,7 +9,7 @@ type LeaderboardListUser = {
   likeDiff: string;
   postDiff: string;
 };
-type LeaderboardListPost = {
+export type LeaderboardListPost = {
   id: string;
   title: string;
   slug: string;
@@ -26,5 +26,4 @@ export type LeaderboardListDto = {
   posts?: LeaderboardListPost[];
 };
 
-export type LeaderboardItemType = NonNullable<LeaderboardListUser> &
-  NonNullable<LeaderboardListPost>;
+export type LeaderboardItemType = LeaderboardListUser | LeaderboardListPost;

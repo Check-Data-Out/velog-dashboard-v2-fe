@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable @next/next/no-img-element */
 
-import { COLORS } from '@/constants';
+import { COLORS } from '@/lib/constants/styles.constant';
 import { fontStyle } from '../util';
 
 interface IProp {

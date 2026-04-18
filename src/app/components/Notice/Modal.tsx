@@ -1,13 +1,14 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { notiList } from '@/apis';
-import { PATHS } from '@/constants';
-import { Modal as Layout } from '@/shared';
-import { convertDateToKST } from '@/utils';
+import sanitizeHtml from 'sanitize-html';
+import { notiList } from '@/lib/apis/notice.request';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { Modal as Layout } from '@/shared/Modal';
 
 export const Modal = () => {
-  const { data } = useQuery({ queryKey: [PATHS.NOTIS], queryFn: notiList });
+  const { data } = useQuery({ queryKey: queryKeys.notis(), queryFn: notiList });
 
   return (
     <Layout title="공지사항" className="w-[800px] h-[500px]">
@@ -22,7 +23,7 @@ export const Modal = () => {
             </div>
             <div
               className="text-TEXT-MAIN text-[14px] prose !max-w-full"
-              dangerouslySetInnerHTML={{ __html: content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
             />
           </div>
         ))}

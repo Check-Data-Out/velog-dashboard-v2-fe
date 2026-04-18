@@ -3,8 +3,9 @@ import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import { ReactNode } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { ENVS, URLS } from '@/constants';
-import { Provider } from './components';
+import { ENVS } from '@/lib/constants/env.constant';
+import { URLS } from '@/lib/constants/urls.constant';
+import { Provider } from './components/Provider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -29,8 +30,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="ko" translate="no">
       <body className={`${NotoSansKr.className} w-full bg-BG-MAIN`}>
         <Provider>{children}</Provider>
+        <GoogleAnalytics gaId={ENVS.GA_ID} />
       </body>
-      <GoogleAnalytics gaId={ENVS.GA_ID} />
     </html>
   );
 }

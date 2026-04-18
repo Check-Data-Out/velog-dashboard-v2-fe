@@ -5,10 +5,13 @@ import { startHolyLoader, stopHolyLoader } from 'holy-loader';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { login, sampleLogin } from '@/apis';
-import { COLORS, URLS } from '@/constants';
-import { Input, Button, Icon } from '@/shared';
-import { LoginVo } from '@/types';
+import { login, sampleLogin } from '@/lib/apis/user.request';
+import { COLORS } from '@/lib/constants/styles.constant';
+import { URLS } from '@/lib/constants/urls.constant';
+import { LoginVo } from '@/lib/types/user.type';
+import { Button } from '@/shared/Button';
+import { Icon } from '@/shared/Icon';
+import { Input } from '@/shared/Input';
 
 const responsiveStyle =
   "flex items-center gap-5 max-MBI:before:inline-block max-MBI:before:bg-[url('/favicon.png')] max-MBI:before:[background-size:_100%_100%] max-MBI:before:w-16 max-MBI:before:h-16";
@@ -75,6 +78,7 @@ export const Content = () => {
           </Button>
           <div className="w-[400px] justify-center flex items-center gap-10">
             <button
+              type="button"
               className="flex gap-2 items-center hover:border-b hover:-mb-[1px] border-b-PRIMARY-MAIN cursor-pointer"
               onClick={() => sampleMutate()}
             >

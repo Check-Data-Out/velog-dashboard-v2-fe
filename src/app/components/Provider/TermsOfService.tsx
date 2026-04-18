@@ -1,4 +1,4 @@
-import { URLS } from '@/constants';
+import { URLS } from '@/lib/constants/urls.constant';
 
 export const TermsOfService = () => {
   return (

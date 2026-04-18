@@ -4,9 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { FormEvent, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { me } from '@/apis';
-import { PATHS, ENVS } from '@/constants';
-import { Check, CopyButton, Dropdown, Modal as Layout } from '@/shared';
+import { me } from '@/lib/apis/user.request';
+import { ENVS } from '@/lib/constants/env.constant';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { Check } from '@/shared/Check';
+import { CopyButton } from '@/shared/CopyButton';
+import { Dropdown } from '@/shared/Dropdown';
+import { Modal as Layout } from '@/shared/Modal';
 
 export const BadgeGenerator = () => {
   const [type, setType] = useState('default');
@@ -22,7 +26,7 @@ export const BadgeGenerator = () => {
     isFetching,
     isError,
   } = useQuery({
-    queryKey: [PATHS.ME],
+    queryKey: queryKeys.me(),
     queryFn: me,
     staleTime: 1000 * 60 * 5,
     retry: 1,

@@ -2,7 +2,7 @@
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { getQueryClient } from '@/utils';
+import { getQueryClient } from '@/lib/utils/query.util';
 
 interface IProp {
   children: React.ReactNode | React.ReactNode[];

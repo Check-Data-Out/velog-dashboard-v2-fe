@@ -4,11 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState, useRef, useEffect } from 'react';
 import { twJoin } from 'tailwind-merge';
-import { createQRToken } from '@/apis';
-import { COLORS, ENVS, PATHS, SCREENS } from '@/constants';
-import { useResponsive } from '@/hooks';
-import { Inform, Modal as Layout, CopyButton } from '@/shared';
-import { formatTimeToMMSS } from '@/utils';
+import { useResponsive } from '@/hooks/useResponsive';
+import { createQRToken } from '@/lib/apis/user.request';
+import { ENVS } from '@/lib/constants/env.constant';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { COLORS, SCREENS } from '@/lib/constants/styles.constant';
+import { formatTimeToMMSS } from '@/lib/utils/datetime.util';
+import { CopyButton } from '@/shared/CopyButton';
+import { Inform } from '@/shared/Inform';
+import { Modal as Layout } from '@/shared/Modal';
 
 const TIMER_DURATION = 5 * 60; // 5분 = 300초
 
@@ -18,20 +22,21 @@ export const QRCode = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: [PATHS.QRLOGIN],
+    queryKey: queryKeys.qrLogin(),
     queryFn: createQRToken,
     refetchOnMount: true,
     staleTime: 0,
     refetchOnWindowFocus: false,
   });
 
-  const url = `${ENVS.BASE_URL}/api/qr-login?token=${data?.token}`;
+  const url = `${ENVS.BASE_URL}/api/qr-login?token=${data?.token ?? ''}`;
   const isUnusable = timeLeft === 0 || isLoading;
 
   useEffect(() => {
-    if (!isLoading) {
-      timerRef.current = setInterval(() => setTimeLeft((prev) => (prev <= 1 ? 0 : prev - 1)), 1000);
-    }
+    if (isLoading) return;
+
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => setTimeLeft((prev) => (prev <= 1 ? 0 : prev - 1)), 1000);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);

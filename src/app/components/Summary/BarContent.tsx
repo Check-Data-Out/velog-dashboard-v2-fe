@@ -1,4 +1,4 @@
-import { parseNumber } from '@/utils';
+import { parseNumber } from '@/lib/utils/number.util';
 
 interface IProp {
   title: string;
@@ -15,8 +15,8 @@ export const BarContent = ({ title, content, increasement, prefix = '개' }: IPr
     <div className="w-full flex justify-between items-center">
       <span className="text-SUBTITLE-5 text-TEXT-ALT">{title}</span>
       <span
-        className={`flex items-center text-TEXT-MAIN text-TITLE-4 ${increasement ? afterContent : ''}`}
-        data-increasement={parseNumber(increasement ? increasement : 0)}
+        className={`flex items-center text-TEXT-MAIN text-TITLE-4 ${increasement !== undefined ? afterContent : ''}`}
+        data-increasement={parseNumber(increasement ?? 0)}
       >
         {parseNumber(content) + prefix}
       </span>

@@ -14,12 +14,15 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { postDetail } from '@/apis';
-import { COLORS, PATHS, SCREENS, GRAPH_OPTIONS } from '@/constants';
-import { useResponsive } from '@/hooks';
-import { Dropdown, Input } from '@/shared';
-import { PostDetailValue } from '@/types';
-import { convertDateToKST } from '@/utils';
+import { useResponsive } from '@/hooks/useResponsive';
+import { postDetail } from '@/lib/apis/dashboard.request';
+import { GRAPH_OPTIONS } from '@/lib/constants/graph.constant';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { COLORS, SCREENS } from '@/lib/constants/styles.constant';
+import { PostDetailValue } from '@/lib/types/dashboard.type';
+import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { Dropdown } from '@/shared/Dropdown';
+import { Input } from '@/shared/Input';
 
 ChartJS.register(
   CategoryScale,
@@ -58,7 +61,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
   const [mode, setMode] = useState<ModeType>('none');
 
   const { data: datas } = useQuery({
-    queryKey: [PATHS.DETAIL, type, id],
+    queryKey: queryKeys.detail(id, type),
     queryFn: async () => await postDetail(id, type.start, type.end),
     select: ({ post }) => ({
       labels: post.map((i) => convertDateToKST(i.date)?.short),

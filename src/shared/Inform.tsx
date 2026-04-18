@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect } from 'react';
-import { ParentNotFoundError } from '@/errors';
+import { ParentNotFoundError } from '@/lib/errors/dev.error';
 
-const InformContext = createContext({ inside: true });
+const InformContext = createContext<{ inside: true } | null>(null);
 
 export const Inform = ({ children }: { children: React.ReactNode | boolean }) => {
   return (
-    <InformContext.Provider value={{ inside: true }}>
+    <InformContext.Provider value={{ inside: true } as const}>
       <div className="flex flex-col items-center gap-3">{children}</div>
     </InformContext.Provider>
   );

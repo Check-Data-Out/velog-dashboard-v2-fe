@@ -1,8 +1,8 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
-import { postList, postSummary } from '@/apis';
-import { PATHS } from '@/constants';
-import { getQueryClient } from '@/utils';
+import { postList, postSummary } from '@/lib/apis/dashboard.request';
+import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { getQueryClient } from '@/lib/utils/query.util';
 import { Content } from './Content';
 
 export const metadata: Metadata = {
@@ -19,14 +19,14 @@ interface IProp {
 export default async function Page({ searchParams }: IProp) {
   const client = getQueryClient();
 
+  const ascBool = searchParams.asc === 'true';
   await client.prefetchInfiniteQuery({
-    queryKey: [PATHS.POSTS, [searchParams.asc, searchParams.sort]],
-    queryFn: async () =>
-      await postList({ asc: searchParams.asc === 'true', sort: searchParams.sort || '' }),
+    queryKey: queryKeys.posts({ asc: ascBool, sort: searchParams.sort || '' }),
+    queryFn: async () => await postList({ asc: ascBool, sort: searchParams.sort || '' }),
     initialPageParam: undefined,
   });
 
-  await client.prefetchQuery({ queryKey: [PATHS.SUMMARY], queryFn: postSummary });
+  await client.prefetchQuery({ queryKey: queryKeys.summary(), queryFn: postSummary });
 
   return (
     <HydrationBoundary state={dehydrate(client)}>

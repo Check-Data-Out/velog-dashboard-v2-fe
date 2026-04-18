@@ -1,18 +1,20 @@
 'use client';
 
 import { forwardRef, useState } from 'react';
-import { COLORS, PATHS, URLS } from '@/constants';
-import { Icon } from '@/shared';
-import { PostType, UserDto } from '@/types';
-import { parseNumber, convertDateToKST, getQueryClient } from '@/utils';
+import { COLORS } from '@/lib/constants/styles.constant';
+import { URLS } from '@/lib/constants/urls.constant';
+import { PostType } from '@/lib/types/dashboard.type';
+import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { parseNumber } from '@/lib/utils/number.util';
+import { Icon } from '@/shared/Icon';
 import { Graph } from './Graph';
 
-export const Section = forwardRef<HTMLElement, PostType>((p, ref) => {
+type SectionProps = PostType & { username: string };
+
+export const Section = forwardRef<HTMLElement, SectionProps>((p, ref) => {
   const [open, setOpen] = useState(false);
 
-  const username = (getQueryClient().getQueryData([PATHS.ME]) as Partial<UserDto>)?.username;
-
-  const url = `${URLS.VELOG}/@${username}/${p.slug}`;
+  const url = p.username ? `${URLS.VELOG}/@${p.username}/${p.slug}` : null;
 
   return (
     <section className="flex flex-col w-full h-fit relative" ref={ref}>
@@ -26,7 +28,8 @@ export const Section = forwardRef<HTMLElement, PostType>((p, ref) => {
             title="해당 글로 바로가기"
             onClick={(e) => {
               e.stopPropagation();
-              window.open(url);
+              if (!url) return;
+              window.open(url, '_blank', 'noopener,noreferrer');
             }}
           >
             <Icon name="Shortcut" color="#ECECEC" size={20} />
