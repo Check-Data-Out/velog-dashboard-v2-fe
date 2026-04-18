@@ -24,7 +24,7 @@ jobs:
           pnpm install --frozen-lockfile
           npx cypress install
 
-      - name: Create .env.production file for Testing
+      - name: Create .env file for Testing
         run: |
           # BEGIN_ENV_SYNC
           echo "NEXT_PUBLIC_BASE_URL=http://localhost:8080/api" >> .env
