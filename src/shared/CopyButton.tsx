@@ -67,7 +67,7 @@ export const CopyButton = ({ url, type = 'default', disabled, ...rest }: IProp) 
         disabledStyle,
         hoverStyle,
         clickedStyle,
-        type === 'code' ? 'w-fit max-w-full p-5' : 'p-4 leading-none truncate',
+        type === 'code' ? 'w-full max-w-full p-5' : 'p-4 leading-none truncate',
         rest.className,
       )}
     >

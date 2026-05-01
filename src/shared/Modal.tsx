@@ -46,13 +46,9 @@ export const Modal = ({ title, children, ...rest }: IProp) => {
           <h2 className="text-TEXT-MAIN items-cenetr gap-3 text-TITLE-3 max-MBI:text-TITLE-4">
             {title}
           </h2>
-          <Icon
-            name="Close"
-            onClick={close}
-            className="cursor-pointer"
-            aria-label="닫기"
-            role="button"
-          />
+          <button type="button" onClick={close} aria-label="닫기" className="cursor-pointer">
+            <Icon name="Close" />
+          </button>
         </div>
         {children}
       </div>

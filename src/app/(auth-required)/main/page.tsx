@@ -19,10 +19,10 @@ interface IProp {
 export default async function Page({ searchParams }: IProp) {
   const client = getQueryClient();
 
+  const ascBool = searchParams.asc === 'true';
   await client.prefetchInfiniteQuery({
-    queryKey: queryKeys.posts({ asc: searchParams.asc, sort: searchParams.sort || '' }),
-    queryFn: async () =>
-      await postList({ asc: searchParams.asc === 'true', sort: searchParams.sort || '' }),
+    queryKey: queryKeys.posts({ asc: ascBool, sort: searchParams.sort || '' }),
+    queryFn: async () => await postList({ asc: ascBool, sort: searchParams.sort || '' }),
     initialPageParam: undefined,
   });
 

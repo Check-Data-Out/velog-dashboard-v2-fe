@@ -24,11 +24,14 @@ export const Dropdown = ({ options, onChange, defaultValue, disabled, ...rest }:
         defaultValue={typeof defaultValue === 'object' ? defaultValue[0] : defaultValue}
         className="w-full bg-TRANSPARENT text-INPUT-2 max-TBL:text-INPUT-4 text-TEXT-MAIN cursor-pointer z-40"
       >
-        {options.map((i) => (
-          <option key={typeof i === 'object' ? i[0] : i} className="bg-BG-SUB">
-            {typeof i === 'object' ? i[0] : i}
-          </option>
-        ))}
+        {options.map((i, index) => {
+          const label = typeof i === 'object' ? i[0] : i;
+          return (
+            <option key={`${label}-${index}`} className="bg-BG-SUB">
+              {label}
+            </option>
+          );
+        })}
       </select>
       <div className="w-0 h-0 pointer-events-none cursor-none border-[4px] border-TRANSPARENT mt-1 border-t-BORDER-SUB right-2" />
     </label>

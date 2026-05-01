@@ -9,12 +9,20 @@ export const metadata: Metadata = {
   title: '리더보드',
 };
 
+const defaultParams = {
+  based: 'user' as const,
+  sort: 'viewCount' as const,
+  limit: '10',
+  dateRange: '30',
+};
+
 export default async function Page({ searchParams }: { searchParams: searchParamsType }) {
   const client = getQueryClient();
+  const finalParams = { ...defaultParams, ...searchParams };
 
   await client.prefetchQuery({
-    queryKey: queryKeys.leaderboard(searchParams),
-    queryFn: async () => await leaderboardList(searchParams),
+    queryKey: queryKeys.leaderboard(finalParams),
+    queryFn: () => leaderboardList(finalParams),
   });
 
   return (

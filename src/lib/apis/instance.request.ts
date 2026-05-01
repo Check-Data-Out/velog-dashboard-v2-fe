@@ -1,6 +1,7 @@
 import returnFetch, { FetchArgs } from 'return-fetch';
 import { ENVS } from '@/lib/constants/env.constant';
 import {
+  AuthRequiredError,
   ExceededRateLimitError,
   fetchOptions,
   FetchResponseError,
@@ -102,7 +103,7 @@ export const instance = async <I, R>(
         redirect('/');
       }
       location.replace('/');
-      return undefined as never;
+      throw new AuthRequiredError(data);
     } else if (err?.status === 429) {
       response = new ExceededRateLimitError(data);
     } else if (customError) {

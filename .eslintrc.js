@@ -57,4 +57,10 @@ module.exports = {
     },
     react: { version: 'detect' },
   },
+  overrides: [
+    {
+      files: ['scripts/**/*.mjs'],
+      parserOptions: { project: false },
+    },
+  ],
 };

@@ -35,17 +35,15 @@ export const Content = () => {
   const { ref, inView } = useInView();
   const queryClient = useQueryClient();
 
+  const ascBool = searchParams.asc === 'true';
   const {
     data: posts,
     fetchNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: queryKeys.posts({ asc: searchParams.asc, sort: searchParams.sort || '' }),
+    queryKey: queryKeys.posts({ asc: ascBool, sort: searchParams.sort || '' }),
     queryFn: async ({ pageParam = '' }) =>
-      await postList(
-        { asc: searchParams.asc === 'true', sort: searchParams.sort || '' },
-        pageParam,
-      ),
+      await postList({ asc: ascBool, sort: searchParams.sort || '' }, pageParam),
     getNextPageParam: (lastPage) => lastPage?.nextCursor,
     getPreviousPageParam: () => '',
     initialPageParam: '',
