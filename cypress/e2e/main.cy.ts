@@ -210,6 +210,10 @@ describe('메인 페이지', () => {
       cy.contains('button', '새로고침').click();
       cy.wait('@statsRefreshAPI');
 
+      // onSuccess 처리 완료 확인: 버튼 비활성화 = setStatus(true) + React 재렌더 완료
+      // 이 시점에 setTimeout(() => refresh(), 5000)이 fake clock에 등록되어 있음
+      cy.contains('button', '새로고침').should('be.disabled');
+
       // 5초 후 2차 폴링 → 완료(409 + lastUpdatedAt) 반환
       cy.intercept('POST', '**/api/stats-refresh', {
         statusCode: 409,
