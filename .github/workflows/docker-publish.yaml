@@ -29,11 +29,12 @@ jobs:
         run: |
           # BEGIN_ENV_SYNC
           echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env.production
-          echo "NEXT_PUBLIC_CLIENT_BASE_URL=${{ secrets.NEXT_PUBLIC_CLIENT_BASE_URL }}" >> .env.production
           echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=${{ secrets.NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY }}" >> .env.production
+          echo "NEXT_PUBLIC_CLIENT_BASE_URL=${{ secrets.NEXT_PUBLIC_CLIENT_BASE_URL }}" >> .env.production
           echo "NEXT_PUBLIC_GA_ID=${{ secrets.NEXT_PUBLIC_GA_ID }}" >> .env.production
           echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=${{ secrets.NEXT_PUBLIC_SENTRY_AUTH_TOKEN }}" >> .env.production
           echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env.production
+          echo "NEWSLETTER_SECRET_KEY=${{ secrets.NEWSLETTER_SECRET_KEY }}" >> .env.production
           # END_ENV_SYNC
 
       - name: Build Next.js application

@@ -9,6 +9,7 @@ export const ENVS = (() => {
     GA_ID: process.env.NEXT_PUBLIC_GA_ID,
     SENTRY_AUTH_TOKEN: process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN,
     SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    NEWSLETTER_SECRET_KEY: process.env.NEWSLETTER_SECRET_KEY,
   } as const;
 
   // 테스트 환경이나 브라우저 환경에서는 환경변수 검사 건너뛰기

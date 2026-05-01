@@ -13,4 +13,5 @@ export const PATHS = {
   TOTALSTATS: '/total-stats',
   LEADERBOARD: '/leaderboard',
   REFRESHSTATS: '/stats-refresh',
+  UNSUBSCRIBE_NEWSLETTER: '/unsubscribe',
 };

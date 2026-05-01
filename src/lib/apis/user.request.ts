@@ -15,3 +15,6 @@ export const createQRToken = async () =>
 
 export const badge = async (username: string) =>
   await instance<null, BadgeDto>(`${PATHS.TOTALSTATS}/${username}/badge`, { method: 'GET' });
+
+export const unsubscribeNewsletter = async (uuid: string) =>
+  await instance(PATHS.UNSUBSCRIBE_NEWSLETTER, { method: 'POST', body: { uuid } });

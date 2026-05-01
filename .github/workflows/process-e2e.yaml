@@ -28,11 +28,12 @@ jobs:
         run: |
           # BEGIN_ENV_SYNC
           echo "NEXT_PUBLIC_BASE_URL=http://localhost:8080/api" >> .env
-          echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env
           echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_value" >> .env
+          echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env
           echo "NEXT_PUBLIC_GA_ID=sample_value" >> .env
           echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_value" >> .env
           echo "NEXT_PUBLIC_SENTRY_DSN=sample_value" >> .env
+          echo "NEWSLETTER_SECRET_KEY=a-secret-key-for-unsubscribing-newsletter" >> .env
           # END_ENV_SYNC
 
       - name: Start application server
