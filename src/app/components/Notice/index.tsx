@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useModal } from '@/hooks/useModal';
 import { notiList } from '@/lib/apis/notice.request';
 import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { convertDateToKST } from '@/lib/utils/datetime.util';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 const TTL = DAY_IN_MS * 2;
@@ -20,7 +21,9 @@ export const Notice = () => {
     try {
       if (!data?.posts?.length) return;
 
-      const lastUpdated = Date.parse(data.posts[0].created_at);
+      const short = convertDateToKST(data?.posts[0].created_at)?.short;
+      if (!short) return;
+      const lastUpdated = new Date(short).getTime();
       if (isNaN(lastUpdated)) return;
       const daysSinceUpdate = Math.ceil((new Date().getTime() - lastUpdated) / DAY_IN_MS);
 

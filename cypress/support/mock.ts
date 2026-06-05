@@ -215,23 +215,42 @@ export const totalStatsResponseData = [
 ];
 
 // 공지사항 응답 데이터
+// Notice/index.tsx, Notice/Modal.tsx에서 created_at(스네이크 케이스) 필드명 사용
 export const notificationsResponseData = {
   posts: [
     {
       id: 'noti-1',
       title: '시스템 점검 안내',
       content: '시스템 점검이 예정되어 있습니다.',
-      createdAt: '2025-01-08T09:00:00Z',
+      created_at: '2025-01-08T09:00:00Z',
       isImportant: true,
     },
     {
       id: 'noti-2',
       title: '새로운 기능 업데이트',
       content: '새로운 기능이 추가되었습니다.',
-      createdAt: '2025-01-07T16:00:00Z',
+      created_at: '2025-01-07T16:00:00Z',
       isImportant: false,
     },
   ],
+};
+
+// 공지사항 배너 테스트용 최근 날짜 공지 데이터 (4일 이내)
+export const recentNotificationsResponseData = {
+  posts: [
+    {
+      id: 'noti-recent-1',
+      title: '긴급 공지사항',
+      content: '서비스 이용에 참고 바랍니다.',
+      created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1일 전
+      isImportant: true,
+    },
+  ],
+};
+
+// QR 토큰 응답 데이터
+export const qrTokenResponseData = {
+  token: 'mock_qr_token_12345',
 };
 
 // 전체 통계 타입별 성공 메시지

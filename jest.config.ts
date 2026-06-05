@@ -7,13 +7,14 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
-  setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironment: 'jest-fixed-jsdom',
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
   moduleNameMapper: {
     '^@sentry/nextjs$': '<rootDir>/node_modules/@sentry/nextjs',
+    '\\.svg$': '<rootDir>/src/shared/Icon/SvgrMock.tsx',
   },
 };
 
