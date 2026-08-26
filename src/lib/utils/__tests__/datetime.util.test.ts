@@ -1,4 +1,9 @@
-import { convertDateToKST, formatTimeToMMSS, KSTDateFormat } from '../datetime.util';
+import {
+  convertDateToKST,
+  formatTimeToMMSS,
+  getDateRangeForMode,
+  KSTDateFormat,
+} from '../datetime.util';
 
 describe('datetime.util', () => {
   describe('convertDateToKST', () => {
@@ -53,6 +58,17 @@ describe('datetime.util', () => {
       expect(typeof result.short).toBe('string');
       expect(typeof result.iso).toBe('string');
       expect(result.full).toBeInstanceOf(Date);
+    });
+  });
+
+  describe('getDateRangeForMode', () => {
+    it('지난 7일은 기준일 7일 전부터 기준일까지를 반환해야 한다', () => {
+      const base = new Date('2026-08-25T12:00:00.000Z');
+
+      expect(getDateRangeForMode('weekly', base)).toEqual({
+        start: '2026-08-18',
+        end: '2026-08-25',
+      });
     });
   });
 

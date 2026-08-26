@@ -48,6 +48,35 @@ export const convertDateToKST = (date?: string): KSTDateFormat | undefined => {
 };
 
 /**
+ * 그래프 기간 선택 모드
+ */
+export type GraphPeriodMode = 'none' | 'weekly' | 'monthly' | 'custom';
+
+/**
+ * 기간 선택 모드에 해당하는 조회 시작/종료 날짜를 계산함.
+ * 미선택/직접선택 모드는 사용자가 직접 날짜를 지정하므로 빈 문자열을 반환함.
+ *
+ * @param {GraphPeriodMode} mode - 기간 선택 모드
+ * @param {Date} [base] - 계산 기준 시각 (기본값: 현재 시각)
+ * @returns {{ start: string; end: string }} "YYYY-MM-DD" 형식의 시작/종료 날짜
+ */
+export const getDateRangeForMode = (
+  mode: GraphPeriodMode,
+  base: Date = new Date(),
+): { start: string; end: string } => {
+  if (mode === 'none' || mode === 'custom') return { start: '', end: '' };
+
+  const start = new Date(base);
+  if (mode === 'monthly') start.setMonth(start.getMonth() - 1);
+  else start.setDate(start.getDate() - 7);
+
+  return {
+    start: start.toISOString().split('T')[0],
+    end: base.toISOString().split('T')[0],
+  };
+};
+
+/**
  * 주어진 초 정수를 'N분 M초' 형태로 변환함.
  *
  * @param {number} [time] - 변환할 초 정수 (예: 360, 6분 0초를 의미함)

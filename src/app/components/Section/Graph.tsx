@@ -20,7 +20,7 @@ import { GRAPH_OPTIONS } from '@/lib/constants/graph.constant';
 import { queryKeys } from '@/lib/constants/queryKeys.constant';
 import { COLORS, SCREENS } from '@/lib/constants/styles.constant';
 import { PostDetailValue } from '@/lib/types/dashboard.type';
-import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { convertDateToKST, getDateRangeForMode, GraphPeriodMode } from '@/lib/utils/datetime.util';
 import { Dropdown } from '@/shared/Dropdown';
 import { Input } from '@/shared/Input';
 
@@ -50,15 +50,13 @@ interface IProp {
   releasedAt: string;
 }
 
-type ModeType = 'none' | 'weekly' | 'monthly' | 'custom';
-
 export const Graph = ({ id, releasedAt }: IProp) => {
   const width = useResponsive();
 
   const isMBI = width < SCREENS.MBI;
 
   const [type, setType] = useState({ start: '', end: '', type: 'View' });
-  const [mode, setMode] = useState<ModeType>('none');
+  const [mode, setMode] = useState<GraphPeriodMode>('none');
 
   const { data: datas } = useQuery({
     queryKey: queryKeys.detail(id, type),
@@ -77,19 +75,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
   });
 
   useEffect(() => {
-    if (mode === 'none' || mode === 'custom') {
-      setType((prev) => ({ ...prev, start: '', end: '' }));
-    } else {
-      const start = new Date();
-      if (mode === 'monthly') start.setMonth(start.getMonth() - 1);
-      else start.setDate(start.getDate() - 7);
-
-      setType((prev) => ({
-        ...prev,
-        start: start.toISOString().split('T')[0],
-        end: new Date().toISOString().split('T')[0],
-      }));
-    }
+    setType((prev) => ({ ...prev, ...getDateRangeForMode(mode) }));
   }, [mode]);
 
   return (
@@ -119,7 +105,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
           </>
         )}
         <Dropdown
-          onChange={(e) => setMode(e as ModeType)}
+          onChange={(e) => setMode(e as GraphPeriodMode)}
           defaultValue="미선택"
           options={[
             ['미선택', 'none'],
