@@ -1,0 +1,5 @@
+allowBuilds:
+  "@sentry/cli": false
+  cypress: false
+  return-fetch: false
+  sharp: false
