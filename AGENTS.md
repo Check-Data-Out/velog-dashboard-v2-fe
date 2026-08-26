@@ -3,7 +3,8 @@ Always follow the instructions in plan.md. When I say "go", find the next unmark
 **plan.md RULES (STRICT):**
 
 - plan.md is an ephemeral, constantly-rewritten working document. It is NOT version-controlled (listed in .gitignore) — never commit it, never remove it from .gitignore.
-- NEVER reference plan.md or its internal structure — phase numbers, step numbers, checklist items, commit labels (e.g. "Phase 2", "C1", "step 3.4") — in code, code comments, commit messages, PR descriptions, or any repository documents. Code and commits must read as fully self-contained without plan.md.
+- NEVER reference plan.md or its internal structure — phase numbers, step numbers, checklist items, commit labels (e.g. "Phase 2", "C1", "step 3.4") — in code, code comments, commit messages, PR descriptions, or product documentation. Code and commits must read as fully self-contained without plan.md.
+- This rule applies to work output, not to the contributor guides themselves. AGENTS.md and CLAUDE.md define the workflow, so they are the only files allowed to mention plan.md.
 
 **IMPORTANT:** Always design and build by strictly following the Design System defined in DESIGN_SYSTEM.md. The design system is the single source of truth for all UI/UX decisions and must be adhered to without exception.
 
