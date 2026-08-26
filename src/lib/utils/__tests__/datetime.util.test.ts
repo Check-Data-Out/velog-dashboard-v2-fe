@@ -2,7 +2,9 @@ import {
   convertDateToKST,
   formatTimeToMMSS,
   getDateRangeForMode,
+  getKSTDateString,
   KSTDateFormat,
+  shiftKSTDate,
 } from '../datetime.util';
 
 describe('datetime.util', () => {
@@ -61,14 +63,74 @@ describe('datetime.util', () => {
     });
   });
 
+  describe('getKSTDateString', () => {
+    it('UTC 날짜가 아닌 KST 날짜를 반환해야 한다', () => {
+      // UTC 8/24 16:00 = KST 8/25 01:00
+      expect(getKSTDateString(new Date('2026-08-24T16:00:00.000Z'))).toBe('2026-08-25');
+    });
+
+    it('KST 자정 직전에는 아직 전날을 반환해야 한다', () => {
+      // UTC 8/24 14:59:59 = KST 8/24 23:59:59
+      expect(getKSTDateString(new Date('2026-08-24T14:59:59.000Z'))).toBe('2026-08-24');
+    });
+  });
+
+  describe('shiftKSTDate', () => {
+    it('윤년의 2월 29일을 처리해야 한다', () => {
+      expect(shiftKSTDate('2028-03-01', -1)).toBe('2028-02-29');
+    });
+
+    it('연도 경계를 넘어야 한다', () => {
+      expect(shiftKSTDate('2026-01-01', -1)).toBe('2025-12-31');
+    });
+  });
+
   describe('getDateRangeForMode', () => {
-    it('지난 7일은 기준일 7일 전부터 기준일까지를 반환해야 한다', () => {
+    afterEach(() => jest.useRealTimers());
+
+    it('기준 시각을 생략하면 현재 시각을 사용해야 한다', () => {
+      // UTC 8/24 18:00 = KST 8/25 03:00
+      jest.useFakeTimers({ now: new Date('2026-08-24T18:00:00.000Z') });
+
+      expect(getDateRangeForMode('weekly')).toEqual({
+        start: '2026-08-19',
+        end: '2026-08-25',
+      });
+    });
+
+    it('지난 7일은 오늘을 포함해 총 7일이어야 한다', () => {
       const base = new Date('2026-08-25T12:00:00.000Z');
 
       expect(getDateRangeForMode('weekly', base)).toEqual({
-        start: '2026-08-18',
+        start: '2026-08-19',
         end: '2026-08-25',
       });
+    });
+
+    it('KST 오전 9시 이전에도 오늘까지의 기간을 반환해야 한다', () => {
+      // UTC 8/24 18:00 = KST 8/25 03:00
+      const base = new Date('2026-08-24T18:00:00.000Z');
+
+      expect(getDateRangeForMode('weekly', base)).toEqual({
+        start: '2026-08-19',
+        end: '2026-08-25',
+      });
+    });
+
+    it('지난 30일은 달력상 한 달이 아니라 정확히 30일이어야 한다', () => {
+      const base = new Date('2026-03-31T12:00:00.000Z');
+
+      expect(getDateRangeForMode('monthly', base)).toEqual({
+        start: '2026-03-02',
+        end: '2026-03-31',
+      });
+    });
+
+    it('미선택과 직접선택은 빈 기간을 반환해야 한다', () => {
+      const base = new Date('2026-08-25T12:00:00.000Z');
+
+      expect(getDateRangeForMode('none', base)).toEqual({ start: '', end: '' });
+      expect(getDateRangeForMode('custom', base)).toEqual({ start: '', end: '' });
     });
   });
 

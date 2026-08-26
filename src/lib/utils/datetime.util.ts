@@ -1,3 +1,4 @@
+// KST는 서머타임이 없어(1988년 폐지) UTC+9로 고정임. 이 전제가 깨지면 Intl.DateTimeFormat의 timeZone 방식으로 전환해야 함
 const KST_DIFF = 9 * 60 * 60 * 1000;
 
 /**
@@ -52,13 +53,43 @@ export const convertDateToKST = (date?: string): KSTDateFormat | undefined => {
  */
 export type GraphPeriodMode = 'none' | 'weekly' | 'monthly' | 'custom';
 
+/** 지난 7일, 지난 30일에 포함되는 날짜 수 (오늘 포함) */
+const PERIOD_DAYS = { weekly: 7, monthly: 30 } as const;
+
 /**
- * 기간 선택 모드에 해당하는 조회 시작/종료 날짜를 계산함.
+ * 주어진 시각의 KST 날짜를 "YYYY-MM-DD" 형식으로 반환함.
+ * toISOString()은 UTC 기준이라 KST 오전 9시 이전에 날짜가 하루 밀리므로 대신 사용함.
+ *
+ * @param {Date} [base] - 기준 시각 (기본값: 현재 시각)
+ * @returns {string} "YYYY-MM-DD" 형식의 KST 날짜
+ */
+export const getKSTDateString = (base: Date = new Date()): string =>
+  // toISOString()은 빈 문자열을 반환하지 않으므로 ?? 분기는 도달 불가. 반환 타입을 string으로 좁히기 위한 것임
+  convertDateToKST(base.toISOString())?.short ?? '';
+
+/**
+ * "YYYY-MM-DD" 형식의 날짜를 일 단위로 이동시킴.
+ * 달력 기준(setMonth)이 아니라 일수 기준이라 월말, 윤년, 연말 경계에서도 정확함.
+ *
+ * @param {string} date - "YYYY-MM-DD" 형식의 기준 날짜
+ * @param {number} days - 이동할 일수 (음수면 과거)
+ * @returns {string} "YYYY-MM-DD" 형식의 이동된 날짜
+ */
+export const shiftKSTDate = (date: string, days: number): string => {
+  // 내부 Date는 항상 UTC 자정에 고정되어야 함. 로컬 기준 메서드(setDate, getDate 등)를 섞으면 날짜가 밀림
+  const shifted = new Date(`${date}T00:00:00Z`);
+  shifted.setUTCDate(shifted.getUTCDate() + days);
+
+  return shifted.toISOString().split('T')[0];
+};
+
+/**
+ * 기간 선택 모드에 해당하는 조회 시작/종료 날짜를 KST 기준으로 계산함.
  * 미선택/직접선택 모드는 사용자가 직접 날짜를 지정하므로 빈 문자열을 반환함.
  *
  * @param {GraphPeriodMode} mode - 기간 선택 모드
  * @param {Date} [base] - 계산 기준 시각 (기본값: 현재 시각)
- * @returns {{ start: string; end: string }} "YYYY-MM-DD" 형식의 시작/종료 날짜
+ * @returns {{ start: string; end: string }} "YYYY-MM-DD" 형식의 시작/종료 날짜. 양끝을 포함해 조회됨
  */
 export const getDateRangeForMode = (
   mode: GraphPeriodMode,
@@ -66,14 +97,9 @@ export const getDateRangeForMode = (
 ): { start: string; end: string } => {
   if (mode === 'none' || mode === 'custom') return { start: '', end: '' };
 
-  const start = new Date(base);
-  if (mode === 'monthly') start.setMonth(start.getMonth() - 1);
-  else start.setDate(start.getDate() - 7);
+  const end = getKSTDateString(base);
 
-  return {
-    start: start.toISOString().split('T')[0],
-    end: base.toISOString().split('T')[0],
-  };
+  return { start: shiftKSTDate(end, -(PERIOD_DAYS[mode] - 1)), end };
 };
 
 /**
