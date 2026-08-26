@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useResponsive } from '@/hooks/useResponsive';
 import { postDetail } from '@/lib/apis/dashboard.request';
-import { GRAPH_OPTIONS } from '@/lib/constants/graph.constant';
+import { POST_GRAPH_OPTIONS } from '@/lib/constants/graph.constant';
 import { queryKeys } from '@/lib/constants/queryKeys.constant';
 import { COLORS, SCREENS } from '@/lib/constants/styles.constant';
 import { PostDetailValue } from '@/lib/types/dashboard.type';
@@ -131,7 +131,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
         )}
         <Line
           data={datas || defaultData}
-          options={GRAPH_OPTIONS}
+          options={POST_GRAPH_OPTIONS}
           className="!w-full !h-auto max-h-[300px]"
         />
       </div>
