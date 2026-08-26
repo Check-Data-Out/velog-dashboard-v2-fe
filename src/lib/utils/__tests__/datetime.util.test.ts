@@ -101,7 +101,7 @@ describe('datetime.util', () => {
     it('지난 7일은 오늘을 포함해 총 7일이어야 한다', () => {
       const base = new Date('2026-08-25T12:00:00.000Z');
 
-      expect(getDateRangeForMode('weekly', base)).toEqual({
+      expect(getDateRangeForMode('weekly', { base })).toEqual({
         start: '2026-08-19',
         end: '2026-08-25',
       });
@@ -111,7 +111,7 @@ describe('datetime.util', () => {
       // UTC 8/24 18:00 = KST 8/25 03:00
       const base = new Date('2026-08-24T18:00:00.000Z');
 
-      expect(getDateRangeForMode('weekly', base)).toEqual({
+      expect(getDateRangeForMode('weekly', { base })).toEqual({
         start: '2026-08-19',
         end: '2026-08-25',
       });
@@ -120,7 +120,7 @@ describe('datetime.util', () => {
     it('지난 30일은 달력상 한 달이 아니라 정확히 30일이어야 한다', () => {
       const base = new Date('2026-03-31T12:00:00.000Z');
 
-      expect(getDateRangeForMode('monthly', base)).toEqual({
+      expect(getDateRangeForMode('monthly', { base })).toEqual({
         start: '2026-03-02',
         end: '2026-03-31',
       });
@@ -129,8 +129,8 @@ describe('datetime.util', () => {
     it('미선택과 직접선택은 빈 기간을 반환해야 한다', () => {
       const base = new Date('2026-08-25T12:00:00.000Z');
 
-      expect(getDateRangeForMode('none', base)).toEqual({ start: '', end: '' });
-      expect(getDateRangeForMode('custom', base)).toEqual({ start: '', end: '' });
+      expect(getDateRangeForMode('none', { base })).toEqual({ start: '', end: '' });
+      expect(getDateRangeForMode('custom', { base })).toEqual({ start: '', end: '' });
     });
   });
 

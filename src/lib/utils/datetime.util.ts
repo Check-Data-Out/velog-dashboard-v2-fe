@@ -88,13 +88,15 @@ export const shiftKSTDate = (date: string, days: number): string => {
  * 미선택/직접선택 모드는 사용자가 직접 날짜를 지정하므로 빈 문자열을 반환함.
  *
  * @param {GraphPeriodMode} mode - 기간 선택 모드
- * @param {Date} [base] - 계산 기준 시각 (기본값: 현재 시각)
+ * @param {object} [options] - base: 계산 기준 시각 (기본값: 현재 시각)
  * @returns {{ start: string; end: string }} "YYYY-MM-DD" 형식의 시작/종료 날짜. 양끝을 포함해 조회됨
  */
 export const getDateRangeForMode = (
   mode: GraphPeriodMode,
-  base: Date = new Date(),
+  options: { base?: Date } = {},
 ): { start: string; end: string } => {
+  const { base = new Date() } = options;
+
   if (mode === 'none' || mode === 'custom') return { start: '', end: '' };
 
   const end = getKSTDateString(base);
