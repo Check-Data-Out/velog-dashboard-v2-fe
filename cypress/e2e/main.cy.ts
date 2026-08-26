@@ -71,6 +71,20 @@ describe('메인 페이지', () => {
       cy.contains('날짜를 선택해서 데이터를 확인하세요!').should('not.exist');
     });
 
+    it('전체를 선택하면 게시물 발행일부터 조회해야 한다', () => {
+      cy.get('section[class*="h-fit"]')
+        .first()
+        .within(() => {
+          cy.contains('150').click();
+        });
+
+      cy.get('section[class*="h-fit"]').first().find('select').first().select('전체');
+
+      // 첫 번째 게시물의 releasedAt(2025-01-08T10:00:00Z)은 KST 기준 2025-01-08
+      cy.wait('@postDetailAPI').its('request.url').should('include', 'start=2025-01-08');
+      cy.contains('날짜를 선택해서 데이터를 확인하세요!').should('not.exist');
+    });
+
     it('그래프 조회수/좋아요 탭이 존재해야 한다', () => {
       cy.get('section[class*="h-fit"]')
         .first()

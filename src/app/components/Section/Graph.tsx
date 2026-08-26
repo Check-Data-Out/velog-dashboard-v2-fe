@@ -75,8 +75,8 @@ export const Graph = ({ id, releasedAt }: IProp) => {
   });
 
   useEffect(() => {
-    setType((prev) => ({ ...prev, ...getDateRangeForMode(mode) }));
-  }, [mode]);
+    setType((prev) => ({ ...prev, ...getDateRangeForMode(mode, { releasedAt }) }));
+  }, [mode, releasedAt]);
 
   return (
     <div className="w-full bg-BG-SUB flex flex-col items-center px-[25px] pb-[30px] gap-[30px] max-MBI:px-5 max-MBI:pb-10">
@@ -111,6 +111,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
             ['미선택', 'none'],
             ['지난 7일', 'weekly'],
             ['지난 30일', 'monthly'],
+            ['전체', 'all'],
             ['직접선택', 'custom'],
           ]}
         />

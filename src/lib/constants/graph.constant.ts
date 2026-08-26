@@ -31,13 +31,13 @@ export const GRAPH_OPTIONS = {
 
 /**
  * 게시물 상세 그래프 전용 옵션.
- * 요약 모달과 표시 기간이 달라 라벨 밀도 설정이 갈리므로 GRAPH_OPTIONS와 분리함.
+ * 전체 기간을 선택하면 데이터가 수백 개까지 늘어나므로 겹치는 라벨은 숨기고, 대신 툴팁으로 값을 확인함.
  */
 export const POST_GRAPH_OPTIONS = {
   ...GRAPH_OPTIONS,
   plugins: {
     ...GRAPH_OPTIONS.plugins,
-    tooltip: { ...GRAPH_OPTIONS.plugins.tooltip },
-    datalabels: { ...GRAPH_OPTIONS.plugins.datalabels },
+    tooltip: { enabled: true },
+    datalabels: { ...GRAPH_OPTIONS.plugins.datalabels, display: 'auto' },
   },
 } as const;

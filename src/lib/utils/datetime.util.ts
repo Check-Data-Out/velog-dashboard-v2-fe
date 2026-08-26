@@ -51,7 +51,7 @@ export const convertDateToKST = (date?: string): KSTDateFormat | undefined => {
 /**
  * 그래프 기간 선택 모드
  */
-export type GraphPeriodMode = 'none' | 'weekly' | 'monthly' | 'custom';
+export type GraphPeriodMode = 'none' | 'weekly' | 'monthly' | 'custom' | 'all';
 
 /** 지난 7일, 지난 30일에 포함되는 날짜 수 (오늘 포함) */
 const PERIOD_DAYS = { weekly: 7, monthly: 30 } as const;
@@ -88,18 +88,25 @@ export const shiftKSTDate = (date: string, days: number): string => {
  * 미선택/직접선택 모드는 사용자가 직접 날짜를 지정하므로 빈 문자열을 반환함.
  *
  * @param {GraphPeriodMode} mode - 기간 선택 모드
- * @param {object} [options] - base: 계산 기준 시각 (기본값: 현재 시각)
+ * @param {object} [options] - base: 계산 기준 시각(기본값: 현재 시각), releasedAt: 전체 모드의 시작이 되는 게시물 발행일
  * @returns {{ start: string; end: string }} "YYYY-MM-DD" 형식의 시작/종료 날짜. 양끝을 포함해 조회됨
  */
 export const getDateRangeForMode = (
   mode: GraphPeriodMode,
-  options: { base?: Date } = {},
+  options: { base?: Date; releasedAt?: string | null } = {},
 ): { start: string; end: string } => {
-  const { base = new Date() } = options;
+  const { base = new Date(), releasedAt } = options;
 
   if (mode === 'none' || mode === 'custom') return { start: '', end: '' };
 
   const end = getKSTDateString(base);
+
+  if (mode === 'all') {
+    // falsy 검사만으로는 'not-a-date'를, NaN 검사만으로는 null(epoch로 파싱됨)을 걸러내지 못하므로 둘 다 필요함
+    if (!releasedAt || Number.isNaN(new Date(releasedAt).getTime())) return { start: '', end: '' };
+
+    return { start: getKSTDateString(new Date(releasedAt)), end };
+  }
 
   return { start: shiftKSTDate(end, -(PERIOD_DAYS[mode] - 1)), end };
 };

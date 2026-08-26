@@ -69,9 +69,11 @@ describe('datetime.util', () => {
       expect(getKSTDateString(new Date('2026-08-24T16:00:00.000Z'))).toBe('2026-08-25');
     });
 
-    it('KST 자정 직전에는 아직 전날을 반환해야 한다', () => {
+    it('KST 자정을 기준으로 날짜가 바뀌어야 한다', () => {
       // UTC 8/24 14:59:59 = KST 8/24 23:59:59
       expect(getKSTDateString(new Date('2026-08-24T14:59:59.000Z'))).toBe('2026-08-24');
+      // UTC 8/24 15:00:00 = KST 8/25 00:00:00
+      expect(getKSTDateString(new Date('2026-08-24T15:00:00.000Z'))).toBe('2026-08-25');
     });
   });
 
@@ -88,8 +90,8 @@ describe('datetime.util', () => {
   describe('getDateRangeForMode', () => {
     afterEach(() => jest.useRealTimers());
 
-    it('기준 시각을 생략하면 현재 시각을 사용해야 한다', () => {
-      // UTC 8/24 18:00 = KST 8/25 03:00
+    it('KST 오전 9시 이전에 조회해도 오늘까지의 기간이어야 한다', () => {
+      // UTC 8/24 18:00 = KST 8/25 03:00. 기준 시각을 넘기지 않는 실제 호출 형태로 검증함
       jest.useFakeTimers({ now: new Date('2026-08-24T18:00:00.000Z') });
 
       expect(getDateRangeForMode('weekly')).toEqual({
@@ -100,16 +102,6 @@ describe('datetime.util', () => {
 
     it('지난 7일은 오늘을 포함해 총 7일이어야 한다', () => {
       const base = new Date('2026-08-25T12:00:00.000Z');
-
-      expect(getDateRangeForMode('weekly', { base })).toEqual({
-        start: '2026-08-19',
-        end: '2026-08-25',
-      });
-    });
-
-    it('KST 오전 9시 이전에도 오늘까지의 기간을 반환해야 한다', () => {
-      // UTC 8/24 18:00 = KST 8/25 03:00
-      const base = new Date('2026-08-24T18:00:00.000Z');
 
       expect(getDateRangeForMode('weekly', { base })).toEqual({
         start: '2026-08-19',
@@ -131,6 +123,25 @@ describe('datetime.util', () => {
 
       expect(getDateRangeForMode('none', { base })).toEqual({ start: '', end: '' });
       expect(getDateRangeForMode('custom', { base })).toEqual({ start: '', end: '' });
+    });
+
+    it('전체는 발행일부터 오늘까지를 반환해야 한다', () => {
+      const base = new Date('2026-08-25T12:00:00.000Z');
+
+      expect(getDateRangeForMode('all', { base, releasedAt: '2020-04-07T07:42:01.000Z' })).toEqual({
+        start: '2020-04-07',
+        end: '2026-08-25',
+      });
+    });
+
+    it('전체는 발행일이 없거나 잘못된 값이면 빈 기간을 반환해야 한다', () => {
+      const base = new Date('2026-08-25T12:00:00.000Z');
+      const emptyRange = { start: '', end: '' };
+
+      expect(getDateRangeForMode('all', { base })).toEqual(emptyRange);
+      expect(getDateRangeForMode('all', { base, releasedAt: '' })).toEqual(emptyRange);
+      expect(getDateRangeForMode('all', { base, releasedAt: null })).toEqual(emptyRange);
+      expect(getDateRangeForMode('all', { base, releasedAt: 'not-a-date' })).toEqual(emptyRange);
     });
   });
 
