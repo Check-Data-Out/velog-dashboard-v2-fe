@@ -204,14 +204,15 @@ export const postLeaderboardResponseData = {
 };
 
 // 전체 통계 응답 데이터
+// 누적 게시글 수 시계열. 마지막 값은 postsStatsResponseData.totalPostCount(15)와 같아야 함
 export const totalStatsResponseData = [
-  { date: '2025-01-03T00:00:00Z', value: 100 },
-  { date: '2025-01-04T00:00:00Z', value: 150 },
-  { date: '2025-01-05T00:00:00Z', value: 200 },
-  { date: '2025-01-06T00:00:00Z', value: 180 },
-  { date: '2025-01-07T00:00:00Z', value: 250 },
-  { date: '2025-01-08T00:00:00Z', value: 300 },
-  { date: '2025-01-09T00:00:00Z', value: 350 },
+  { date: '2025-01-03T00:00:00Z', value: 9 },
+  { date: '2025-01-04T00:00:00Z', value: 10 },
+  { date: '2025-01-05T00:00:00Z', value: 11 },
+  { date: '2025-01-06T00:00:00Z', value: 12 },
+  { date: '2025-01-07T00:00:00Z', value: 12 },
+  { date: '2025-01-08T00:00:00Z', value: 13 },
+  { date: '2025-01-09T00:00:00Z', value: 15 },
 ];
 
 // 공지사항 응답 데이터

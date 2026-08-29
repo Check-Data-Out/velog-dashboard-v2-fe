@@ -14,6 +14,7 @@ import { SORT_TYPE } from '@/lib/constants/searchParams.constant';
 import { FetchError, FetchResponseError } from '@/lib/errors/fetch.error';
 import { SortKey, SortValue } from '@/lib/types/searchParams.type';
 import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { getYesterdayValue } from '@/lib/utils/stats.util';
 import { Button } from '@/shared/Button';
 import { Check } from '@/shared/Check';
 import { Dropdown } from '@/shared/Dropdown';
@@ -57,7 +58,7 @@ export const Content = () => {
   const { data: yesterdayPostCount } = useQuery({
     queryKey: queryKeys.totalStats('post'),
     queryFn: async () => totalStats('post'),
-    select: (data) => data.slice(1, 2)[0]?.value,
+    select: getYesterdayValue,
   });
 
   const { data: user } = useQuery({
