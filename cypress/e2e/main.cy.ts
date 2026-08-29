@@ -31,6 +31,14 @@ describe('메인 페이지', () => {
       // totalViews(2500) - yesterdayViews(180) = 2,320
       cy.contains('2,320').should('be.visible');
     });
+
+    it('게시글 증가분은 통계 시계열의 어제 값을 기준으로 계산되어야 한다', () => {
+      // totalPostCount(15) - 어제 값(13, 시계열 뒤에서 두 번째) = 2
+      cy.get('#forTest')
+        .contains('총 게시글 수')
+        .closest('.cursor-pointer')
+        .should('contain.text', '2↑');
+    });
   });
 
   describe('게시물 목록', () => {
