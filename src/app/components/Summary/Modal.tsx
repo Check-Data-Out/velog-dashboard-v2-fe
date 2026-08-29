@@ -67,7 +67,7 @@ export const Modal = ({ name }: { name: SidebarIdType }) => {
         className="w-full !h-auto max-h-[300px]"
       />
       <span className="text-SUBTITLE-5 self-end text-PRIMARY-MAIN">
-        * 7일 전까지의 데이터만 표시됩니다
+        * 최근 7일간의 데이터만 표시됩니다
       </span>
     </Layout>
   );
