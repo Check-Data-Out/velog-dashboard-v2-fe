@@ -92,11 +92,11 @@ beforeEach(() => {
     BaseSuccess(postLeaderboardResponseData, '게시물 리더보드 조회에 성공하였습니다.'),
   ).as('postLeaderboardAPI');
 
-  cy.intercept(
-    'GET',
-    '**/api/total-stats*',
-    BaseSuccess(totalStatsResponseData, '전체 통계 조회에 성공하였습니다.'),
-  ).as('totalStatsAPI');
+  cy.intercept('GET', '**/api/total-stats*', (req) => {
+    const type = new URL(req.url).searchParams.get('type') as keyof typeof totalStatsResponseData;
+    const data = totalStatsResponseData[type] ?? totalStatsResponseData.view;
+    req.reply(BaseSuccess(data, '전체 통계 조회에 성공하였습니다.'));
+  }).as('totalStatsAPI');
 
   cy.intercept(
     'GET',
