@@ -12,7 +12,7 @@ COPY public ./public
 COPY .env.production ./.env.production
 
 # 프로덕션 의존성만 설치
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --no-frozen-lockfile --prod
 
 EXPOSE 3000
