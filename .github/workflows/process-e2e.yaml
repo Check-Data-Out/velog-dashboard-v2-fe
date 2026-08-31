@@ -24,6 +24,10 @@ jobs:
           pnpm install --frozen-lockfile
           npx cypress install
 
+      # 배포 워크플로의 next build 가 같은 규칙으로 lint 를 검사하므로, PR 단계에서 먼저 잡는다
+      - name: Lint
+        run: pnpm eslint:lint
+
       - name: Create .env file for Testing
         run: |
           # BEGIN_ENV_SYNC
