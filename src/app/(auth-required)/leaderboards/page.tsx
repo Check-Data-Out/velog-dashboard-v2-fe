@@ -22,7 +22,7 @@ export default async function Page({ searchParams }: { searchParams: searchParam
 
   await client.prefetchQuery({
     queryKey: queryKeys.leaderboard(finalParams),
-    queryFn: () => leaderboardList(finalParams),
+    queryFn: async () => leaderboardList(finalParams),
   });
 
   return (

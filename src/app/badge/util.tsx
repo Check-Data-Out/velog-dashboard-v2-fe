@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 
-import satori, { SatoriOptions } from 'satori';
+import satori, { type SatoriOptions } from 'satori';
 import sharp from 'sharp';
 import { COLORS, FONTS } from '@/lib/constants/styles.constant';
 
