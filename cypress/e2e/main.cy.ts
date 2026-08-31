@@ -31,6 +31,14 @@ describe('메인 페이지', () => {
       // totalViews(2500) - yesterdayViews(180) = 2,320
       cy.contains('2,320').should('be.visible');
     });
+
+    it('게시글 증가분은 통계 시계열의 어제 값을 기준으로 계산되어야 한다', () => {
+      // totalPostCount(15) - 어제 값(13, 시계열 뒤에서 두 번째) = 2
+      cy.get('#forTest')
+        .contains('총 게시글 수')
+        .closest('.cursor-pointer')
+        .should('contain.text', '2↑');
+    });
   });
 
   describe('게시물 목록', () => {
@@ -68,6 +76,20 @@ describe('메인 페이지', () => {
       cy.get('section[class*="h-fit"]').first().find('select').first().select('지난 7일');
 
       // 날짜 선택 후 안내 문구 사라짐
+      cy.contains('날짜를 선택해서 데이터를 확인하세요!').should('not.exist');
+    });
+
+    it('전체를 선택하면 게시물 발행일부터 조회해야 한다', () => {
+      cy.get('section[class*="h-fit"]')
+        .first()
+        .within(() => {
+          cy.contains('150').click();
+        });
+
+      cy.get('section[class*="h-fit"]').first().find('select').first().select('전체');
+
+      // 첫 번째 게시물의 releasedAt(2025-01-08T10:00:00Z)은 KST 기준 2025-01-08
+      cy.wait('@postDetailAPI').its('request.url').should('include', 'start=2025-01-08');
       cy.contains('날짜를 선택해서 데이터를 확인하세요!').should('not.exist');
     });
 

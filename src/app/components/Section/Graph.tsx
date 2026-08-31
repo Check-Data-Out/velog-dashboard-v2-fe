@@ -16,11 +16,11 @@ import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useResponsive } from '@/hooks/useResponsive';
 import { postDetail } from '@/lib/apis/dashboard.request';
-import { GRAPH_OPTIONS } from '@/lib/constants/graph.constant';
+import { POST_GRAPH_OPTIONS } from '@/lib/constants/graph.constant';
 import { queryKeys } from '@/lib/constants/queryKeys.constant';
 import { COLORS, SCREENS } from '@/lib/constants/styles.constant';
 import { PostDetailValue } from '@/lib/types/dashboard.type';
-import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { convertDateToKST, getDateRangeForMode, GraphPeriodMode } from '@/lib/utils/datetime.util';
 import { Dropdown } from '@/shared/Dropdown';
 import { Input } from '@/shared/Input';
 
@@ -50,15 +50,13 @@ interface IProp {
   releasedAt: string;
 }
 
-type ModeType = 'none' | 'weekly' | 'monthly' | 'custom';
-
 export const Graph = ({ id, releasedAt }: IProp) => {
   const width = useResponsive();
 
   const isMBI = width < SCREENS.MBI;
 
   const [type, setType] = useState({ start: '', end: '', type: 'View' });
-  const [mode, setMode] = useState<ModeType>('none');
+  const [mode, setMode] = useState<GraphPeriodMode>('none');
 
   const { data: datas } = useQuery({
     queryKey: queryKeys.detail(id, type),
@@ -77,20 +75,8 @@ export const Graph = ({ id, releasedAt }: IProp) => {
   });
 
   useEffect(() => {
-    if (mode === 'none' || mode === 'custom') {
-      setType((prev) => ({ ...prev, start: '', end: '' }));
-    } else {
-      const start = new Date();
-      if (mode === 'monthly') start.setMonth(start.getMonth() - 1);
-      else start.setDate(start.getDate() - 7);
-
-      setType((prev) => ({
-        ...prev,
-        start: start.toISOString().split('T')[0],
-        end: new Date().toISOString().split('T')[0],
-      }));
-    }
-  }, [mode]);
+    setType((prev) => ({ ...prev, ...getDateRangeForMode(mode, { releasedAt }) }));
+  }, [mode, releasedAt]);
 
   return (
     <div className="w-full bg-BG-SUB flex flex-col items-center px-[25px] pb-[30px] gap-[30px] max-MBI:px-5 max-MBI:pb-10">
@@ -119,12 +105,13 @@ export const Graph = ({ id, releasedAt }: IProp) => {
           </>
         )}
         <Dropdown
-          onChange={(e) => setMode(e as ModeType)}
+          onChange={(e) => setMode(e as GraphPeriodMode)}
           defaultValue="미선택"
           options={[
             ['미선택', 'none'],
             ['지난 7일', 'weekly'],
             ['지난 30일', 'monthly'],
+            ['전체', 'all'],
             ['직접선택', 'custom'],
           ]}
         />
@@ -145,7 +132,7 @@ export const Graph = ({ id, releasedAt }: IProp) => {
         )}
         <Line
           data={datas || defaultData}
-          options={GRAPH_OPTIONS}
+          options={POST_GRAPH_OPTIONS}
           className="!w-full !h-auto max-h-[300px]"
         />
       </div>

@@ -365,9 +365,9 @@ describe('모달', () => {
       cy.get('canvas').should('exist');
     });
 
-    it('통계 모달에 7일 전까지 안내 문구가 표시되어야 한다', () => {
+    it('통계 모달에 최근 7일 안내 문구가 표시되어야 한다', () => {
       cy.get('#forTest').contains('전체 조회수').click();
-      cy.contains('7일 전까지의 데이터만 표시됩니다').should('be.visible');
+      cy.contains('최근 7일간의 데이터만 표시됩니다').should('be.visible');
     });
 
     it('통계 API 오류 시에도 모달이 열려야 한다', () => {

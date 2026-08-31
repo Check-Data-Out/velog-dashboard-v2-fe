@@ -204,15 +204,36 @@ export const postLeaderboardResponseData = {
 };
 
 // 전체 통계 응답 데이터
-export const totalStatsResponseData = [
-  { date: '2025-01-03T00:00:00Z', value: 100 },
-  { date: '2025-01-04T00:00:00Z', value: 150 },
-  { date: '2025-01-05T00:00:00Z', value: 200 },
-  { date: '2025-01-06T00:00:00Z', value: 180 },
-  { date: '2025-01-07T00:00:00Z', value: 250 },
-  { date: '2025-01-08T00:00:00Z', value: 300 },
-  { date: '2025-01-09T00:00:00Z', value: 350 },
-];
+// 통계 유형별 누적 시계열. 마지막 값은 postsStatsResponseData의 총계와 같아야 함
+export const totalStatsResponseData = {
+  view: [
+    { date: '2025-01-03T00:00:00Z', value: 1800 },
+    { date: '2025-01-04T00:00:00Z', value: 1950 },
+    { date: '2025-01-05T00:00:00Z', value: 2080 },
+    { date: '2025-01-06T00:00:00Z', value: 2150 },
+    { date: '2025-01-07T00:00:00Z', value: 2240 },
+    { date: '2025-01-08T00:00:00Z', value: 2320 },
+    { date: '2025-01-09T00:00:00Z', value: 2500 },
+  ],
+  like: [
+    { date: '2025-01-03T00:00:00Z', value: 240 },
+    { date: '2025-01-04T00:00:00Z', value: 260 },
+    { date: '2025-01-05T00:00:00Z', value: 275 },
+    { date: '2025-01-06T00:00:00Z', value: 290 },
+    { date: '2025-01-07T00:00:00Z', value: 300 },
+    { date: '2025-01-08T00:00:00Z', value: 305 },
+    { date: '2025-01-09T00:00:00Z', value: 350 },
+  ],
+  post: [
+    { date: '2025-01-03T00:00:00Z', value: 9 },
+    { date: '2025-01-04T00:00:00Z', value: 10 },
+    { date: '2025-01-05T00:00:00Z', value: 11 },
+    { date: '2025-01-06T00:00:00Z', value: 12 },
+    { date: '2025-01-07T00:00:00Z', value: 12 },
+    { date: '2025-01-08T00:00:00Z', value: 13 },
+    { date: '2025-01-09T00:00:00Z', value: 15 },
+  ],
+} as const;
 
 // 공지사항 응답 데이터
 // Notice/index.tsx, Notice/Modal.tsx에서 created_at(스네이크 케이스) 필드명 사용
