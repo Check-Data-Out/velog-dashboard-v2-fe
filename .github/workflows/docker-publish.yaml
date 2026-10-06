@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install -g pnpm
+          npm install -g pnpm@10.33.0
           pnpm install --frozen-lockfile
 
       # .env.production 변경 시 `pnpm sync-env` 를 실행하면 이 구간이 자동 업데이트됩니다.
