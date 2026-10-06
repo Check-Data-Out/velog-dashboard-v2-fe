@@ -40,8 +40,9 @@ jobs:
           # END_ENV_SYNC
 
       # next/jest 가 .env 를 로드하므로 .env 생성 뒤에 실행해 로컬과 같은 조건으로 검사한다
+      # pnpm 은 `--` 를 jest 에 그대로 넘겨 뒤의 플래그가 경로 패턴으로 읽히므로 `--` 없이 전달한다
       - name: Unit tests
-        run: pnpm jest:test
+        run: pnpm jest:test --ci
 
       - name: Start application server
         run: |
