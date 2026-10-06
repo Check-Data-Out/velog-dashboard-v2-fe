@@ -2,13 +2,12 @@
 
 import { useQuery } from '@tanstack/react-query';
 import sanitizeHtml from 'sanitize-html';
-import { notiList } from '@/lib/apis/notice.request';
-import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { notiListQuery } from '@/lib/apis/notice.request';
 import { convertDateToKST } from '@/lib/utils/datetime.util';
 import { Modal as Layout } from '@/shared/Modal';
 
 export const Modal = () => {
-  const { data } = useQuery({ queryKey: queryKeys.notis(), queryFn: notiList });
+  const { data } = useQuery(notiListQuery);
 
   return (
     <Layout title="공지사항" className="w-[800px] h-[500px]">

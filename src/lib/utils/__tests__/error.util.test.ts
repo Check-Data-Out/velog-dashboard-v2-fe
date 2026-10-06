@@ -5,7 +5,7 @@ import {
   TimeoutError,
   ExceededRateLimitError,
 } from '@/lib/errors/fetch.error';
-import { errorHandler } from '../error.util';
+import { errorHandler, shouldCaptureError } from '../error.util';
 
 const mockWithScope = jest.fn();
 const mockCaptureException = jest.fn();
@@ -28,6 +28,29 @@ jest.mock('react-toastify', () => ({
 const mockOptions = { url: '/api/test', method: 'GET' };
 
 const flushMicrotasks = async () => Promise.resolve();
+
+describe('shouldCaptureError', () => {
+  it.each([
+    {
+      label: '원시 TypeError(네트워크 단절)',
+      error: new TypeError('Failed to fetch'),
+      expected: true,
+    },
+    {
+      label: '5xx FetchResponseError',
+      error: new FetchResponseError({ message: '서버 오류', options: mockOptions, code: 500 }),
+      expected: true,
+    },
+    {
+      label: '4xx FetchResponseError',
+      error: new FetchResponseError({ message: '없음', options: mockOptions, code: 404 }),
+      expected: false,
+    },
+    { label: 'AuthRequiredError', error: new AuthRequiredError(mockOptions), expected: false },
+  ])('$label 는 $expected 를 반환해야 한다', ({ error, expected }) => {
+    expect(shouldCaptureError(error)).toBe(expected);
+  });
+});
 
 describe('errorHandler', () => {
   beforeEach(() => {

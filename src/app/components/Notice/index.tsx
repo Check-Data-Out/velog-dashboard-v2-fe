@@ -3,8 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useModal } from '@/hooks/useModal';
-import { notiList } from '@/lib/apis/notice.request';
-import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { notiListQuery } from '@/lib/apis/notice.request';
 import { convertDateToKST } from '@/lib/utils/datetime.util';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
@@ -13,7 +12,7 @@ const RECENT_POST_THRESHOLD_DAYS = 4;
 const NOTIFICATION_STORAGE_KEY = 'noti_expiry';
 
 export const Notice = () => {
-  const { data } = useQuery({ queryKey: queryKeys.notis(), queryFn: notiList });
+  const { data } = useQuery(notiListQuery);
   const [show, setShow] = useState(false);
   const { open } = useModal();
 
