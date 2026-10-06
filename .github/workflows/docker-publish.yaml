@@ -32,13 +32,15 @@ jobs:
           echo "NEXT_PUBLIC_CLIENT_BASE_URL=${{ secrets.NEXT_PUBLIC_CLIENT_BASE_URL }}" >> .env.production
           echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=${{ secrets.NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY }}" >> .env.production
           echo "NEXT_PUBLIC_GA_ID=${{ secrets.NEXT_PUBLIC_GA_ID }}" >> .env.production
-          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=${{ secrets.NEXT_PUBLIC_SENTRY_AUTH_TOKEN }}" >> .env.production
           echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env.production
           # END_ENV_SYNC
 
+      # 소스맵 업로드 토큰은 빌드 step 의 env 로만 주입한다 (.env.production 과 이미지에는 넣지 않는다)
       - name: Build Next.js application
         run: |
           pnpm run build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       # Docker 로그인
       - name: Log in to Docker Hub

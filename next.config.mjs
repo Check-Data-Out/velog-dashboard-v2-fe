@@ -32,7 +32,8 @@ const nextConfig = {
 
 export default withSentryConfig(nextConfig, {
   // 센트리 동작을 위한 기본값
-  authToken: process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN,
+  // 업로드 토큰은 빌드 시에만 필요하므로 NEXT_PUBLIC_ 접두 없이 읽어 클라이언트 번들에 인라인되지 않게 한다
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   org: 'velog-dashboardv2',
   project: 'vd-fe',
 

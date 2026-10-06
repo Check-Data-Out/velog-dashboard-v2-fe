@@ -7,7 +7,7 @@ export const ENVS = (() => {
     CLIENT_BASE_URL: process.env.NEXT_PUBLIC_CLIENT_BASE_URL,
     CHANNELTALK_PLUGIN_KEY: process.env.NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY,
     GA_ID: process.env.NEXT_PUBLIC_GA_ID,
-    SENTRY_AUTH_TOKEN: process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN,
+    // Sentry 업로드 토큰은 빌드 시 next.config.mjs 가 SENTRY_AUTH_TOKEN 으로만 읽는다 (클라이언트 번들 비노출)
     SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
   } as const;
 

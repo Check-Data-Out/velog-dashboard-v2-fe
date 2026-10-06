@@ -35,7 +35,6 @@ jobs:
           echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env
           echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_value" >> .env
           echo "NEXT_PUBLIC_GA_ID=sample_value" >> .env
-          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_value" >> .env
           echo "NEXT_PUBLIC_SENTRY_DSN=sample_value" >> .env
           # END_ENV_SYNC
 
@@ -64,7 +63,6 @@ jobs:
           NEXT_PUBLIC_CLIENT_BASE_URL: 'http://localhost:3000'
           NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY: 'sample_key'
           NEXT_PUBLIC_GA_ID: 'sample_id'
-          NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'sample_token'
           NEXT_PUBLIC_SENTRY_DSN: 'sample_dsn'
 
       # KST 시간을 GitHub Actions 환경 변수에 세팅
