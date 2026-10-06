@@ -39,6 +39,10 @@ jobs:
           echo "NEXT_PUBLIC_SENTRY_DSN=sample_value" >> .env
           # END_ENV_SYNC
 
+      # next/jest 가 .env 를 로드하므로 .env 생성 뒤에 실행해 로컬과 같은 조건으로 검사한다
+      - name: Unit tests
+        run: pnpm jest:test
+
       - name: Start application server
         run: |
           pnpm dev &
