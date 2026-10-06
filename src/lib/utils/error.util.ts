@@ -15,6 +15,25 @@ export const shouldCaptureError = (error: unknown) => {
 };
 
 /**
+ * 요청 컨텍스트(API Data, Handler Data)를 붙여 Sentry 에 보고
+ *
+ * @param error 보고할 오류
+ * @param tags 이벤트에 붙일 태그 (예: 기능 구분)
+ */
+export const reportError = (error: unknown, tags?: Record<string, string>) => {
+  withScope((scope) => {
+    if (error instanceof FetchResponseError) {
+      scope.setContext('API Data', error.options);
+    }
+    if (error instanceof Error) {
+      scope.setContext('Handler Data', { name: error.name, cause: error.cause });
+    }
+    if (tags) scope.setTags(tags);
+    captureException(error);
+  });
+};
+
+/**
  * QueryClient에서 에러 핸들링에 사용, true/false 값 반환
  *
  * @returns boolean
@@ -22,15 +41,7 @@ export const shouldCaptureError = (error: unknown) => {
 export const errorHandler = (error: unknown) => {
   if (error instanceof FetchResponseError || error instanceof FetchError) {
     if (error instanceof AuthRequiredError) return false;
-    if (shouldCaptureError(error)) {
-      withScope((scope) => {
-        if (error instanceof FetchResponseError) {
-          scope.setContext('API Data', error.options);
-        }
-        scope.setContext('Handler Data', { name: error.name, cause: error.cause });
-        captureException(error);
-      });
-    }
+    if (shouldCaptureError(error)) reportError(error);
     queueMicrotask(
       () =>
         typeof window !== 'undefined' &&
