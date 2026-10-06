@@ -1,4 +1,5 @@
 import {
+  AuthRequiredError,
   ExceededRateLimitError,
   FetchResponseError,
   TimeoutError,
@@ -63,10 +64,8 @@ describe('instance', () => {
 
       await instance('/posts');
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/posts'),
-        expect.any(Object),
-      );
+      // return-fetch 는 baseUrl 이 설정되면 첫 인자를 URL 객체로 넘기므로 문자열로 변환해 검증한다
+      expect(String(mockFetch.mock.calls[0][0])).toContain('/api/posts');
     });
 
     it('init 옵션(method, body)이 그대로 전달된다', async () => {
@@ -75,7 +74,7 @@ describe('instance', () => {
       await instance('/login', { method: 'POST', body: { token: 'abc' } });
 
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
+        expect.anything(),
         expect.objectContaining({
           method: 'POST',
           body: JSON.stringify({ token: 'abc' }),
@@ -89,7 +88,7 @@ describe('instance', () => {
       await instance('/me');
 
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
+        expect.anything(),
         expect.objectContaining({ credentials: 'include' }),
       );
     });
@@ -100,7 +99,7 @@ describe('instance', () => {
       await instance('/me');
 
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
+        expect.anything(),
         expect.objectContaining({ cache: 'no-store' }),
       );
     });
@@ -111,7 +110,7 @@ describe('instance', () => {
       await instance('/me');
 
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
+        expect.anything(),
         expect.objectContaining({ body: undefined }),
       );
     });
@@ -128,7 +127,7 @@ describe('instance', () => {
 
       expect(AbortSignal.timeout).toHaveBeenCalledWith(30000);
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
+        expect.anything(),
         expect.objectContaining({ signal: fakeSignal }),
       );
 
@@ -145,7 +144,7 @@ describe('instance', () => {
       await instance('/posts');
 
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
+        expect.anything(),
         expect.objectContaining({ signal: expect.any(AbortSignal) }),
       );
     });
@@ -235,21 +234,12 @@ describe('instance', () => {
       });
     });
 
-    it('브라우저 환경에서 401 응답 시 location.replace("/")를 호출해야 한다', async () => {
+    it('브라우저 환경에서 401 응답 시 로그인 화면으로 보내고 AuthRequiredError 를 throw 한다', async () => {
       mockFetch.mockResolvedValueOnce(makeErrorResponse(401));
 
-      // 클라이언트에서 401은 undefined를 반환(throw하지 않음)하므로 await으로 처리
-      await instance('/posts');
-
+      // errorHandler 가 AuthRequiredError 를 조용히 처리하므로 throw 가 설계된 동작이다
+      await expect(instance('/posts')).rejects.toBeInstanceOf(AuthRequiredError);
       expect(window.location.replace).toHaveBeenCalledWith('/');
-    });
-
-    it('브라우저 환경에서 401 응답 시 undefined를 반환해야 한다', async () => {
-      mockFetch.mockResolvedValueOnce(makeErrorResponse(401));
-
-      const result = await instance('/posts');
-
-      expect(result).toBeUndefined();
     });
   });
 });
