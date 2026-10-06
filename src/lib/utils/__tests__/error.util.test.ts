@@ -47,6 +47,8 @@ describe('shouldCaptureError', () => {
       expected: false,
     },
     { label: 'AuthRequiredError', error: new AuthRequiredError(mockOptions), expected: false },
+    { label: 'null', error: null, expected: false },
+    { label: 'undefined', error: undefined, expected: false },
   ])('$label 는 $expected 를 반환해야 한다', ({ error, expected }) => {
     expect(shouldCaptureError(error)).toBe(expected);
   });

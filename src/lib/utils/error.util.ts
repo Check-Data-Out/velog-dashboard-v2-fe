@@ -4,12 +4,14 @@ import { AuthRequiredError, FetchError, FetchResponseError } from '@/lib/errors/
 
 /**
  * Sentry 에 보고할 오류인지 판정
+ * - 오류가 없으면(null/undefined) 보고하지 않음
  * - 요청 유틸이 분류하지 않은 오류(네트워크 단절 등)는 보고
  * - 분류된 오류는 로그인 필요를 제외하고 각 오류의 shouldCaptureException 을 따름
  *
  * @returns boolean
  */
 export const shouldCaptureError = (error: unknown) => {
+  if (error == null) return false;
   if (!(error instanceof FetchResponseError || error instanceof FetchError)) return true;
   return !(error instanceof AuthRequiredError) && error.shouldCaptureException;
 };
