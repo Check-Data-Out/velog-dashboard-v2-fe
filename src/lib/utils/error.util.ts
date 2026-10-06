@@ -16,8 +16,12 @@ export const shouldCaptureError = (error: unknown) => {
   return !(error instanceof AuthRequiredError) && error.shouldCaptureException;
 };
 
+const SERVER_MESSAGE_MAX = 200;
+const CAUSE_MAX = 500;
+
 /**
  * 요청 컨텍스트(API Data, Handler Data)를 붙여 Sentry 에 보고
+ * 응답 body 전체는 개인정보가 섞일 수 있어 보내지 않고, 식별에 필요한 최소 항목만 화이트리스트로 담는다
  *
  * @param error 보고할 오류
  * @param tags 이벤트에 붙일 태그 (예: 기능 구분)
@@ -25,10 +29,22 @@ export const shouldCaptureError = (error: unknown) => {
 export const reportError = (error: unknown, tags?: Record<string, string>) => {
   withScope((scope) => {
     if (error instanceof FetchResponseError) {
-      scope.setContext('API Data', error.options);
+      const { url, method, body } = error.options;
+      const serverMessage = body?.message;
+      scope.setContext('API Data', {
+        url,
+        method,
+        status: error.code,
+        ...(typeof serverMessage === 'string' && {
+          message: serverMessage.slice(0, SERVER_MESSAGE_MAX),
+        }),
+      });
     }
     if (error instanceof Error) {
-      scope.setContext('Handler Data', { name: error.name, cause: error.cause });
+      scope.setContext('Handler Data', {
+        name: error.name,
+        ...(error.cause !== undefined && { cause: String(error.cause).slice(0, CAUSE_MAX) }),
+      });
     }
     if (tags) scope.setTags(tags);
     captureException(error);

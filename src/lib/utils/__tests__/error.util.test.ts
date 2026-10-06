@@ -5,16 +5,17 @@ import {
   TimeoutError,
   ExceededRateLimitError,
 } from '@/lib/errors/fetch.error';
-import { errorHandler, shouldCaptureError } from '../error.util';
+import { errorHandler, reportError, shouldCaptureError } from '../error.util';
 
 const mockWithScope = jest.fn();
 const mockCaptureException = jest.fn();
 const mockToastError = jest.fn();
+const mockScope = { setContext: jest.fn(), setTags: jest.fn() };
 
 jest.mock('@sentry/nextjs', () => ({
   withScope: (cb: (scope: unknown) => void) => {
     mockWithScope(cb);
-    cb({ setContext: jest.fn() });
+    cb(mockScope);
   },
   captureException: (...args: unknown[]) => mockCaptureException(...args),
 }));
@@ -51,6 +52,58 @@ describe('shouldCaptureError', () => {
     { label: 'undefined', error: undefined, expected: false },
   ])('$label 는 $expected 를 반환해야 한다', ({ error, expected }) => {
     expect(shouldCaptureError(error)).toBe(expected);
+  });
+});
+
+describe('reportError', () => {
+  beforeEach(() => {
+    mockCaptureException.mockClear();
+    mockScope.setContext.mockClear();
+    mockScope.setTags.mockClear();
+  });
+
+  it('API Data 에는 url·method·status 와 절단된 서버 메시지만 담고 응답 body 는 보내지 않는다', () => {
+    const error = new FetchResponseError({
+      message: '서버 오류',
+      options: {
+        url: '/api/test',
+        method: 'GET',
+        body: { success: false, message: 'm'.repeat(300), data: { email: 'user@example.com' } },
+      },
+      code: 500,
+    });
+
+    reportError(error);
+
+    expect(mockScope.setContext).toHaveBeenCalledWith('API Data', {
+      url: '/api/test',
+      method: 'GET',
+      status: 500,
+      message: 'm'.repeat(200),
+    });
+    expect(mockCaptureException).toHaveBeenCalledWith(error);
+  });
+
+  it('서버 메시지가 없으면 API Data 에 message 키를 넣지 않는다', () => {
+    reportError(new FetchResponseError({ message: '서버 오류', options: mockOptions, code: 503 }));
+
+    expect(mockScope.setContext).toHaveBeenCalledWith('API Data', {
+      url: '/api/test',
+      method: 'GET',
+      status: 503,
+    });
+  });
+
+  it('Handler Data 의 cause 는 문자열로 바꿔 500자까지만 담는다', () => {
+    const error = new Error('오류', { cause: 'c'.repeat(600) });
+
+    reportError(error, { feature: 'test' });
+
+    expect(mockScope.setContext).toHaveBeenCalledWith('Handler Data', {
+      name: 'Error',
+      cause: 'c'.repeat(500),
+    });
+    expect(mockScope.setTags).toHaveBeenCalledWith({ feature: 'test' });
   });
 });
 

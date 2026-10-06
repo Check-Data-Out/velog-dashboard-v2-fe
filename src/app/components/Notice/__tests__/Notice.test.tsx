@@ -83,7 +83,10 @@ describe('Notice', () => {
 
       await waitFor(() => expect(mockCaptureException).toHaveBeenCalledTimes(1));
       expect(mockCaptureException).toHaveBeenCalledWith(error);
-      expect(mockScope.setContext).toHaveBeenCalledWith('API Data', notiOptions);
+      expect(mockScope.setContext).toHaveBeenCalledWith('API Data', {
+        ...notiOptions,
+        status: 500,
+      });
       expect(mockScope.setTags).toHaveBeenCalledWith({ feature: 'notice' });
       expect(screen.getByRole('status')).toBeInTheDocument();
       expect(mockToastError).not.toHaveBeenCalled();
