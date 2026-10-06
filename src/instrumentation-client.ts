@@ -24,6 +24,10 @@ Sentry.init({
   // Define how likely Replay events are sampled when an error occurs.
   replaysOnErrorSampleRate: 1.0,
 
+  // v10.4+ 는 이 옵션 없이는 서버가 요청 IP 로 사용자를 추론하지 않는다.
+  // 앱은 Sentry.setUser 를 쓰지 않으므로 IP 기반 Users 집계·지역 정보를 유지하려면 클라이언트에서만 켠다 (server/edge 는 끔)
+  sendDefaultPii: true,
+
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
   enabled: process.env.NODE_ENV === 'production',
