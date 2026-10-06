@@ -1,14 +1,12 @@
-// This file configures the initialization of Sentry on the client.
-// The config you add here will be used whenever a users loads a page in their browser.
+// 클라이언트(브라우저) Sentry 초기화 파일.
+// Next.js 의 instrumentation-client 규약 위치이며, @sentry/nextjs 가 빌드 시 클라이언트 엔트리에 주입한다.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from '@sentry/nextjs';
 
-import { ENVS } from '@/lib/constants/env.constant';
-
 Sentry.init({
-  dsn: ENVS.SENTRY_DSN,
-  release: 'production',
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  // release 는 빌드 플러그인이 커밋 SHA 로 주입하므로 여기서 지정하지 않는다
 
   // Add optional integrations for additional features
   integrations: [Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false })],
@@ -26,5 +24,8 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
-  enabled: ENVS.NODE_ENV === 'production',
+  enabled: process.env.NODE_ENV === 'production',
 });
+
+// App Router 네비게이션 계측 훅 (Next 15.3+ 에서 호출됨, 그 이전 버전에서는 무시된다)
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

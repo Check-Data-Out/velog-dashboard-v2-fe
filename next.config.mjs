@@ -1,4 +1,4 @@
-import { withSentryConfig } from '@sentry/nextjs';
+import { withSentryConfig } from '@sentry/nextjs/config';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -38,13 +38,15 @@ export default withSentryConfig(nextConfig, {
   project: 'vd-fe',
 
   widenClientFileUpload: true, // 파일의 크기가 비교적 큰 대신, 더 상세한 정보를 포함하는 소스맵 파일 생성
-  sourcemaps: { deleteSourcemapsAfterUpload: true }, // 소스맵 파일 업로드 후 자동 제거
-  hideSourceMaps: true, // 클라이언트 대상의 소스맵 파일 은닉
+  sourcemaps: { deleteSourcemapsAfterUpload: true }, // 소스맵 파일 업로드 후 자동 제거 (클라이언트 소스맵 은닉은 v9+ 기본 동작)
 
   silent: !process.env.CI, // CI 진행시에만 로그가 표시되도록 강제
-  disableLogger: true, // 번들 사이즈 감소를 위해 센트리 기본 로그 메세지 트리셰이크
 
-  reactComponentAnnotation: { enabled: true }, // 세션 리플레이와 브레드크럼에서 상세한 컴포넌트명 표시
+  // release 는 지정하지 않는다: 플러그인이 CI 의 커밋 SHA(GITHUB_SHA)로 결정해 런타임에 주입한다
+  webpack: {
+    reactComponentAnnotation: { enabled: true }, // 세션 리플레이와 브레드크럼에서 상세한 컴포넌트명 표시
+    treeshake: { removeDebugLogging: true }, // 번들 사이즈 감소를 위해 센트리 기본 로그 메세지 트리셰이크
+  },
 
   tunnelRoute: '/monitoring', // ad-blocker 우회용 엔드포인트 (이벤트 로깅 관련)
 });
