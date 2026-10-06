@@ -5,8 +5,10 @@
 import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
+  // DSN 은 ENVS 대신 process.env 에서 직접 읽는다: 이 파일은 클라이언트 엔트리에 주입되므로
+  // ENVS 의 누락 검사(EnvNotFoundError)와 그 의존성을 클라이언트 번들에 끌어오지 않기 위함
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  // release 는 빌드 플러그인이 커밋 SHA 로 주입하므로 여기서 지정하지 않는다
+  // release 는 빌드 플러그인이 결정해 주입하므로 여기서 지정하지 않는다 (next.config.mjs 참고)
 
   // Add optional integrations for additional features
   integrations: [Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false })],

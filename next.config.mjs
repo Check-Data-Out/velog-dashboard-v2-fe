@@ -42,8 +42,10 @@ export default withSentryConfig(nextConfig, {
 
   silent: !process.env.CI, // CI 진행시에만 로그가 표시되도록 강제
 
-  // release 는 지정하지 않는다: 플러그인이 CI 의 커밋 SHA(GITHUB_SHA)로 결정해 런타임에 주입한다
+  // release 는 지정하지 않는다: 플러그인이 SENTRY_RELEASE 환경 변수 → CI 커밋 SHA(GITHUB_SHA 등) → `git rev-parse HEAD`
+  // 순서로 결정해 세 런타임(client/server/edge)에 같은 값을 주입한다
   webpack: {
+    // v11 에서는 최상위 reactComponentAnnotation 으로 복귀 (migration/v10-to-v11)
     reactComponentAnnotation: { enabled: true }, // 세션 리플레이와 브레드크럼에서 상세한 컴포넌트명 표시
     treeshake: { removeDebugLogging: true }, // 번들 사이즈 감소를 위해 센트리 기본 로그 메세지 트리셰이크
   },
