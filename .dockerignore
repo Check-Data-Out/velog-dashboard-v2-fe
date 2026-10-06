@@ -1,0 +1,12 @@
+# Dockerfile 이 COPY 하는 것: next.config.mjs, ecosystem.config.js, .next/standalone, .next/static, public,
+# .env.production(CI 가 생성, 토큰 없음), package.json, pnpm-lock.yaml, pnpm-workspace.yaml
+# 그 외 로컬 env 파일·빌드 캐시·의존성은 컨텍스트에서 제외해 이미지에 들어가지 않게 한다
+# (Next standalone 출력이 .env 를 .next/standalone/ 에도 복사하므로 **/ 로 하위 경로까지 제외한다)
+.git
+node_modules
+.next/cache
+cypress
+coverage
+**/.env
+**/.env.local
+**/.env.*.local
