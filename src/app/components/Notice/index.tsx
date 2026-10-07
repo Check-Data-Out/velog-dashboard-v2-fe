@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useModal } from '@/hooks/useModal';
-import { notiList } from '@/lib/apis/notice.request';
-import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { notiListQuery } from '@/lib/apis/notice.request';
 import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { reportError, shouldCaptureError } from '@/lib/utils/error.util';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 const TTL = DAY_IN_MS * 2;
@@ -13,9 +13,14 @@ const RECENT_POST_THRESHOLD_DAYS = 4;
 const NOTIFICATION_STORAGE_KEY = 'noti_expiry';
 
 export const Notice = () => {
-  const { data } = useQuery({ queryKey: queryKeys.notis(), queryFn: notiList });
+  const { data, error } = useQuery(notiListQuery);
   const [show, setShow] = useState(false);
   const { open } = useModal();
+
+  // 공지 조회 실패는 페이지를 깨뜨리지 않는 대신, 보고 기준에 맞는 오류만 요청 컨텍스트와 함께 Sentry 에 남긴다
+  useEffect(() => {
+    if (shouldCaptureError(error)) reportError(error, { feature: 'notice' });
+  }, [error]);
 
   useEffect(() => {
     try {

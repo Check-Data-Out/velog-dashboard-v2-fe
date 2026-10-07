@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { partitionSecretKeys } from './env-keys.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -125,7 +126,14 @@ function main() {
   }
 
   const entries = parseEnvFile(ENV_PROD);
-  const keys = entries.map((e) => e.key);
+  const { allowed: keys, skipped } = partitionSecretKeys(entries.map((e) => e.key));
+
+  if (skipped.length > 0) {
+    console.warn(
+      `warning: skipped secret-like keys (never written to workflows): ${skipped.join(', ')}\n` +
+        '         inject them via the build step env (GitHub secret) instead.',
+    );
+  }
 
   if (keys.length === 0) {
     console.error('no valid keys found in .env.production.');
