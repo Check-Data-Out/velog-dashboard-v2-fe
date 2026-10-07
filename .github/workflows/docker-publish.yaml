@@ -37,8 +37,10 @@ jobs:
 
       # 토큰이 없으면 Sentry 플러그인이 조용히 업로드·release 생성을 건너뛰므로 빌드 전에 실패시킨다
       - name: Check Sentry auth token secret
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
-          test -n "${{ secrets.SENTRY_AUTH_TOKEN }}" || { echo "::error::SENTRY_AUTH_TOKEN secret missing"; exit 1; }
+          test -n "$SENTRY_AUTH_TOKEN" || { echo "::error::SENTRY_AUTH_TOKEN secret missing"; exit 1; }
 
       # 소스맵 업로드 토큰은 빌드 step 의 env 로만 주입한다 (.env.production 과 이미지에는 넣지 않는다)
       - name: Build Next.js application
