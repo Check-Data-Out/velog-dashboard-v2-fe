@@ -19,6 +19,9 @@ describe('ENVS', () => {
     jest.resetModules();
     process.env = { ...originalEnv, NODE_ENV: 'production', ...REQUIRED_PUBLIC_ENVS };
     delete process.env.CYPRESS;
+    // next/jest 가 로컬 .env 를 로드하므로, 로컬 파일에 토큰이 있어도 "토큰 없이 로드" 를 검증하도록 제거한다
+    delete process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN;
+    delete process.env.SENTRY_AUTH_TOKEN;
   });
 
   afterEach(() => {
