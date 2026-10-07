@@ -8,7 +8,7 @@ Sentry.init({
   // DSN 은 ENVS 대신 process.env 에서 직접 읽는다: 이 파일은 클라이언트 엔트리에 주입되므로
   // ENVS 의 누락 검사(EnvNotFoundError)와 그 의존성을 클라이언트 번들에 끌어오지 않기 위함
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  // release 는 빌드 플러그인이 결정해 주입하므로 여기서 지정하지 않는다 (next.config.mjs 참고)
+  // release: next.config.mjs 참고
 
   // Add optional integrations for additional features
   integrations: [Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false })],
@@ -33,5 +33,5 @@ Sentry.init({
   enabled: process.env.NODE_ENV === 'production',
 });
 
-// App Router 네비게이션 계측 훅 (Next 15.3+ 에서 호출됨, 그 이전 버전에서는 무시된다)
+// Next 15.3+ 업그레이드 시 활성화되는 네비게이션 계측 훅 — 현재 14.x 에서는 호출되지 않음
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

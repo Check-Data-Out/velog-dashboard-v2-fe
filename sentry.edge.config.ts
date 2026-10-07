@@ -8,7 +8,7 @@ import { ENVS } from '@/lib/constants/env.constant';
 
 Sentry.init({
   dsn: ENVS.SENTRY_DSN,
-  // release 는 빌드 플러그인이 커밋 SHA 로 주입하므로 여기서 지정하지 않는다
+  // release: next.config.mjs 참고
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 0.05,
