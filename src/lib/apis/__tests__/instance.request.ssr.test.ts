@@ -14,7 +14,7 @@ jest.mock('../../constants/env.constant', () => ({
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
-const mockCookies = jest.fn(() => ({ toString: () => 'session=abc' }));
+const mockCookies = jest.fn((): { toString: () => string } => ({ toString: () => 'session=abc' }));
 
 jest.mock('next/headers', () => ({
   cookies: mockCookies,

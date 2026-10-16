@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Header } from '@/app/components/Header';
 import { Notice } from '@/app/components/Notice';
-import { notiList } from '@/lib/apis/notice.request';
+import { notiListQuery } from '@/lib/apis/notice.request';
 import { me } from '@/lib/apis/user.request';
 import { queryKeys } from '@/lib/constants/queryKeys.constant';
 import { getQueryClient } from '@/lib/utils/query.util';
@@ -11,7 +11,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
   await Promise.all([
     client.prefetchQuery({ queryKey: queryKeys.me(), queryFn: me }),
-    client.prefetchQuery({ queryKey: queryKeys.notis(), queryFn: notiList }),
+    client.prefetchQuery(notiListQuery),
   ]);
 
   return (

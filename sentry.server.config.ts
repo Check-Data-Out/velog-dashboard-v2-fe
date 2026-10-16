@@ -7,7 +7,7 @@ import { ENVS } from '@/lib/constants/env.constant';
 
 Sentry.init({
   dsn: ENVS.SENTRY_DSN,
-  release: 'production',
+  // release: next.config.mjs 참고
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 0.1,

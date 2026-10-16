@@ -339,7 +339,10 @@ describe('모달', () => {
       cy.reload();
       cy.waitForPageLoad();
 
+      // 실패 응답이 도착한 뒤에도 배너는 숨겨지고 본문(#forTest 는 사이드바 aside)은 유지되어야 한다
+      cy.wait('@errorNotisAPI');
       cy.contains('📣 새로운 업데이트를 확인해보세요!').should('not.be.visible');
+      cy.get('#forTest').should('be.visible');
     });
   });
 

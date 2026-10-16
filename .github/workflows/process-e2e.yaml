@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install -g pnpm
+          npm install -g pnpm@10.33.0
           pnpm install --frozen-lockfile
           npx cypress install
 
@@ -35,9 +35,13 @@ jobs:
           echo "NEXT_PUBLIC_CLIENT_BASE_URL=http://localhost:3000" >> .env
           echo "NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY=sample_value" >> .env
           echo "NEXT_PUBLIC_GA_ID=sample_value" >> .env
-          echo "NEXT_PUBLIC_SENTRY_AUTH_TOKEN=sample_value" >> .env
           echo "NEXT_PUBLIC_SENTRY_DSN=sample_value" >> .env
           # END_ENV_SYNC
+
+      # next/jest 가 .env 를 로드하므로 .env 생성 뒤에 실행해 로컬과 같은 조건으로 검사한다
+      # pnpm 은 `--` 를 jest 에 그대로 넘겨 뒤의 플래그가 경로 패턴으로 읽히므로 `--` 없이 전달한다
+      - name: Unit tests
+        run: pnpm jest:test --ci
 
       - name: Start application server
         run: |
@@ -59,7 +63,6 @@ jobs:
           NEXT_PUBLIC_CLIENT_BASE_URL: 'http://localhost:3000'
           NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY: 'sample_key'
           NEXT_PUBLIC_GA_ID: 'sample_id'
-          NEXT_PUBLIC_SENTRY_AUTH_TOKEN: 'sample_token'
           NEXT_PUBLIC_SENTRY_DSN: 'sample_dsn'
 
       # KST 시간을 GitHub Actions 환경 변수에 세팅

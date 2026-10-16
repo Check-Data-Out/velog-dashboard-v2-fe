@@ -7,7 +7,6 @@ export const ENVS = (() => {
     CLIENT_BASE_URL: process.env.NEXT_PUBLIC_CLIENT_BASE_URL,
     CHANNELTALK_PLUGIN_KEY: process.env.NEXT_PUBLIC_CHANNELTALK_PLUGIN_KEY,
     GA_ID: process.env.NEXT_PUBLIC_GA_ID,
-    SENTRY_AUTH_TOKEN: process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN,
     SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
   } as const;
 

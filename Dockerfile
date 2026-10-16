@@ -2,7 +2,7 @@ FROM node:23-alpine
 
 WORKDIR /usr/src/app
 
-RUN npm install -g pnpm pm2
+RUN npm install -g pnpm@10.33.0 pm2
 
 # 기존 빌드된 파일들과 필요한 설정 파일들 복사
 COPY next.config.mjs ecosystem.config.js ./
@@ -13,7 +13,7 @@ COPY .env.production ./.env.production
 
 # 프로덕션 의존성만 설치
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --no-frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile --prod
 
 EXPOSE 3000
 
