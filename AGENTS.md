@@ -392,7 +392,7 @@ Before considering a page complete:
 
 # NOTICE HTML SANITIZING (DO NOT CHANGE)
 
-Notice content (`noti_notipost.content`) is HTML written in the back-office. Its headings and links carry their accent color, background, and left border as inline `style` attributes. These rules must never be changed, removed, or bypassed:
+Notice content (`posts[].content` from the notice API) is HTML written in the back-office. Headings carry their accent color, background, and left border as inline `style` attributes, and links carry font size, text decoration, and color the same way. These rules must never be changed, removed, or bypassed:
 
 - Notice HTML must always be rendered through `sanitizeNoticeHtml` (`src/lib/utils/sanitize.util.ts`). Never call `sanitizeHtml(content)` with default options, never render it unsanitized, and never swap it for another sanitizer.
 - The `style` attribute must stay allowed, together with the `allowedStyles` allowlist (`color`, `background`, `border-left`, `padding`, `margin`, `font-size`, `font-weight`, `text-decoration`). The default options strip `style`, which turns notice headings into the dark `prose` heading color and makes them unreadable on the dark background.
