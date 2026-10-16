@@ -1,9 +1,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import sanitizeHtml from 'sanitize-html';
 import { notiListQuery } from '@/lib/apis/notice.request';
 import { convertDateToKST } from '@/lib/utils/datetime.util';
+import { sanitizeNoticeHtml } from '@/lib/utils/sanitize.util';
 import { Modal as Layout } from '@/shared/Modal';
 
 export const Modal = () => {
@@ -22,7 +22,7 @@ export const Modal = () => {
             </div>
             <div
               className="text-TEXT-MAIN text-[14px] prose !max-w-full"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
+              dangerouslySetInnerHTML={{ __html: sanitizeNoticeHtml(content) }}
             />
           </div>
         ))}

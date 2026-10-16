@@ -390,6 +390,15 @@ Before considering a page complete:
 - [ ] Translation keys exist in both ko.json and en.json
 - [ ] Tested in both Korean and English
 
+# NOTICE HTML SANITIZING (DO NOT CHANGE)
+
+Notice content (`posts[].content` from the notice API) is HTML written in the back-office. Headings carry their accent color, background, and left border as inline `style` attributes, and links carry font size, text decoration, and color the same way. These rules must never be changed, removed, or bypassed:
+
+- Notice HTML must always be rendered through `sanitizeNoticeHtml` (`src/lib/utils/sanitize.util.ts`). Never call `sanitizeHtml(content)` with default options, never render it unsanitized, and never swap it for another sanitizer.
+- The `style` attribute must stay allowed, together with the `allowedStyles` allowlist (`color`, `background`, `border-left`, `padding`, `margin`, `font-size`, `font-weight`, `text-decoration`). The default options strip `style`, which turns notice headings into the dark `prose` heading color and makes them unreadable on the dark background.
+- Keep each allowed property restricted to value regexes. Do not allow `url()`, arbitrary values, or layout properties such as `position`.
+- If a new notice needs another style property, add it to the allowlist with a value regex and a test in `src/lib/utils/__tests__/sanitize.util.test.ts`. Do not loosen the existing entries.
+
 # OUTPUT
 
 Output have to be Korean.
