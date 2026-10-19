@@ -82,4 +82,16 @@ describe('instance (SSR 환경)', () => {
     const calledHeaders = new Headers(mockFetch.mock.calls[0][1].headers);
     expect(calledHeaders.get('X-Forwarded-For')).toBe('203.0.113.7');
   });
+
+  it('호출자가 Headers 로 넘긴 헤더도 서버 헤더와 함께 유지한다', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({}));
+
+    const { instance } = await import('../instance.request');
+    await instance('/posts', { headers: new Headers({ 'X-Custom': 'kept' }) });
+
+    const calledHeaders = new Headers(mockFetch.mock.calls[0][1].headers);
+    expect(calledHeaders.get('X-Custom')).toBe('kept');
+    expect(calledHeaders.get('Content-Type')).toBe('application/json');
+    expect(calledHeaders.get('Cookie')).toBe('session=abc');
+  });
 });
