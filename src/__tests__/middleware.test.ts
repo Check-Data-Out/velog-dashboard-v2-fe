@@ -4,12 +4,12 @@
 import { NextRequest } from 'next/server';
 import { middleware } from '@/middleware';
 
-const createRequest = (cookie?: string) =>
-  new NextRequest('http://localhost/main', cookie ? { headers: { cookie } } : undefined);
+const createRequest = (cookie?: string, path = '/main') =>
+  new NextRequest(`http://localhost${path}`, cookie ? { headers: { cookie } } : undefined);
 
 describe('middleware', () => {
-  it('세션 쿠키만 있어도 대시보드 페이지 진입을 허용한다', () => {
-    const response = middleware(createRequest('vd_session=session-id'));
+  it.each(['/main', '/leaderboards'])('세션 쿠키만 있어도 %s 진입을 허용한다', (path) => {
+    const response = middleware(createRequest('vd_session=session-id', path));
 
     expect(response.headers.get('x-middleware-next')).toBe('1');
   });

@@ -94,4 +94,14 @@ describe('instance (SSR 환경)', () => {
     expect(calledHeaders.get('Content-Type')).toBe('application/json');
     expect(calledHeaders.get('Cookie')).toBe('session=abc');
   });
+
+  it('원래 요청에 x-forwarded-for 가 없으면 X-Forwarded-For 를 넣지 않는다', async () => {
+    mockHeaders.mockReturnValueOnce(new Headers());
+    mockFetch.mockResolvedValueOnce(makeResponse({}));
+
+    const { instance } = await import('../instance.request');
+    await instance('/posts');
+
+    expect(new Headers(mockFetch.mock.calls[0][1].headers).get('X-Forwarded-For')).toBeNull();
+  });
 });
