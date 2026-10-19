@@ -52,15 +52,21 @@ export const instance = async <I, R>(
   init?: InitType<I>,
   errorTypes?: Record<number, new (options: fetchOptions) => FetchResponseError>,
 ): Promise<R> => {
-  let cookieHeader = '';
+  // 서버 컴포넌트에서 부를 때는 사용자 쿠키와 클라이언트 IP 를 실어 보낸다.
+  // IP 를 넘기지 않으면 API 가 모든 SSR 요청을 FE 서버 IP 하나로 보고 인증 실패를 합산한다
+  const requestHeaders = new Headers(init?.headers);
   if (typeof window === 'undefined') {
-    cookieHeader = (await import('next/headers')).cookies().toString();
+    const { cookies, headers } = await import('next/headers');
+    const cookieHeader = cookies().toString();
+    const forwardedFor = headers().get('x-forwarded-for');
+    if (cookieHeader) requestHeaders.set('Cookie', cookieHeader);
+    if (forwardedFor) requestHeaders.set('X-Forwarded-For', forwardedFor);
   }
 
   try {
     const data = await fetch('/api' + input, {
       ...init,
-      headers: cookieHeader ? { ...init?.headers, Cookie: cookieHeader } : init?.headers,
+      headers: requestHeaders,
       body: init?.body ? JSON.stringify(init.body) : undefined,
       signal: AbortSignal.timeout?.(Number(ABORT_MS)) ?? abortPolyfill(Number(ABORT_MS)),
       credentials: 'include',
