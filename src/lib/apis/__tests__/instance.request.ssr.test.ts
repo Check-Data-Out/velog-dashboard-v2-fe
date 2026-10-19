@@ -16,8 +16,11 @@ global.fetch = mockFetch;
 
 const mockCookies = jest.fn((): { toString: () => string } => ({ toString: () => 'session=abc' }));
 
+const mockHeaders = jest.fn(() => new Headers({ 'x-forwarded-for': '203.0.113.7' }));
+
 jest.mock('next/headers', () => ({
   cookies: mockCookies,
+  headers: mockHeaders,
 }));
 
 jest.mock('next/navigation', () => ({
@@ -68,5 +71,15 @@ describe('instance (SSR 환경)', () => {
         ? (calledHeaders.get('Cookie') ?? calledHeaders.get('cookie'))
         : (calledHeaders?.Cookie ?? calledHeaders?.cookie);
     expect(cookieValue).toBeNull();
+  });
+
+  it('서버 환경에서는 원래 요청의 클라이언트 IP 를 X-Forwarded-For 로 전달한다', async () => {
+    mockFetch.mockResolvedValueOnce(makeResponse({}));
+
+    const { instance } = await import('../instance.request');
+    await instance('/posts');
+
+    const calledHeaders = new Headers(mockFetch.mock.calls[0][1].headers);
+    expect(calledHeaders.get('X-Forwarded-For')).toBe('203.0.113.7');
   });
 });
