@@ -1,7 +1,6 @@
 // API 서버의 응답 형태에 맞춘 모킹 데이터
 
-export const MOCK_ACCESS_TOKEN = 'mock_access_token_12345';
-export const MOCK_REFRESH_TOKEN = 'mock_refresh_token_67890';
+export const MOCK_SESSION_TOKEN = 'mock_session_token_12345';
 
 // 유저 정보 관련 응답 데이터
 export const userResponseData = {
