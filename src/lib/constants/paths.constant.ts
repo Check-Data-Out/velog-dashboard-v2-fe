@@ -2,6 +2,8 @@ export const PATHS = {
   LOGIN: '/login',
   SAMPLELOGIN: '/login-sample',
   QRLOGIN: '/qr-login',
+  QRLOGIN_CONFIRM: '/qr-login/confirm',
+  QRLOGIN_STATUS: '/qr-login/status',
   NOTIS: '/notis',
   EVENT: '/event',
   STAY: '/stay',

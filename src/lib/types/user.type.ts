@@ -32,3 +32,10 @@ export type BadgeDto = {
   };
   recentPosts: recentPosts[];
 };
+
+export type QRLoginStatusDto = {
+  status: 'pending' | 'used' | 'expired';
+  usedAt?: string;
+  userAgent?: string | null;
+  ip?: string | null;
+};

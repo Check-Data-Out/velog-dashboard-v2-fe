@@ -1,6 +1,15 @@
 import { PATHS } from '@/lib/constants/paths.constant';
 import { instance } from '../instance.request';
-import { login, me, logout, sampleLogin, createQRToken, badge } from '../user.request';
+import {
+  login,
+  me,
+  logout,
+  sampleLogin,
+  createQRToken,
+  confirmQRLogin,
+  getQRLoginStatus,
+  badge,
+} from '../user.request';
 
 jest.mock('../instance.request', () => ({
   instance: jest.fn(),
@@ -73,6 +82,43 @@ describe('user.request', () => {
 
       expect(mockInstance).toHaveBeenCalledWith(PATHS.QRLOGIN, { method: 'POST' });
       expect(result).toBe(mockToken);
+    });
+  });
+
+  describe('confirmQRLogin', () => {
+    it('POST 메서드로 QR 로그인 확인 엔드포인트에 token을 body로 보내야 한다', async () => {
+      mockInstance.mockResolvedValueOnce(undefined);
+
+      await confirmQRLogin('abcde12345');
+
+      expect(mockInstance).toHaveBeenCalledWith(PATHS.QRLOGIN_CONFIRM, {
+        method: 'POST',
+        body: { token: 'abcde12345' },
+      });
+    });
+  });
+
+  describe('getQRLoginStatus', () => {
+    it('token을 쿼리로 붙여 QR 로그인 상태 엔드포인트를 GET으로 호출해야 한다', async () => {
+      const mockStatus = { status: 'pending' };
+      mockInstance.mockResolvedValueOnce(mockStatus);
+
+      const result = await getQRLoginStatus('abcde12345');
+
+      expect(mockInstance).toHaveBeenCalledWith(`${PATHS.QRLOGIN_STATUS}?token=abcde12345`, {
+        method: 'GET',
+      });
+      expect(result).toBe(mockStatus);
+    });
+
+    it('token을 URL 인코딩해야 한다', async () => {
+      mockInstance.mockResolvedValueOnce({ status: 'pending' });
+
+      await getQRLoginStatus('a&b=c');
+
+      expect(mockInstance).toHaveBeenCalledWith(`${PATHS.QRLOGIN_STATUS}?token=a%26b%3Dc`, {
+        method: 'GET',
+      });
     });
   });
 
