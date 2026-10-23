@@ -268,7 +268,7 @@ describe('메인 페이지', () => {
       cy.contains('button', '새로고침').click();
       cy.wait('@alreadyRefreshedAPI');
 
-      cy.get('.Toastify').should('be.visible');
+      cy.get('.Toastify__toast').should('be.visible');
     });
   });
 
