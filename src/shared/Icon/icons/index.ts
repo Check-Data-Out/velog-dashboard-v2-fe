@@ -10,3 +10,4 @@ export { default as Video } from './Video.svg';
 export { default as Post } from './Post.svg';
 export { default as View } from './View.svg';
 export { default as Logo } from './Logo.svg';
+export { default as Check } from './Check.svg';
