@@ -2,6 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { unsubscribeNewsletter } from '@/lib/apis/user.request';
 import { FetchResponseError } from '@/lib/errors/fetch.error';
 import { Button } from '@/shared/Button';
@@ -9,13 +10,24 @@ import { Button } from '@/shared/Button';
 const INVALID_MESSAGE = '링크가 올바르지 않아요. 최근 받은 메일의 링크를 사용해 주세요.';
 const ERROR_MESSAGE = '수신거부하지 못했어요. 잠시 후 다시 시도해 주세요.';
 
-interface IProp {
-  uid?: string;
-  sig?: string;
+interface ILinkParams {
+  uid: string | null;
+  sig: string | null;
 }
 
-export const Content = ({ uid, sig }: IProp) => {
+export const Content = () => {
   const { replace } = useRouter();
+  // 메일 링크는 서명이 분석 도구에 남지 않도록 uid·sig 를 fragment 로 넘긴다.
+  // fragment 는 서버에 오지 않아 브라우저에서 읽으며, 읽기 전(null)에는 확인 중으로 둔다.
+  const [params, setParams] = useState<ILinkParams | null>(null);
+
+  useEffect(() => {
+    const hash = new URLSearchParams(window.location.hash.slice(1));
+    setParams({ uid: hash.get('uid'), sig: hash.get('sig') });
+  }, []);
+
+  const uid = params?.uid;
+  const sig = params?.sig;
 
   // 화면에 직접 안내하므로 전역 토스트를 띄우지 않는다
   const { mutate, isPending, isSuccess, error } = useMutation({
@@ -23,7 +35,9 @@ export const Content = ({ uid, sig }: IProp) => {
     throwOnError: false,
   });
 
-  const isInvalid = !uid || !sig || (error instanceof FetchResponseError && error.code === 400);
+  const isChecking = params === null;
+  const isInvalid =
+    (!isChecking && (!uid || !sig)) || (error instanceof FetchResponseError && error.code === 400);
   const message = isInvalid ? INVALID_MESSAGE : error ? ERROR_MESSAGE : null;
 
   return (
@@ -58,7 +72,7 @@ export const Content = ({ uid, sig }: IProp) => {
                 size="FULL"
                 form="LARGE"
                 type="button"
-                disabled={isPending || isInvalid}
+                disabled={isChecking || isPending || isInvalid}
                 onClick={() => mutate()}
               >
                 수신거부
