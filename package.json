@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@channel.io/channel-web-sdk-loader": "^2.0.0",
-    "@next/eslint-plugin-next": "^16.4.2",
     "@next/third-parties": "^16.4.2",
     "@sentry/nextjs": "^10.76.0",
     "@tailwindcss/typography": "^0.5.16",
@@ -50,6 +49,7 @@
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^6.0.4",
     "@eslint/js": "^9.15.0",
+    "@next/eslint-plugin-next": "^16.4.2",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query-devtools": "5.69.0",
     "@testing-library/jest-dom": "^6.6.3",
