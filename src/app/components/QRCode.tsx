@@ -58,6 +58,8 @@ export const QRCode = () => {
     queryFn: createQRToken,
     refetchOnMount: true,
     staleTime: 0,
+    // 다시 열 때 이전 토큰(과 그 사용 상태)을 잠깐이라도 보여 주지 않도록 캐시에 남기지 않는다
+    gcTime: 0,
     refetchOnWindowFocus: false,
   });
 
