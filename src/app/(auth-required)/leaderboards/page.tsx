@@ -16,9 +16,9 @@ const defaultParams = {
   dateRange: '30',
 };
 
-export default async function Page({ searchParams }: { searchParams: searchParamsType }) {
+export default async function Page({ searchParams }: { searchParams: Promise<searchParamsType> }) {
   const client = getQueryClient();
-  const finalParams = { ...defaultParams, ...searchParams };
+  const finalParams = { ...defaultParams, ...(await searchParams) };
 
   await client.prefetchQuery({
     queryKey: queryKeys.leaderboard(finalParams),
