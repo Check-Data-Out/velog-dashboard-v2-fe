@@ -129,12 +129,6 @@ beforeEach(() => {
 
   cy.intercept(
     'POST',
-    '**/api/qr-login/confirm',
-    BaseSuccess({}, 'QR 로그인에 성공하였습니다.'),
-  ).as('qrLoginConfirmAPI');
-
-  cy.intercept(
-    'POST',
     '**/api/stats-refresh',
     BaseSuccess({}, '통계 새로고침이 시작되었습니다.'),
   ).as('statsRefreshAPI');
