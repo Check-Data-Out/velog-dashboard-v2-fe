@@ -19,6 +19,18 @@ describe('모달', () => {
       cy.contains('QR 로그인').click();
     });
 
+    // 모달을 닫았다 다시 연다. 처음 연 모달의 요청과 섞이지 않게 다시 연 모달의 요청에 별칭을 새로 붙이고,
+    // 토큰이 반영되어 만료 타이머가 시작된 뒤(흐림 해제)에 시간을 돌리게 한다
+    const reopenModal = () => {
+      cy.get('body').type('{esc}');
+      cy.intercept('POST', '**/api/qr-login').as('reopenedQRAPI');
+      cy.intercept('GET', '**/api/qr-login/status*').as('reopenedStatusAPI');
+      cy.get('#profile').click();
+      cy.contains('QR 로그인').click();
+      cy.wait('@reopenedQRAPI');
+      cy.get('svg[width="171"]').should('not.have.class', 'blur-sm');
+    };
+
     it('모달이 열리고 타이틀이 표시되어야 한다', () => {
       cy.contains('QR 로그인').should('be.visible');
     });
@@ -83,13 +95,9 @@ describe('모달', () => {
     });
 
     it('만료 후 새로고침 버튼이 표시되어야 한다', () => {
-      // cy.clock()을 먼저 설치한 뒤 모달을 닫고 재오픈해야
-      // useEffect의 setInterval이 fake timer로 생성됨
-      cy.clock();
-      cy.get('body').type('{esc}');
-      cy.get('#profile').click();
-      cy.contains('QR 로그인').click();
-      cy.wait('@qrLoginAPI');
+      // 만료 타이머(setInterval)만 멈춘다. setTimeout 까지 멈추면 react-query 가 응답을 반영하지 못한다
+      cy.clock(Date.now(), ['setInterval']);
+      reopenModal();
 
       cy.tick(300 * 1000);
 
@@ -100,11 +108,8 @@ describe('모달', () => {
     });
 
     it('만료 후 QR 코드가 흐리게 표시되어야 한다', () => {
-      cy.clock();
-      cy.get('body').type('{esc}');
-      cy.get('#profile').click();
-      cy.contains('QR 로그인').click();
-      cy.wait('@qrLoginAPI');
+      cy.clock(Date.now(), ['setInterval']);
+      reopenModal();
 
       cy.tick(300 * 1000);
 
@@ -113,11 +118,8 @@ describe('모달', () => {
     });
 
     it('만료 후 복사 버튼이 비활성화되어야 한다', () => {
-      cy.clock();
-      cy.get('body').type('{esc}');
-      cy.get('#profile').click();
-      cy.contains('QR 로그인').click();
-      cy.wait('@qrLoginAPI');
+      cy.clock(Date.now(), ['setInterval']);
+      reopenModal();
 
       cy.tick(300 * 1000);
 
@@ -126,11 +128,8 @@ describe('모달', () => {
     });
 
     it('만료 후 새로고침 버튼을 클릭하면 QR 코드가 재발급되어야 한다', () => {
-      cy.clock();
-      cy.get('body').type('{esc}');
-      cy.get('#profile').click();
-      cy.contains('QR 로그인').click();
-      cy.wait('@qrLoginAPI');
+      cy.clock(Date.now(), ['setInterval']);
+      reopenModal();
 
       cy.tick(300 * 1000);
 
@@ -166,11 +165,8 @@ describe('모달', () => {
     it('휴대폰에서 로그인하면 완료 표시와 기기 정보를 보여 주고 5초 뒤 닫혀야 한다', () => {
       // 폴링(setInterval)만 멈춘다. react-query 상태 반영과 닫힘 타이머는 setTimeout 이라 실제 시간으로 둔다
       cy.clock(Date.now(), ['setInterval']);
-      cy.get('body').type('{esc}');
-      cy.get('#profile').click();
-      cy.contains('QR 로그인').click();
-      cy.wait('@qrLoginAPI');
-      cy.wait('@qrLoginStatusAPI');
+      reopenModal();
+      cy.wait('@reopenedStatusAPI');
 
       cy.intercept(
         'GET',
