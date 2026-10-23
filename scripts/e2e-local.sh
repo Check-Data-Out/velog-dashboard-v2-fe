@@ -24,5 +24,6 @@ for _ in $(seq 1 60); do
   curl -sf -o /dev/null "http://localhost:${PORT}" && break
   sleep 1
 done
+curl -sf -o /dev/null "http://localhost:${PORT}" || { echo "서버가 60초 안에 뜨지 않았습니다" >&2; exit 1; }
 
 pnpm exec cypress run --config "baseUrl=http://localhost:${PORT}" "$@"
