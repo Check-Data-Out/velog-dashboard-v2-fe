@@ -45,8 +45,10 @@ export const Notice = () => {
 
   return (
     <>
+      {/* 접힌 동안에는 보이지도, 키보드·보조기기로 닿지도 않게 한다 */}
       <div
-        className={`transition-all shrink-0 duration-300 flex items-center justify-center gap-2 w-full overflow-hidden  bg-BORDER-SUB ${show ? 'h-[50px]' : 'h-[0px]'}`}
+        aria-hidden={!show}
+        className={`transition-all shrink-0 duration-300 flex items-center justify-center gap-2 w-full overflow-hidden  bg-BORDER-SUB ${show ? 'h-[50px]' : 'h-[0px] invisible'}`}
       >
         <h1 className="text-TEXT-MAIN text-SUBTITLE-4 max-MBI:text-SUBTITLE-5">
           📣 새로운 업데이트를 확인해보세요!

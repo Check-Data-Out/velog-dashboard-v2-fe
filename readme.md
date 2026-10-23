@@ -35,6 +35,7 @@
 - `pnpm jest:test` (unit test)
 - `pnpm cypress:open` (e2e test, with preview screen)
 - `pnpm cypress:test` (e2e test, without preview screen)
+- `pnpm e2e:local` (로컬 권장: 운영 빌드에 대고 e2e 를 돌리고 서버를 정리한다. dev 서버에 대고 돌릴 때보다 메모리를 덜 쓰고 빠르다. dev 서버·Cypress 를 여러 개 동시에 띄우지 말 것)
 
 ### local 에서 docker image 생성, 태깅, 푸시, 테스팅까지
 
