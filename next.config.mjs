@@ -4,20 +4,11 @@ import { withSentryConfig } from '@sentry/nextjs/config';
 const nextConfig = {
   // TODO: reactStrictMode false 없이도 오류 토스트가 정상적으로 표시되도록 개선
   reactStrictMode: false,
-  experimental: { forceSwcTransforms: true, workerThreads: false, cpus: 1 },
+  experimental: { workerThreads: false, cpus: 1 },
   output: 'standalone',
   productionBrowserSourceMaps: true,
-  webpack: (config, options) => {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      use: [options.defaultLoaders.babel, { loader: '@svgr/webpack', options: { babel: false } }],
-    });
-    if (!options.dev) {
-      config.devtool =
-        process.env.NODE_ENV === 'production' ? 'hidden-source-map' : 'inline-source-map';
-    }
-
-    return config;
+  turbopack: {
+    rules: { '*.svg': { loaders: ['@svgr/webpack'], as: '*.js' } },
   },
 
   images: {
@@ -27,6 +18,8 @@ const nextConfig = {
       { protocol: 'https', hostname: 'velog-dashboard.kro.kr', pathname: '**' },
       { protocol: 'http', hostname: 'localhost', pathname: '**' },
     ],
+    // 로컬 개발에서는 배지 미리보기가 localhost 이미지를 최적화하므로 dev 에서만 로컬 IP 를 허용한다
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development',
   },
 };
 

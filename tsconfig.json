@@ -15,7 +15,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [{ "name": "next" }],
     "baseUrl": ".",
@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     "eslint.config.mjs",
     "next.config.mjs",
-    "src/app/components/Provider/index.tsx"
+    "src/app/components/Provider/index.tsx",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules", "cypress", "cypress.config.ts"]
 }
