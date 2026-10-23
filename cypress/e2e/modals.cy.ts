@@ -164,7 +164,8 @@ describe('모달', () => {
       cy.contains('QR 로그인').should('be.visible');
     });
     it('휴대폰에서 로그인하면 완료 표시와 기기 정보를 보여 주고 5초 뒤 닫혀야 한다', () => {
-      cy.clock();
+      // 폴링(setInterval)만 멈춘다. react-query 상태 반영과 닫힘 타이머는 setTimeout 이라 실제 시간으로 둔다
+      cy.clock(Date.now(), ['setInterval']);
       cy.get('body').type('{esc}');
       cy.get('#profile').click();
       cy.contains('QR 로그인').click();
@@ -188,8 +189,7 @@ describe('모달', () => {
         cy.get('svg[width="171"]').should('not.exist');
       });
 
-      cy.tick(5000);
-      cy.get('[class*="000000AA"]').should('not.exist');
+      cy.get('[class*="000000AA"]', { timeout: 8000 }).should('not.exist');
     });
 
     it('로그인 상태 조회가 실패해도 QR 코드를 유지하고 토스트를 띄우지 않아야 한다', () => {
