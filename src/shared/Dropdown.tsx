@@ -3,7 +3,6 @@ export type OptionType = string | [string, string, boolean?] | string[];
 interface IProp extends Omit<React.HTMLAttributes<HTMLSelectElement>, 'onChange' | 'defaultValue'> {
   /** 드롭다운 선택지 (문자열 or [Key 문자열, Value 문자열, 배열째 반환 여부] ) */
   options: Array<OptionType>;
-  // eslint-disable-next-line no-unused-vars
   onChange: (data: OptionType) => void;
   disabled?: boolean;
   defaultValue: OptionType;
