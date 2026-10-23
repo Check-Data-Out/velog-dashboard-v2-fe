@@ -11,6 +11,7 @@ export const queryKeys = {
   notis: () => [PATHS.NOTIS] as const,
   summary: () => [PATHS.SUMMARY] as const,
   qrLogin: () => [PATHS.QRLOGIN] as const,
+  qrLoginStatus: (token: string) => [PATHS.QRLOGIN_STATUS, token] as const,
   posts: (sort?: SortParams) =>
     sort !== undefined ? ([PATHS.POSTS, sort] as const) : ([PATHS.POSTS] as const),
   totalStats: (type?: SidebarIdType) =>

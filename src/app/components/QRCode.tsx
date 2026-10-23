@@ -4,20 +4,52 @@ import { useQuery } from '@tanstack/react-query';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState, useRef, useEffect } from 'react';
 import { twJoin } from 'tailwind-merge';
+import { useModal } from '@/hooks/useModal';
 import { useResponsive } from '@/hooks/useResponsive';
-import { createQRToken } from '@/lib/apis/user.request';
+import { createQRToken, getQRLoginStatus } from '@/lib/apis/user.request';
 import { ENVS } from '@/lib/constants/env.constant';
 import { queryKeys } from '@/lib/constants/queryKeys.constant';
 import { COLORS, SCREENS } from '@/lib/constants/styles.constant';
+import { QRLoginStatusDto } from '@/lib/types/user.type';
 import { formatTimeToMMSS } from '@/lib/utils/datetime.util';
+import { summarizeUserAgent } from '@/lib/utils/userAgent.util';
 import { CopyButton } from '@/shared/CopyButton';
+import { Icon } from '@/shared/Icon';
 import { Inform } from '@/shared/Inform';
 import { Modal as Layout } from '@/shared/Modal';
 
 const TIMER_DURATION = 5 * 60; // 5분 = 300초
+const STATUS_POLLING_MS = 3000;
+const QR_LOGIN_SUCCESS_CLOSE_MS = 5000;
+const JUST_NOW_MS = 60 * 1000;
+
+const formatUsedAt = (usedAt?: string) => {
+  if (!usedAt) return undefined;
+  const date = new Date(usedAt);
+  if (Date.now() - date.getTime() < JUST_NOW_MS) return '방금 전';
+  return `${date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })} 로그인`;
+};
+
+const LoginCompleted = ({ userAgent, ip, usedAt }: QRLoginStatusDto) => {
+  const device = [summarizeUserAgent(userAgent), ip && `참고용 IP ${ip}`, formatUsedAt(usedAt)]
+    .filter(Boolean)
+    .join(' · ');
+
+  return (
+    <div className="fadeIn [animation-duration:300ms] flex flex-col items-center gap-3 text-center">
+      <Icon name="Check" size={64} color={COLORS.PRIMARY.MAIN} />
+      <p className="text-TEXT-MAIN text-TITLE-4">로그인 완료</p>
+      <p className="text-TEXT-SUB text-INPUT-4">{device}</p>
+      <p className="text-TEXT-ALT text-INPUT-4 break-keep">
+        본인이 아니라면 프로필 메뉴의 로그아웃으로 모든 기기에서 로그아웃하세요.
+      </p>
+    </div>
+  );
+};
 
 export const QRCode = () => {
   const width = useResponsive();
+  const { close } = useModal();
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -29,8 +61,31 @@ export const QRCode = () => {
     refetchOnWindowFocus: false,
   });
 
-  const url = `${ENVS.BASE_URL}/api/qr-login?token=${data?.token ?? ''}`;
-  const isUnusable = timeLeft === 0 || isLoading;
+  const token = data?.token ?? '';
+
+  // 실패하면 전역 토스트 없이 조용히 멈추고 QR 화면을 유지한다
+  const { data: status } = useQuery({
+    queryKey: queryKeys.qrLoginStatus(token),
+    queryFn: async () => await getQRLoginStatus(token),
+    enabled: !!token && timeLeft > 0,
+    staleTime: 0,
+    refetchInterval: (query) =>
+      query.state.status === 'error' || query.state.data?.status !== 'pending'
+        ? false
+        : STATUS_POLLING_MS,
+    throwOnError: false,
+    retry: false,
+  });
+
+  const isUsed = status?.status === 'used';
+  const url = `${ENVS.BASE_URL}/api/qr-login?token=${token}`;
+  const isUnusable = timeLeft === 0 || isLoading || status?.status === 'expired';
+
+  useEffect(() => {
+    if (!isUsed) return;
+    const closeTimer = setTimeout(close, QR_LOGIN_SUCCESS_CLOSE_MS);
+    return () => clearTimeout(closeTimer);
+  }, [isUsed, close]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -42,6 +97,14 @@ export const QRCode = () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isLoading]);
+
+  if (isUsed) {
+    return (
+      <Layout title="QR 로그인">
+        <LoginCompleted {...status} />
+      </Layout>
+    );
+  }
 
   return (
     <Layout title="QR 로그인">

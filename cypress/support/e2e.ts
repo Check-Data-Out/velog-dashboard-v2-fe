@@ -7,6 +7,7 @@ import {
   postsGraphData,
   postsSecondData,
   postsStatsResponseData,
+  qrLoginPendingStatusData,
   qrTokenResponseData,
   totalStatsResponseData,
   userLeaderboardResponseData,
@@ -119,6 +120,18 @@ beforeEach(() => {
     '**/api/qr-login',
     BaseSuccess(qrTokenResponseData, 'QR 토큰이 발급되었습니다.'),
   ).as('qrLoginAPI');
+
+  cy.intercept(
+    'GET',
+    '**/api/qr-login/status*',
+    BaseSuccess(qrLoginPendingStatusData, 'QR 로그인 상태 조회에 성공하였습니다.'),
+  ).as('qrLoginStatusAPI');
+
+  cy.intercept(
+    'POST',
+    '**/api/qr-login/confirm',
+    BaseSuccess({}, 'QR 로그인에 성공하였습니다.'),
+  ).as('qrLoginConfirmAPI');
 
   cy.intercept(
     'POST',

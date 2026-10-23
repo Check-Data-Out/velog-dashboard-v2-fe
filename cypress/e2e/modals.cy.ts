@@ -1,4 +1,10 @@
-import { BaseError, BaseSuccess, recentNotificationsResponseData } from '../support';
+import {
+  BaseError,
+  BaseSuccess,
+  qrLoginExpiredStatusData,
+  qrLoginUsedStatusData,
+  recentNotificationsResponseData,
+} from '../support';
 
 describe('모달', () => {
   beforeEach(() => {
@@ -156,6 +162,68 @@ describe('모달', () => {
 
       // 오류가 발생해도 모달 UI는 유지되어야 함
       cy.contains('QR 로그인').should('be.visible');
+    });
+    it('휴대폰에서 로그인하면 완료 표시와 기기 정보를 보여 주고 5초 뒤 닫혀야 한다', () => {
+      cy.clock();
+      cy.get('body').type('{esc}');
+      cy.get('#profile').click();
+      cy.contains('QR 로그인').click();
+      cy.wait('@qrLoginAPI');
+      cy.wait('@qrLoginStatusAPI');
+
+      cy.intercept(
+        'GET',
+        '**/api/qr-login/status*',
+        BaseSuccess(qrLoginUsedStatusData, 'QR 로그인 상태 조회에 성공하였습니다.'),
+      ).as('qrLoginUsedAPI');
+
+      cy.tick(3000);
+      cy.wait('@qrLoginUsedAPI');
+
+      cy.get('[class*="000000AA"]').within(() => {
+        cy.contains('로그인 완료').should('be.visible');
+        cy.contains('Safari · iOS').should('be.visible');
+        cy.contains('참고용 IP 203.0.113.7').should('be.visible');
+        cy.contains('프로필 메뉴의 로그아웃').should('be.visible');
+        cy.get('svg[width="171"]').should('not.exist');
+      });
+
+      cy.tick(5000);
+      cy.get('[class*="000000AA"]').should('not.exist');
+    });
+
+    it('로그인 상태 조회가 실패해도 QR 코드를 유지하고 토스트를 띄우지 않아야 한다', () => {
+      cy.get('body').type('{esc}');
+
+      cy.intercept('GET', '**/api/qr-login/status*', BaseError(404, 'Not Found')).as(
+        'qrStatusErrorAPI',
+      );
+
+      cy.get('#profile').click();
+      cy.contains('QR 로그인').click();
+      cy.wait('@qrStatusErrorAPI');
+
+      cy.get('svg[width="171"]').should('exist').and('not.have.class', 'blur-sm');
+      cy.get('.Toastify__toast').should('not.exist');
+    });
+
+    it('QR 토큰이 만료 상태면 만료 화면을 보여 줘야 한다', () => {
+      cy.get('body').type('{esc}');
+
+      cy.intercept(
+        'GET',
+        '**/api/qr-login/status*',
+        BaseSuccess(qrLoginExpiredStatusData, 'QR 로그인 상태 조회에 성공하였습니다.'),
+      ).as('qrStatusExpiredAPI');
+
+      cy.get('#profile').click();
+      cy.contains('QR 로그인').click();
+      cy.wait('@qrStatusExpiredAPI');
+
+      cy.get('svg[width="171"]').should('have.class', 'blur-sm');
+      cy.get('[class*="000000AA"]').within(() => {
+        cy.contains('새로고침').should('be.visible');
+      });
     });
   });
 
