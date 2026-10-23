@@ -8,6 +8,7 @@ import {
   createQRToken,
   confirmQRLogin,
   getQRLoginStatus,
+  unsubscribeNewsletter,
   badge,
 } from '../user.request';
 
@@ -95,6 +96,19 @@ describe('user.request', () => {
         method: 'POST',
         body: { token: 'abcde12345' },
       });
+    });
+  });
+
+  describe('unsubscribeNewsletter', () => {
+    it('POST 메서드로 서명된 uid·sig 를 쿼리에 담아 수신거부 엔드포인트를 호출해야 한다', async () => {
+      mockInstance.mockResolvedValueOnce(undefined);
+
+      await unsubscribeNewsletter('42', 'sig+/=');
+
+      expect(mockInstance).toHaveBeenCalledWith(
+        `${PATHS.NEWSLETTER_UNSUBSCRIBE}?uid=42&sig=${encodeURIComponent('sig+/=')}`,
+        { method: 'POST' },
+      );
     });
   });
 

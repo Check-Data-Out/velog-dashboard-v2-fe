@@ -16,6 +16,12 @@ export const createQRToken = async () =>
 export const confirmQRLogin = async (token: string) =>
   await instance(PATHS.QRLOGIN_CONFIRM, { method: 'POST', body: { token } });
 
+export const unsubscribeNewsletter = async (uid: string, sig: string) =>
+  await instance(
+    `${PATHS.NEWSLETTER_UNSUBSCRIBE}?uid=${encodeURIComponent(uid)}&sig=${encodeURIComponent(sig)}`,
+    { method: 'POST' },
+  );
+
 export const getQRLoginStatus = async (token: string) =>
   await instance<null, QRLoginStatusDto>(
     `${PATHS.QRLOGIN_STATUS}?token=${encodeURIComponent(token)}`,
