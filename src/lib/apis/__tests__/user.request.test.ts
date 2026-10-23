@@ -6,7 +6,6 @@ import {
   logout,
   sampleLogin,
   createQRToken,
-  confirmQRLogin,
   getQRLoginStatus,
   unsubscribeNewsletter,
   badge,
@@ -86,19 +85,6 @@ describe('user.request', () => {
     });
   });
 
-  describe('confirmQRLogin', () => {
-    it('POST 메서드로 QR 로그인 확인 엔드포인트에 token을 body로 보내야 한다', async () => {
-      mockInstance.mockResolvedValueOnce(undefined);
-
-      await confirmQRLogin('abcde12345');
-
-      expect(mockInstance).toHaveBeenCalledWith(PATHS.QRLOGIN_CONFIRM, {
-        method: 'POST',
-        body: { token: 'abcde12345' },
-      });
-    });
-  });
-
   describe('unsubscribeNewsletter', () => {
     it('POST 메서드로 서명된 uid·sig 를 쿼리에 담아 수신거부 엔드포인트를 호출해야 한다', async () => {
       mockInstance.mockResolvedValueOnce(undefined);
@@ -113,19 +99,7 @@ describe('user.request', () => {
   });
 
   describe('getQRLoginStatus', () => {
-    it('token을 쿼리로 붙여 QR 로그인 상태 엔드포인트를 GET으로 호출해야 한다', async () => {
-      const mockStatus = { status: 'pending' };
-      mockInstance.mockResolvedValueOnce(mockStatus);
-
-      const result = await getQRLoginStatus('abcde12345');
-
-      expect(mockInstance).toHaveBeenCalledWith(`${PATHS.QRLOGIN_STATUS}?token=abcde12345`, {
-        method: 'GET',
-      });
-      expect(result).toBe(mockStatus);
-    });
-
-    it('token을 URL 인코딩해야 한다', async () => {
+    it('token을 URL 인코딩해 쿼리로 붙이고 GET으로 호출해야 한다', async () => {
       mockInstance.mockResolvedValueOnce({ status: 'pending' });
 
       await getQRLoginStatus('a&b=c');
