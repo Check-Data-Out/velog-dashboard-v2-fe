@@ -14,8 +14,12 @@ describe('middleware', () => {
     expect(response.headers.get('x-middleware-next')).toBe('1');
   });
 
-  it('기존 velog 토큰 쿠키만 있으면 첫 화면으로 보낸다', () => {
-    const response = middleware(createRequest('access_token=legacy-token'));
+  it.each([
+    'access_token=legacy-token',
+    'refresh_token=legacy-token',
+    'access_token=a; refresh_token=b',
+  ])('기존 velog 토큰 쿠키(%s)만 있으면 첫 화면으로 보낸다', (cookie) => {
+    const response = middleware(createRequest(cookie));
 
     expect(response.status).toBe(307);
     expect(response.headers.get('location')).toBe('http://localhost/');
