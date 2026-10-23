@@ -19,6 +19,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "cypress:test": "cypress run --headless",
+    "e2e:local": "bash scripts/e2e-local.sh",
     "prettier:format": "prettier --check --ignore-path .gitignore --ignore-path pnpm-lock.yaml .",
     "sync-env": "node scripts/sync-env.mjs"
   },
