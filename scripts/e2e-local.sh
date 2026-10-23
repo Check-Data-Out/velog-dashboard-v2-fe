@@ -1,6 +1,6 @@
 #!/bin/bash
 # 로컬 E2E 를 운영 빌드(standalone 서버)에 대고 한 세트만 돌린다.
-# dev 서버(webpack + Sentry 플러그인)에 대고 돌릴 때보다 메모리를 절반 정도 쓴다 (Next.js 공식 Cypress 가이드 권장 방식).
+# dev 서버에 대고 돌릴 때보다 메모리를 덜 쓴다 (Next.js 공식 Cypress 가이드 권장 방식).
 # 사용: pnpm e2e:local [cypress run 옵션, 예: --spec cypress/e2e/main.cy.ts]
 set -euo pipefail
 
