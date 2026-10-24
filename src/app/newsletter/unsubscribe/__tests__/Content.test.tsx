@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/navigation';
 import { renderToString } from 'react-dom/server';
@@ -111,6 +111,29 @@ describe('뉴스레터 수신거부 확인 화면', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(ERROR_MESSAGE);
     expect(screen.getByRole('button', { name: '수신거부' })).toBeEnabled();
     expect(mockToastError).not.toHaveBeenCalled();
+  });
+
+  it('같은 탭에서 fragment 가 바뀌면 이전 오류를 지우고 새 링크의 uid·sig 로 요청한다', async () => {
+    mockInstance
+      .mockRejectedValueOnce(
+        new UnknownError({ url: '/api/user/newsletter-unsubscribe', method: 'POST' }, 400),
+      )
+      .mockResolvedValueOnce(undefined);
+    renderContent('#uid=42&sig=old');
+    await userEvent.click(screen.getByRole('button', { name: '수신거부' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent(INVALID_MESSAGE);
+
+    act(() => {
+      window.location.hash = '#uid=43&sig=new';
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: '수신거부' }));
+
+    expect(mockInstance).toHaveBeenLastCalledWith(
+      expect.stringMatching(/\?uid=43&sig=new$/),
+      expect.objectContaining({ method: 'POST' }),
+    );
   });
 
   it('uid 나 sig 가 없으면 처음부터 안내 문구를 보여 주고 요청하지 않는다', () => {

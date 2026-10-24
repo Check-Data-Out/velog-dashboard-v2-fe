@@ -21,19 +21,26 @@ export const Content = () => {
   // fragment 는 서버에 오지 않아 브라우저에서 읽으며, 읽기 전(null)에는 확인 중으로 둔다.
   const [params, setParams] = useState<ILinkParams | null>(null);
 
-  useEffect(() => {
-    const hash = new URLSearchParams(window.location.hash.slice(1));
-    setParams({ uid: hash.get('uid'), sig: hash.get('sig') });
-  }, []);
-
   const uid = params?.uid;
   const sig = params?.sig;
 
   // 화면에 직접 안내하므로 전역 토스트를 띄우지 않는다
-  const { mutate, isPending, isSuccess, error } = useMutation({
+  const { mutate, isPending, isSuccess, error, reset } = useMutation({
     mutationFn: async () => unsubscribeNewsletter(uid as string, sig as string),
     throwOnError: false,
   });
+
+  useEffect(() => {
+    const readLink = () => {
+      const hash = new URLSearchParams(window.location.hash.slice(1));
+      setParams({ uid: hash.get('uid'), sig: hash.get('sig') });
+      reset();
+    };
+    readLink();
+    // 같은 탭에서 다른 메일의 링크를 열면 문서는 그대로이고 fragment 만 바뀐다
+    window.addEventListener('hashchange', readLink);
+    return () => window.removeEventListener('hashchange', readLink);
+  }, [reset]);
 
   const isChecking = params === null;
   const isInvalid =
