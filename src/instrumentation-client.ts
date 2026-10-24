@@ -33,5 +33,5 @@ Sentry.init({
   enabled: process.env.NODE_ENV === 'production',
 });
 
-// Next 15.3+ 업그레이드 시 활성화되는 네비게이션 계측 훅 — 현재 14.x 에서는 호출되지 않음
+// 클라이언트 네비게이션 계측 훅 (Next 15.3+)
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

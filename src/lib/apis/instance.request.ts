@@ -57,8 +57,8 @@ export const instance = async <I, R>(
   const requestHeaders = new Headers(init?.headers);
   if (typeof window === 'undefined') {
     const { cookies, headers } = await import('next/headers');
-    const cookieHeader = cookies().toString();
-    const forwardedFor = headers().get('x-forwarded-for');
+    const cookieHeader = (await cookies()).toString();
+    const forwardedFor = (await headers()).get('x-forwarded-for');
     if (cookieHeader) requestHeaders.set('Cookie', cookieHeader);
     if (forwardedFor) requestHeaders.set('X-Forwarded-For', forwardedFor);
   }

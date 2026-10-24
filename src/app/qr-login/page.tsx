@@ -3,7 +3,11 @@ import { Content } from './Content';
 
 export const metadata: Metadata = { title: 'QR 로그인', robots: { index: false, follow: false } };
 
-export default function Page({ searchParams }: { searchParams: { token?: string | string[] } }) {
-  const { token } = searchParams;
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ token?: string | string[] }>;
+}) {
+  const { token } = await searchParams;
   return <Content token={typeof token === 'string' ? token : undefined} />;
 }
