@@ -124,7 +124,8 @@ describe('뉴스레터 수신거부 확인 화면', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(INVALID_MESSAGE);
 
     act(() => {
-      window.location.hash = '#uid=43&sig=new';
+      // location.hash 대입은 jsdom 이 hashchange 를 따로 비동기로 보내므로 replaceState 로 바꾸고 직접 보낸다
+      window.history.replaceState(null, '', '#uid=43&sig=new');
       window.dispatchEvent(new HashChangeEvent('hashchange'));
     });
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
