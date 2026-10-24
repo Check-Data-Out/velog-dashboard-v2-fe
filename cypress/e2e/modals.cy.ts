@@ -203,6 +203,29 @@ describe('모달', () => {
       cy.get('.Toastify__toast').should('not.exist');
     });
 
+    it('로그인 상태 조회가 한 번 실패해도 다음 주기에 다시 확인해 완료를 보여 줘야 한다', () => {
+      cy.clock(Date.now(), ['setInterval']);
+      cy.get('body').type('{esc}');
+      cy.intercept('POST', '**/api/qr-login').as('reopenedQRAPI');
+      cy.intercept('GET', '**/api/qr-login/status*', BaseError(500, 'Internal Server Error')).as(
+        'qrStatusFailedAPI',
+      );
+      cy.get('#profile').click();
+      cy.contains('QR 로그인').click();
+      cy.wait('@reopenedQRAPI');
+      cy.wait('@qrStatusFailedAPI');
+
+      cy.intercept(
+        'GET',
+        '**/api/qr-login/status*',
+        BaseSuccess(qrLoginUsedStatusData, 'QR 로그인 상태 조회에 성공하였습니다.'),
+      ).as('qrLoginUsedAPI');
+
+      cy.tick(3000);
+      cy.wait('@qrLoginUsedAPI');
+      cy.contains('로그인 완료').should('be.visible');
+    });
+
     it('QR 토큰이 만료 상태면 만료 화면을 보여 줘야 한다', () => {
       cy.get('body').type('{esc}');
 

@@ -10,6 +10,7 @@ import { createQRToken, getQRLoginStatus } from '@/lib/apis/user.request';
 import { ENVS } from '@/lib/constants/env.constant';
 import { queryKeys } from '@/lib/constants/queryKeys.constant';
 import { COLORS, SCREENS } from '@/lib/constants/styles.constant';
+import { FetchResponseError } from '@/lib/errors/fetch.error';
 import { QRLoginStatusDto } from '@/lib/types/user.type';
 import { formatTimeToMMSS } from '@/lib/utils/datetime.util';
 import { summarizeUserAgent } from '@/lib/utils/userAgent.util';
@@ -65,16 +66,17 @@ export const QRCode = () => {
 
   const token = data?.token ?? '';
 
-  // 실패하면 전역 토스트 없이 조용히 멈추고 QR 화면을 유지한다
+  // 실패해도 전역 토스트 없이 QR 화면을 유지하고 다음 주기에 다시 묻는다.
+  // 상태 API 가 아직 없을 때(API 배포 전 404)만 묻지 않는다
   const { data: status } = useQuery({
     queryKey: queryKeys.qrLoginStatus(token),
     queryFn: async () => await getQRLoginStatus(token),
     enabled: !!token && timeLeft > 0,
     staleTime: 0,
-    refetchInterval: (query) =>
-      query.state.status === 'error' || query.state.data?.status !== 'pending'
-        ? false
-        : STATUS_POLLING_MS,
+    refetchInterval: ({ state: { data, error } }) => {
+      if (error instanceof FetchResponseError && error.code === 404) return false;
+      return data && data.status !== 'pending' ? false : STATUS_POLLING_MS;
+    },
     throwOnError: false,
     retry: false,
   });
