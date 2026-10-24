@@ -210,7 +210,6 @@ describe('메인 페이지', () => {
     });
 
     it('새로고침 버튼 클릭 시 비활성화되어야 한다', () => {
-      cy.clock();
       cy.contains('button', '새로고침').click();
       cy.wait('@statsRefreshAPI');
 
@@ -220,7 +219,6 @@ describe('메인 페이지', () => {
     });
 
     it('새로고침 클릭 시 시작 토스트가 표시되어야 한다', () => {
-      cy.clock();
       cy.contains('button', '새로고침').click();
       cy.wait('@statsRefreshAPI');
 
@@ -228,6 +226,7 @@ describe('메인 페이지', () => {
     });
 
     it('새로고침 완료 응답 수신 시 버튼이 재활성화되고 완료 토스트가 표시되어야 한다', () => {
+      // 5초 뒤 다시 조회하는 setTimeout 을 당기기 위해 이 테스트만 시간을 멈춘다
       cy.clock();
       cy.contains('button', '새로고침').click();
       cy.wait('@statsRefreshAPI');
@@ -268,7 +267,7 @@ describe('메인 페이지', () => {
       cy.contains('button', '새로고침').click();
       cy.wait('@alreadyRefreshedAPI');
 
-      cy.get('.Toastify').should('be.visible');
+      cy.get('.Toastify__toast').should('be.visible');
     });
   });
 

@@ -1,12 +1,13 @@
 import { BaseError, BaseSuccess } from './base';
 import {
-  MOCK_ACCESS_TOKEN,
+  MOCK_SESSION_TOKEN,
   notificationsResponseData,
   postLeaderboardResponseData,
   postsFirstData,
   postsGraphData,
   postsSecondData,
   postsStatsResponseData,
+  qrLoginPendingStatusData,
   qrTokenResponseData,
   totalStatsResponseData,
   userLeaderboardResponseData,
@@ -22,7 +23,7 @@ Cypress.on('uncaught:exception', (err) => {
 });
 
 beforeEach(() => {
-  // middleware.ts 는 access_token 쿠키를 검사하므로,
+  // middleware.ts 는 vd_session 쿠키를 검사하므로,
   // 로그인 성공 응답에 Set-Cookie 헤더를 포함해야 /main 으로 정상 이동 가능
   cy.intercept('POST', '**/api/login', (req) => {
     const body = req.body;
@@ -32,7 +33,7 @@ beforeEach(() => {
       req.reply({
         statusCode: 200,
         headers: {
-          'Set-Cookie': `access_token=${MOCK_ACCESS_TOKEN}; Path=/; HttpOnly; SameSite=Strict`,
+          'Set-Cookie': `vd_session=${MOCK_SESSION_TOKEN}; Path=/; HttpOnly; SameSite=Strict`,
         },
         body: {
           success: true,
@@ -48,7 +49,7 @@ beforeEach(() => {
     req.reply({
       statusCode: 200,
       headers: {
-        'Set-Cookie': `access_token=${MOCK_ACCESS_TOKEN}; Path=/; HttpOnly; SameSite=Strict`,
+        'Set-Cookie': `vd_session=${MOCK_SESSION_TOKEN}; Path=/; HttpOnly; SameSite=Strict`,
       },
       body: {
         success: true,
@@ -119,6 +120,12 @@ beforeEach(() => {
     '**/api/qr-login',
     BaseSuccess(qrTokenResponseData, 'QR 토큰이 발급되었습니다.'),
   ).as('qrLoginAPI');
+
+  cy.intercept(
+    'GET',
+    '**/api/qr-login/status*',
+    BaseSuccess(qrLoginPendingStatusData, 'QR 로그인 상태 조회에 성공하였습니다.'),
+  ).as('qrLoginStatusAPI');
 
   cy.intercept(
     'POST',

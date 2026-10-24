@@ -1,7 +1,6 @@
 // API 서버의 응답 형태에 맞춘 모킹 데이터
 
-export const MOCK_ACCESS_TOKEN = 'mock_access_token_12345';
-export const MOCK_REFRESH_TOKEN = 'mock_refresh_token_67890';
+export const MOCK_SESSION_TOKEN = 'mock_session_token_12345';
 
 // 유저 정보 관련 응답 데이터
 export const userResponseData = {
@@ -273,6 +272,18 @@ export const recentNotificationsResponseData = {
 export const qrTokenResponseData = {
   token: 'mock_qr_token_12345',
 };
+
+export const qrLoginPendingStatusData = { status: 'pending' };
+
+export const qrLoginUsedStatusData = {
+  status: 'used',
+  usedAt: new Date().toISOString(),
+  userAgent:
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+  ip: '203.0.113.7',
+};
+
+export const qrLoginExpiredStatusData = { status: 'expired' };
 
 // 전체 통계 타입별 성공 메시지
 export const getTotalStatsMessage = (type: string) => {

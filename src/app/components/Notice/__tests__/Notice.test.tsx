@@ -57,6 +57,14 @@ describe('Notice', () => {
     mockScope.setTags.mockClear();
   });
 
+  it('배너를 접은 동안에는 확인하기 버튼이 보조기기·키보드로도 닿지 않는다', () => {
+    mockInstance.mockImplementation(async () => new Promise(() => {}));
+
+    mountNotice();
+
+    expect(screen.queryByRole('button', { name: '확인하기' })).not.toBeInTheDocument();
+  });
+
   describe('공지 조회가 실패해도 페이지를 깨뜨리지 않고, 처리되지 않은 오류와 5xx 만 토스트 없이 보고해야 한다', () => {
     it('네트워크 단절(TypeError)이면 형제 노드를 유지하고 notice 태그로 1회 보고한다', async () => {
       const error = new TypeError('Failed to fetch');

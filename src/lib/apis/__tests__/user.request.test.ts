@@ -1,6 +1,15 @@
 import { PATHS } from '@/lib/constants/paths.constant';
 import { instance } from '../instance.request';
-import { login, me, logout, sampleLogin, createQRToken, badge } from '../user.request';
+import {
+  login,
+  me,
+  logout,
+  sampleLogin,
+  createQRToken,
+  getQRLoginStatus,
+  unsubscribeNewsletter,
+  badge,
+} from '../user.request';
 
 jest.mock('../instance.request', () => ({
   instance: jest.fn(),
@@ -73,6 +82,31 @@ describe('user.request', () => {
 
       expect(mockInstance).toHaveBeenCalledWith(PATHS.QRLOGIN, { method: 'POST' });
       expect(result).toBe(mockToken);
+    });
+  });
+
+  describe('unsubscribeNewsletter', () => {
+    it('POST 메서드로 서명된 uid·sig 를 쿼리에 담아 수신거부 엔드포인트를 호출해야 한다', async () => {
+      mockInstance.mockResolvedValueOnce(undefined);
+
+      await unsubscribeNewsletter('42', 'sig+/=');
+
+      expect(mockInstance).toHaveBeenCalledWith(
+        `${PATHS.NEWSLETTER_UNSUBSCRIBE}?uid=42&sig=${encodeURIComponent('sig+/=')}`,
+        { method: 'POST' },
+      );
+    });
+  });
+
+  describe('getQRLoginStatus', () => {
+    it('token을 URL 인코딩해 쿼리로 붙이고 GET으로 호출해야 한다', async () => {
+      mockInstance.mockResolvedValueOnce({ status: 'pending' });
+
+      await getQRLoginStatus('a&b=c');
+
+      expect(mockInstance).toHaveBeenCalledWith(`${PATHS.QRLOGIN_STATUS}?token=a%26b%3Dc`, {
+        method: 'GET',
+      });
     });
   });
 

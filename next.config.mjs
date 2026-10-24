@@ -4,20 +4,11 @@ import { withSentryConfig } from '@sentry/nextjs/config';
 const nextConfig = {
   // TODO: reactStrictMode false 없이도 오류 토스트가 정상적으로 표시되도록 개선
   reactStrictMode: false,
-  experimental: { forceSwcTransforms: true, workerThreads: false, cpus: 1 },
+  experimental: { workerThreads: false, cpus: 1 },
   output: 'standalone',
   productionBrowserSourceMaps: true,
-  webpack: (config, options) => {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      use: [options.defaultLoaders.babel, { loader: '@svgr/webpack', options: { babel: false } }],
-    });
-    if (!options.dev) {
-      config.devtool =
-        process.env.NODE_ENV === 'production' ? 'hidden-source-map' : 'inline-source-map';
-    }
-
-    return config;
+  turbopack: {
+    rules: { '*.svg': { loaders: ['@svgr/webpack'], as: '*.js' } },
   },
 
   images: {
@@ -27,6 +18,10 @@ const nextConfig = {
       { protocol: 'https', hostname: 'velog-dashboard.kro.kr', pathname: '**' },
       { protocol: 'http', hostname: 'localhost', pathname: '**' },
     ],
+    // 로컬 개발에서는 배지 미리보기가 localhost 이미지를 최적화하므로 dev 에서만 로컬 IP 를 허용한다
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development',
+    // Next 16 기본값(4시간)이면 배지 미리보기가 배지 응답의 max-age(1시간)보다 오래 남으므로 이전 기본값을 유지한다
+    minimumCacheTTL: 60,
   },
 };
 
@@ -44,10 +39,9 @@ export default withSentryConfig(nextConfig, {
 
   // release 는 지정하지 않는다: 플러그인이 SENTRY_RELEASE 환경 변수 → CI 커밋 SHA(GITHUB_SHA 등) → `git rev-parse HEAD`
   // 순서로 결정해 세 런타임(client/server/edge)에 같은 값을 주입한다
-  webpack: {
-    // v11 에서는 최상위 reactComponentAnnotation 으로 복귀 (migration/v10-to-v11)
-    reactComponentAnnotation: { enabled: true }, // 세션 리플레이와 브레드크럼에서 상세한 컴포넌트명 표시
-    treeshake: { removeDebugLogging: true }, // 번들 사이즈 감소를 위해 센트리 기본 로그 메세지 트리셰이크
+  // Turbopack 빌드에는 webpack 전용 옵션(reactComponentAnnotation·treeshake)이 적용되지 않는다
+  _experimental: {
+    turbopackReactComponentAnnotation: { enabled: true }, // 세션 리플레이와 브레드크럼에서 상세한 컴포넌트명 표시
   },
 
   tunnelRoute: '/monitoring', // ad-blocker 우회용 엔드포인트 (이벤트 로깅 관련)

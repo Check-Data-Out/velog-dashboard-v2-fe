@@ -14,9 +14,11 @@ jest.mock('../../constants/env.constant', () => ({
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
-const mockCookies = jest.fn((): { toString: () => string } => ({ toString: () => 'session=abc' }));
+const mockCookies = jest.fn(
+  async (): Promise<{ toString: () => string }> => ({ toString: () => 'session=abc' }),
+);
 
-const mockHeaders = jest.fn(() => new Headers({ 'x-forwarded-for': '203.0.113.7' }));
+const mockHeaders = jest.fn(async () => new Headers({ 'x-forwarded-for': '203.0.113.7' }));
 
 jest.mock('next/headers', () => ({
   cookies: mockCookies,
@@ -59,7 +61,7 @@ describe('instance (SSR 환경)', () => {
   });
 
   it('쿠키가 비어 있으면 Cookie 헤더를 추가하지 않는다', async () => {
-    mockCookies.mockReturnValueOnce({ toString: () => '' });
+    mockCookies.mockResolvedValueOnce({ toString: () => '' });
     mockFetch.mockResolvedValueOnce(makeResponse({}));
 
     const { instance } = await import('../instance.request');
@@ -96,7 +98,7 @@ describe('instance (SSR 환경)', () => {
   });
 
   it('원래 요청에 x-forwarded-for 가 없으면 X-Forwarded-For 를 넣지 않는다', async () => {
-    mockHeaders.mockReturnValueOnce(new Headers());
+    mockHeaders.mockResolvedValueOnce(new Headers());
     mockFetch.mockResolvedValueOnce(makeResponse({}));
 
     const { instance } = await import('../instance.request');

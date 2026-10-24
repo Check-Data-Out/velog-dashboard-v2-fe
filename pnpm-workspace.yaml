@@ -3,3 +3,8 @@ allowBuilds:
   cypress: false
   return-fetch: false
   sharp: false
+
+# 보안 권고가 있는 전이 의존성의 최소 버전 (같은 메이저 안에서만 올린다)
+# @tailwindcss/typography 가 6.0.10 으로 고정해 남겨 둔다. 나머지는 의존 패키지가 해결 버전 이상을 받아 지웠다
+overrides:
+  "postcss-selector-parser@>=6.0.0 <7.0.0": ^6.1.3

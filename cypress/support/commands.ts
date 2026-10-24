@@ -1,4 +1,4 @@
-import { MOCK_ACCESS_TOKEN, MOCK_REFRESH_TOKEN } from './mock';
+import { MOCK_SESSION_TOKEN } from './mock';
 
 const DEFAULT_OPTION = {
   httpOnly: true,
@@ -8,14 +8,12 @@ const DEFAULT_OPTION = {
 } as const;
 
 Cypress.Commands.add('setAuthCookies', () => {
-  cy.setCookie('access_token', MOCK_ACCESS_TOKEN, DEFAULT_OPTION);
-  cy.setCookie('refresh_token', MOCK_REFRESH_TOKEN, DEFAULT_OPTION);
+  cy.setCookie('vd_session', MOCK_SESSION_TOKEN, DEFAULT_OPTION);
   cy.wait(100);
 });
 
 Cypress.Commands.add('clearAuthCookies', () => {
-  cy.clearCookie('access_token');
-  cy.clearCookie('refresh_token');
+  cy.clearCookie('vd_session');
 });
 
 Cypress.Commands.add('waitForPageLoad', () => {

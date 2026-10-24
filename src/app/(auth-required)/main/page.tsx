@@ -10,13 +10,14 @@ export const metadata: Metadata = {
 };
 
 interface IProp {
-  searchParams: {
+  searchParams: Promise<{
     asc: 'true' | 'false';
     sort: '' | 'dailyViewCount' | 'dailyLikeCount';
-  };
+  }>;
 }
 
-export default async function Page({ searchParams }: IProp) {
+export default async function Page(props: IProp) {
+  const searchParams = await props.searchParams;
   const client = getQueryClient();
 
   const ascBool = searchParams.asc === 'true';
