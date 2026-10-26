@@ -3,6 +3,7 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from '@sentry/nextjs';
+import { isLocalUrl } from '@/lib/utils/sentry.util';
 
 Sentry.init({
   // DSN 은 ENVS 대신 process.env 에서 직접 읽는다: 이 파일은 클라이언트 엔트리에 주입되므로
@@ -30,7 +31,8 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
-  enabled: process.env.NODE_ENV === 'production',
+  // 로컬에서 띄운 운영 빌드(e2e 등)는 리플레이까지 보내지 않는다
+  enabled: process.env.NODE_ENV === 'production' && !isLocalUrl(window.location.origin),
 });
 
 // 클라이언트 네비게이션 계측 훅 (Next 15.3+)
