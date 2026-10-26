@@ -47,7 +47,7 @@ export const Content = ({ token }: IProp) => {
             size="FULL"
             form="LARGE"
             type="button"
-            className="bg-BG-ALT text-TEXT-MAIN hover:bg-BORDER-SUB"
+            className="shrink bg-BG-ALT text-TEXT-MAIN hover:bg-BORDER-SUB"
             disabled={isPending}
             onClick={() => replace('/')}
           >
@@ -57,6 +57,7 @@ export const Content = ({ token }: IProp) => {
             size="FULL"
             form="LARGE"
             type="button"
+            className="shrink"
             disabled={isPending || isExpired}
             onClick={() => token && mutate(token)}
           >

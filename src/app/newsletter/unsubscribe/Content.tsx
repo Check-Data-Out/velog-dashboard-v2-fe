@@ -69,7 +69,7 @@ export const Content = () => {
                 size="FULL"
                 form="LARGE"
                 type="button"
-                className="bg-BG-ALT text-TEXT-MAIN hover:bg-BORDER-SUB"
+                className="shrink bg-BG-ALT text-TEXT-MAIN hover:bg-BORDER-SUB"
                 disabled={isPending}
                 onClick={() => replace('/')}
               >
@@ -79,6 +79,7 @@ export const Content = () => {
                 size="FULL"
                 form="LARGE"
                 type="button"
+                className="shrink"
                 disabled={isChecking || isPending || isInvalid}
                 onClick={() => mutate()}
               >
