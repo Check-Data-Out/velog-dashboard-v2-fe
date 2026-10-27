@@ -31,7 +31,7 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
-  // 로컬에서 띄운 운영 빌드(e2e 등)는 리플레이까지 보내지 않는다
+  // 로컬에서 띄운 운영 빌드(e2e 등)는 클라이언트 SDK 전체(에러·트레이스·리플레이)를 끈다
   enabled: process.env.NODE_ENV === 'production' && !isLocalUrl(window.location.origin),
 });
 
