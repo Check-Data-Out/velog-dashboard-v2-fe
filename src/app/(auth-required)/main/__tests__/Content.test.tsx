@@ -80,6 +80,7 @@ describe('메인 Content 통계 새로고침', () => {
   });
 
   afterEach(() => {
+    jest.runOnlyPendingTimers();
     jest.useRealTimers();
   });
 
@@ -191,5 +192,15 @@ describe('메인 Content 통계 새로고침', () => {
     await waitNextCycle();
 
     expect(mockRefreshStats).toHaveBeenCalledTimes(2);
+  });
+
+  it('첫 응답이 오기 전에 다시 눌러도 요청은 한 번만 보낸다', async () => {
+    mockRefreshStats.mockReturnValue(new Promise(() => {}));
+    renderContent();
+
+    await clickRefresh();
+    await clickRefresh();
+
+    expect(mockRefreshStats).toHaveBeenCalledTimes(1);
   });
 });

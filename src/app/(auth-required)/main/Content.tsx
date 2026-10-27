@@ -75,7 +75,7 @@ export const Content = () => {
     refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
   };
 
-  const { mutate: refresh } = useMutation({
+  const { mutate: refresh, isPending } = useMutation({
     mutationFn: refreshStats,
     onSuccess: () => {
       // 확인 중 200 은 서버가 새 새로고침을 받아들였다는 뜻이므로 계속 확인한다
@@ -146,7 +146,7 @@ export const Content = () => {
         <div className="flex h-fit flex-col items-center p-[20px] bg-BG-SUB gap-5 rounded-[4px]">
           <div className="w-full flex items-center justify-between flex-wrap max-MBI:justify-center max-MBI:gap-4">
             <div className="flex items-center gap-3 max-MBI:hidden">
-              <Button size="SMALL" onClick={() => refresh()} disabled={status}>
+              <Button size="SMALL" onClick={() => refresh()} disabled={status || isPending}>
                 새로고침
               </Button>
               <span className="text-TEXT-ALT text-SUBTITLE-4 max-TBL:text-SUBTITLE-5">
