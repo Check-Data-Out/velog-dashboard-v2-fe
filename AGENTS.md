@@ -117,7 +117,7 @@ Don't refactor because:
 - Only commit when:
   1. ALL tests are passing (`pnpm jest:test` shows green)
   2. ALL TypeScript compiler errors have been resolved (`pnpm exec tsc --noEmit` passes)
-  3. ALL ESLint warnings have been addressed (`pnpm eslint:lint` passes)
+  3. `pnpm eslint:lint` reports no errors and no new warnings (it exits 0 on warnings, so compare the warning count)
   4. The change represents a single logical unit of work
   5. Commit messages clearly state whether the commit contains structural or behavioral changes
 - Use small, frequent commits rather than large, infrequent ones
