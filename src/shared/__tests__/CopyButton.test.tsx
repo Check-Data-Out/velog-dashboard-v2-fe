@@ -11,6 +11,11 @@ beforeEach(() => {
   });
 });
 
+// 테스트가 중간에 실패해도 가짜 타이머가 다음 테스트로 새지 않게 한다
+afterEach(() => {
+  jest.useRealTimers();
+});
+
 describe('CopyButton', () => {
   describe('렌더링', () => {
     it('type="default"일 때 url 텍스트를 직접 표시해야 한다', () => {
@@ -89,8 +94,6 @@ describe('CopyButton', () => {
 
       fireEvent.click(screen.getByRole('button'));
       await waitFor(() => expect(mockWriteText).toHaveBeenCalledTimes(2));
-
-      jest.useRealTimers();
     });
   });
 
@@ -139,7 +142,6 @@ describe('CopyButton', () => {
       expect(clearTimeoutSpy).toHaveBeenCalled();
 
       clearTimeoutSpy.mockRestore();
-      jest.useRealTimers();
     });
   });
 });
