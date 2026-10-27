@@ -6,12 +6,12 @@ Always follow the instructions in plan.md. When I say "go", find the next unmark
 - NEVER reference plan.md or its internal structure — phase numbers, step numbers, checklist items, commit labels (e.g. "Phase 2", "C1", "step 3.4") — in code, code comments, commit messages, PR descriptions, or product documentation. Code and commits must read as fully self-contained without plan.md.
 - This rule applies to work output, not to the contributor guides themselves. AGENTS.md and CLAUDE.md define the workflow, so they are the only files allowed to mention plan.md.
 
-**IMPORTANT:** Always design and build by strictly following the Design System defined in DESIGN_SYSTEM.md. The design system is the single source of truth for all UI/UX decisions and must be adhered to without exception.
+**IMPORTANT:** There is no separate design system document. For UI work, use the color and typography tokens defined in `tailwind.config.ts` and the shared components in `src/shared`.
 
 # ROLE AND EXPERTISE
 
 You are a senior frontend engineer who follows Kent Beck's Test-Driven Development (TDD) and Tidy First principles. Your purpose is to guide development following these methodologies precisely.
-(Run Test by `pnpm test` or `pnpm test:watch` for watch mode)
+(Run Test by `pnpm jest:test` or `pnpm exec jest --watch` for watch mode)
 
 # CORE DEVELOPMENT PRINCIPLES
 
@@ -115,9 +115,9 @@ Don't refactor because:
 # COMMIT DISCIPLINE
 
 - Only commit when:
-  1. ALL tests are passing (`pnpm test` shows green)
+  1. ALL tests are passing (`pnpm jest:test` shows green)
   2. ALL TypeScript compiler errors have been resolved (`pnpm exec tsc --noEmit` passes)
-  3. ALL ESLint warnings have been addressed (`pnpm lint` passes)
+  3. ALL ESLint warnings have been addressed (`pnpm eslint:lint` passes)
   4. The change represents a single logical unit of work
   5. Commit messages clearly state whether the commit contains structural or behavioral changes
 - Use small, frequent commits rather than large, infrequent ones
@@ -173,7 +173,7 @@ When approaching a new feature:
    - Example: Test that a button renders with the correct text
 2. Implement the bare minimum to make it pass
    - Example: Create a component that returns the button
-3. Run tests to confirm they pass (Green) - `pnpm test`
+3. Run tests to confirm they pass (Green) - `pnpm jest:test`
 4. Make any necessary structural changes (Tidy First), running tests after each change
    - Example: Extract button into a reusable component (only if you'll reuse it)
 5. Commit structural changes separately with message like "refactor: extract Button component"
@@ -211,7 +211,7 @@ Always write one test at a time, make it run, then improve structure. Always run
 
 - Aim for high coverage of business logic and critical user paths
 - Don't obsess over 100% coverage - focus on meaningful tests
-- Use `pnpm test:coverage` to check coverage
+- Use `pnpm exec jest --coverage` to check coverage
 - **Uncovered code is sometimes okay** if it's simple and low-risk
 
 ## Performance
@@ -227,168 +227,9 @@ Always write one test at a time, make it run, then improve structure. Always run
 - Verify SSG output in `.next` directory when debugging build issues
 - Test production build locally: `pnpm build && pnpm start`
 
-# INTERNATIONALIZATION (i18n) GUIDELINES
+# INTERNATIONALIZATION (i18n)
 
-This project uses **next-intl** with Static Site Generation (SSG). Follow these guidelines strictly for all new code.
-
-## Core Principles
-
-1. **All pages must support locale routing** via `[locale]` dynamic segment
-2. **Always use explicit locale** in all server-side data fetching
-3. **Use LocalizedLink for client components**, explicit locale for server components
-4. **Never hardcode user-facing text** - always use translation keys
-
-## Required Setup for All Pages
-
-Every page in `app/[locale]/` must include:
-
-```typescript
-import { setRequestLocale, getTranslations, getMessages } from "next-intl/server";
-import { routing } from "@/i18n/routing";
-
-// Enable static export
-export const dynamic = "force-static";
-
-// Generate static params for all locales
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
-
-type PageProps = {
-  params: Promise<{ locale: string }>;
-};
-
-export default async function Page({ params }: PageProps) {
-  const { locale } = await params;
-
-  // Enable static rendering (REQUIRED for SSG)
-  setRequestLocale(locale);
-
-  // Always pass locale to getTranslations
-  const t = await getTranslations({ locale, namespace: "yourNamespace" });
-
-  // For accessing raw messages, always pass locale
-  const messages = await getMessages({ locale });
-
-  // ... rest of component
-}
-```
-
-## Navigation and Links
-
-### In Client Components
-
-Use `LocalizedLink` which automatically prepends the current locale:
-
-```typescript
-"use client";
-
-import { LocalizedLink as Link } from "@/components/ui/LocalizedLink";
-
-// This will automatically become /{currentLocale}/apply
-<Link href="/apply">Apply Now</Link>
-```
-
-### In Server Components
-
-Use standard Next.js `Link` with **explicit locale**:
-
-```typescript
-import Link from "next/link";
-
-// Explicitly include locale variable
-<Link href={`/${locale}/apply`}>Apply Now</Link>
-<Link href={`/${locale}/blog/${slug}`}>Read More</Link>
-```
-
-### NEVER Do This
-
-```typescript
-// ❌ WRONG - Missing locale in server component
-<Link href="/apply">Apply Now</Link>
-
-// ❌ WRONG - Using routing Link in client component with SSG
-import { Link } from "@/i18n/routing"; // This doesn't work reliably in SSG
-```
-
-## Translation Keys
-
-### Common Text
-
-For frequently reused text (e.g., "Back", "Contact Us"), use the `common` namespace:
-
-```typescript
-const tCommon = await getTranslations({ locale, namespace: "common" });
-
-<span>{tCommon("back")}</span>
-<h3>{tCommon("contactTitle")}</h3>
-```
-
-### Page-Specific Text
-
-For page-specific content, use dedicated namespaces:
-
-```typescript
-const tHero = await getTranslations({ locale, namespace: "hero" });
-const tFeatures = await getTranslations({ locale, namespace: "features" });
-
-<h1>{tHero("title")}</h1>
-<p>{tFeatures("subtitle")}</p>
-```
-
-## Message File Structure
-
-All translation keys must exist in both `/messages/ko.json` and `/messages/en.json`:
-
-```json
-{
-  "common": {
-    "back": "뒤로",
-    "contactTitle": "문의하기",
-    "privacyOfficer": "개인정보 보호책임자:",
-    "generalInquiry": "일반 문의:",
-    "email": "이메일:",
-    "phone": "전화:"
-  },
-  "hero": {
-    "title": "52시간 걸리던 작업을\n1시간으로!",
-    "subtitle": "...",
-    "cta": "무료 상담 신청하기"
-  }
-}
-```
-
-## Testing i18n
-
-When testing locale-aware pages:
-
-1. Test at both `http://localhost:3000/ko/` and `http://localhost:3000/en/`
-2. Verify all links preserve the current locale
-3. Verify language switcher correctly navigates between locales
-4. Check that hardcoded text doesn't exist (except email addresses, phone numbers)
-
-## Common Mistakes to Avoid
-
-1. ❌ Forgetting `setRequestLocale(locale)` in server components
-2. ❌ Calling `getTranslations()` without locale parameter
-3. ❌ Using `Link` from `@/i18n/routing` in client components with SSG
-4. ❌ Hardcoding text instead of using translation keys
-5. ❌ Forgetting to add translation keys to both ko.json and en.json
-6. ❌ Using relative paths like `/apply` in server components without locale
-
-## Checklist for New Pages
-
-Before considering a page complete:
-
-- [ ] Added `generateStaticParams()` function
-- [ ] Added `setRequestLocale(locale)` call
-- [ ] All `getTranslations()` calls include `{ locale, namespace }`
-- [ ] All `getMessages()` calls include `{ locale }`
-- [ ] Server component links use explicit locale: `href={/${locale}/path}`
-- [ ] Client components use `LocalizedLink`
-- [ ] No hardcoded user-facing text (except contact info)
-- [ ] Translation keys exist in both ko.json and en.json
-- [ ] Tested in both Korean and English
+This project does not use i18n. User-facing text is Korean and written directly in components.
 
 # NOTICE HTML SANITIZING (DO NOT CHANGE)
 
