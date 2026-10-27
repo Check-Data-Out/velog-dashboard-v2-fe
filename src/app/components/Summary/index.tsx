@@ -14,6 +14,17 @@ interface IProp {
 
 export const Summary = ({ totalPostCount, yesterdayPostCount, stats }: IProp) => {
   const [open, setOpen] = useState(false);
+  // 사이드바(데스크톱)와 접이식 요약(모바일)이 같은 값을 보이도록 증가분은 한 번만 계산한다
+  const viewIncrease =
+    stats?.totalViews !== undefined && stats?.yesterdayViews !== undefined
+      ? stats.totalViews - stats.yesterdayViews
+      : undefined;
+  const likeIncrease =
+    stats?.totalLikes !== undefined && stats?.yesterdayLikes !== undefined
+      ? stats.totalLikes - stats.yesterdayLikes
+      : undefined;
+  const postIncrease =
+    yesterdayPostCount !== undefined ? totalPostCount - yesterdayPostCount : undefined;
 
   return (
     <>
@@ -24,30 +35,20 @@ export const Summary = ({ totalPostCount, yesterdayPostCount, stats }: IProp) =>
         <SidebarContent
           title="전체 조회수"
           content={stats?.totalViews}
-          increasement={
-            stats?.totalViews !== undefined && stats?.yesterdayViews !== undefined
-              ? stats.totalViews - stats.yesterdayViews
-              : undefined
-          }
+          increasement={viewIncrease}
           id="view"
           typeIsCount
         />
         <SidebarContent
           title="전체 좋아요 수"
           content={stats?.totalLikes}
-          increasement={
-            stats?.totalLikes !== undefined && stats?.yesterdayLikes !== undefined
-              ? stats.totalLikes - stats.yesterdayLikes
-              : undefined
-          }
+          increasement={likeIncrease}
           id="like"
         />
         <SidebarContent
           title="총 게시글 수"
           content={totalPostCount}
-          increasement={
-            yesterdayPostCount !== undefined ? totalPostCount - yesterdayPostCount : undefined
-          }
+          increasement={postIncrease}
           id="post"
         />
       </aside>
@@ -65,28 +66,14 @@ export const Summary = ({ totalPostCount, yesterdayPostCount, stats }: IProp) =>
               title="전체 조회수"
               content={stats?.totalViews}
               prefix="회"
-              increasement={
-                stats?.totalViews !== undefined && stats?.yesterdayViews !== undefined
-                  ? stats.totalViews - stats.yesterdayViews
-                  : undefined
-              }
+              increasement={viewIncrease}
             />
             <BarContent
               title="전체 좋아요 수"
               content={stats?.totalLikes}
-              increasement={
-                stats?.totalLikes !== undefined && stats?.yesterdayLikes !== undefined
-                  ? stats.totalLikes - stats.yesterdayLikes
-                  : undefined
-              }
+              increasement={likeIncrease}
             />
-            <BarContent
-              title="총 게시글 수"
-              content={totalPostCount}
-              increasement={
-                yesterdayPostCount !== undefined ? totalPostCount - yesterdayPostCount : undefined
-              }
-            />
+            <BarContent title="총 게시글 수" content={totalPostCount} increasement={postIncrease} />
           </div>
         )}
       </section>
