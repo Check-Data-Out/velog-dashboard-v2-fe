@@ -176,4 +176,20 @@ describe('메인 Content 통계 새로고침', () => {
 
     expect(mockRefreshStats).toHaveBeenCalledTimes(3);
   });
+
+  it('확인 요청이 끝나기 전에 페이지를 떠나면 더 이상 확인하지 않는다', async () => {
+    let finishPending: (value: object) => void = () => {};
+    mockRefreshStats
+      .mockResolvedValueOnce({})
+      .mockReturnValueOnce(new Promise((resolve) => (finishPending = resolve)));
+    const { unmount } = renderContent();
+
+    await clickRefresh();
+    await waitNextCycle();
+    unmount();
+    await act(async () => finishPending({}));
+    await waitNextCycle();
+
+    expect(mockRefreshStats).toHaveBeenCalledTimes(2);
+  });
 });

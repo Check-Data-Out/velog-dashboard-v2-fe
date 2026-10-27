@@ -33,6 +33,7 @@ export const Content = () => {
   }>();
   const [status, setStatus] = useState(false);
   const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isMountedRef = useRef(false);
 
   const { ref, inView } = useInView();
   const queryClient = useQueryClient();
@@ -69,6 +70,8 @@ export const Content = () => {
   });
 
   const scheduleRefresh = () => {
+    // mutation 콜백은 언마운트 뒤에도 실행되므로, 페이지를 떠났으면 다시 확인하지 않는다
+    if (!isMountedRef.current) return;
     refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
   };
 
@@ -114,7 +117,9 @@ export const Content = () => {
   });
 
   useEffect(() => {
+    isMountedRef.current = true;
     return () => {
+      isMountedRef.current = false;
       if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
     };
   }, []);
