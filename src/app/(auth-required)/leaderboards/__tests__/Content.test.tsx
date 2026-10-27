@@ -30,6 +30,10 @@ describe('리더보드 Content', () => {
     (leaderboardList as jest.Mock).mockResolvedValue({ users: [], posts: [] });
   });
 
+  afterEach(() => {
+    queryClient.clear();
+  });
+
   it('URL 조건으로 바로 들어오면 드롭다운이 그 조건을 보여 준다', () => {
     mockUseSearchParams.mockReturnValue(
       new URLSearchParams('based=post&sort=likeCount&dateRange=7&limit=30'),
