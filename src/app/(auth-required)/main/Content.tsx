@@ -68,6 +68,10 @@ export const Content = () => {
     staleTime: Infinity,
   });
 
+  const scheduleRefresh = () => {
+    refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+  };
+
   const { mutate: refresh } = useMutation({
     mutationFn: refreshStats,
     onSuccess: () => {
@@ -76,7 +80,7 @@ export const Content = () => {
         setStatus(true);
         toast.success('통계 새로고침이 시작되었습니다!');
       }
-      refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+      scheduleRefresh();
     },
     throwOnError: false,
     onError: (error: FetchResponseError | FetchError) => {
@@ -92,7 +96,7 @@ export const Content = () => {
         setStatus(false);
       } else if (status) {
         // 새로고침 실행중이거나 일시적인 오류(타임아웃·네트워크 포함)는 다음 주기에 다시 확인한다
-        refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+        scheduleRefresh();
       } else if (!(error instanceof FetchResponseError)) {
         return;
       } else if (isLastUpdated) {
@@ -102,7 +106,7 @@ export const Content = () => {
         // 페이지 리프레시 이후에도 새로고침 실행중인 경우
         toast.success('새로고침 실행 상태를 동기화하였습니다');
         setStatus(true);
-        refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+        scheduleRefresh();
       } else {
         toast.error(error.getToastMessage());
       }
