@@ -4,6 +4,7 @@
 
 import * as Sentry from '@sentry/nextjs';
 import { ENVS } from '@/lib/constants/env.constant';
+import { dropLocalEvent } from '@/lib/utils/sentry.util';
 
 Sentry.init({
   dsn: ENVS.SENTRY_DSN,
@@ -15,4 +16,6 @@ Sentry.init({
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
   enabled: ENVS.NODE_ENV === 'production',
+  beforeSend: dropLocalEvent,
+  beforeSendTransaction: dropLocalEvent,
 });
