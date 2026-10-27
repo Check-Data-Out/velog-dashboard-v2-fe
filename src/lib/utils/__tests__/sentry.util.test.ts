@@ -9,6 +9,8 @@ describe('sentry.util', () => {
       'http://localhost:3000?e2e=1',
       'http://0.0.0.0:3000/main',
       'http://app.localhost:3000/',
+      'http://localhost.:3000/',
+      'http://app.localhost.:3000/',
     ])('로컬 주소(%s) 이벤트는 버린다', (url) => {
       expect(dropLocalEvent({ request: { url } })).toBeNull();
     });

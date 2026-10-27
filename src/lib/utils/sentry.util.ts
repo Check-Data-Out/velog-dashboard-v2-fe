@@ -4,7 +4,8 @@ const LOCAL_HOSTNAMES = new Set(['localhost', '127.0.0.1', '[::1]', '0.0.0.0']);
 export const isLocalUrl = (url?: string) => {
   if (!url) return false;
   try {
-    const { hostname } = new URL(url);
+    // 'localhost.' 처럼 끝에 점이 붙은 FQDN 표기도 같은 호스트다
+    const hostname = new URL(url).hostname.replace(/\.$/, '');
     return LOCAL_HOSTNAMES.has(hostname) || hostname.endsWith('.localhost');
   } catch {
     return false;
