@@ -20,6 +20,23 @@ export type searchParamsType = {
   dateRange: string;
 };
 
+const basedOptions: Array<[string, searchParamsType['based']]> = [
+  ['사용자 기준', 'user'],
+  ['게시글 기준', 'post'],
+];
+const sortOptions: Array<[string, searchParamsType['sort']]> = [
+  ['조회수 증가순', 'viewCount'],
+  ['좋아요 증가순', 'likeCount'],
+];
+const limitOptions: Array<[string, string]> = [
+  ['10위까지', '10'],
+  ['30위까지', '30'],
+];
+const dateRangeOptions: Array<[string, string]> = [
+  ['지난 30일', '30'],
+  ['지난 7일', '7'],
+];
+
 export const Content = () => {
   const [searchParams, setSearchParams] = useSearchParam<searchParamsType>();
 
@@ -63,38 +80,24 @@ export const Content = () => {
       <div className="flex items-center gap-4 flex-wrap justify-center">
         <div className="flex items-center gap-4">
           <Dropdown
-            options={[
-              ['사용자 기준', 'user'],
-              ['게시글 기준', 'post'],
-            ]}
+            options={basedOptions}
             onChange={(data) => handleChange({ based: data as 'user' | 'post' })}
             defaultValue="사용자 기준"
           />
           <Dropdown
-            options={
-              [
-                ['조회수 증가순', 'viewCount'],
-                ['좋아요 증가순', 'likeCount'],
-              ] as const
-            }
+            options={sortOptions}
             onChange={(data) => handleChange({ sort: data as 'viewCount' | 'likeCount' })}
             defaultValue="조회수 증가순"
           />
         </div>
         <div className="flex items-center gap-4">
           <Dropdown
-            options={[
-              ['10위까지', '10'],
-              ['30위까지', '30'],
-            ]}
+            options={limitOptions}
             onChange={(data) => handleChange({ limit: data as string })}
             defaultValue={`${finalParams.limit}위까지`}
           />
           <Dropdown
-            options={[
-              ['지난 30일', '30'],
-              ['지난 7일', '7'],
-            ]}
+            options={dateRangeOptions}
             onChange={(data) => handleChange({ dateRange: data as string })}
             defaultValue="지난 30일"
           />
