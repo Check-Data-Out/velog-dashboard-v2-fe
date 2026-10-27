@@ -245,5 +245,14 @@ describe('instance', () => {
       await expect(instance('/posts')).rejects.toBeInstanceOf(AuthRequiredError);
       expect(window.location.replace).toHaveBeenCalledWith('/');
     });
+
+    it('본문이 JSON 이 아닌 401 응답도 로그인 화면으로 보낸다', async () => {
+      mockFetch.mockResolvedValueOnce(
+        new Response('<html>401 Unauthorized</html>', { status: 401 }),
+      );
+
+      await expect(instance('/posts')).rejects.toBeInstanceOf(AuthRequiredError);
+      expect(window.location.replace).toHaveBeenCalledWith('/');
+    });
   });
 });
