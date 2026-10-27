@@ -247,6 +247,8 @@ describe('메인 페이지', () => {
       }).as('statsRefreshCompletedAPI');
 
       cy.tick(1000 * 5);
+      // 5초 대기만 당기고, 응답 뒤 상태 반영(쿼리 라이브러리의 알림 예약 포함)은 실제 시간으로 흘려보낸다
+      cy.clock().then((clock) => clock.restore());
       cy.wait('@statsRefreshCompletedAPI');
 
       cy.contains('button', '새로고침').should('not.be.disabled');
