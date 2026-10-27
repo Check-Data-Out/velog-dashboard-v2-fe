@@ -37,6 +37,10 @@ const dateRangeOptions: Array<[string, string]> = [
   ['지난 7일', '7'],
 ];
 
+// URL 값과 맞는 선택지가 없으면 첫 선택지를 보여 준다
+const findOption = (options: Array<[string, string]>, value: string) =>
+  options.find(([, optionValue]) => optionValue === value) ?? options[0];
+
 export const Content = () => {
   const [searchParams, setSearchParams] = useSearchParam<searchParamsType>();
 
@@ -80,26 +84,30 @@ export const Content = () => {
       <div className="flex items-center gap-4 flex-wrap justify-center">
         <div className="flex items-center gap-4">
           <Dropdown
+            key={`based-${finalParams.based}`}
             options={basedOptions}
             onChange={(data) => handleChange({ based: data as 'user' | 'post' })}
-            defaultValue="사용자 기준"
+            defaultValue={findOption(basedOptions, finalParams.based)}
           />
           <Dropdown
+            key={`sort-${finalParams.sort}`}
             options={sortOptions}
             onChange={(data) => handleChange({ sort: data as 'viewCount' | 'likeCount' })}
-            defaultValue="조회수 증가순"
+            defaultValue={findOption(sortOptions, finalParams.sort)}
           />
         </div>
         <div className="flex items-center gap-4">
           <Dropdown
+            key={`limit-${finalParams.limit}`}
             options={limitOptions}
             onChange={(data) => handleChange({ limit: data as string })}
-            defaultValue={`${finalParams.limit}위까지`}
+            defaultValue={findOption(limitOptions, finalParams.limit)}
           />
           <Dropdown
+            key={`dateRange-${finalParams.dateRange}`}
             options={dateRangeOptions}
             onChange={(data) => handleChange({ dateRange: data as string })}
-            defaultValue="지난 30일"
+            defaultValue={findOption(dateRangeOptions, finalParams.dateRange)}
           />
         </div>
       </div>
