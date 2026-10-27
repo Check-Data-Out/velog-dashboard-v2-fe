@@ -7,6 +7,7 @@ import { Rank } from '@/app/components/Rank';
 import { useSearchParam } from '@/hooks/useSearchParam';
 import { leaderboardList } from '@/lib/apis/leaderboard.request';
 import { queryKeys } from '@/lib/constants/queryKeys.constant';
+import { LEADERBOARD_DEFAULT_PARAMS } from '@/lib/constants/searchParams.constant';
 import { URLS } from '@/lib/constants/urls.constant';
 import { LeaderboardItemType, LeaderboardListPost } from '@/lib/types/leaderboard.type';
 import { Dropdown } from '@/shared/Dropdown';
@@ -19,18 +20,11 @@ export type searchParamsType = {
   dateRange: string;
 };
 
-const defaultParams = {
-  based: 'user' as const,
-  sort: 'viewCount' as const,
-  limit: '10',
-  dateRange: '30',
-};
-
 export const Content = () => {
   const [searchParams, setSearchParams] = useSearchParam<searchParamsType>();
 
   const finalParams = {
-    ...defaultParams,
+    ...LEADERBOARD_DEFAULT_PARAMS,
     ...searchParams,
   };
 
