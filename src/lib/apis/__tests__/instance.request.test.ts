@@ -195,13 +195,17 @@ describe('instance', () => {
       await expect(instance('/posts')).rejects.toMatchObject({ code: 502 });
     });
 
-    it('응답 body가 JSON이 아닐 때 SyntaxError가 전파된다', async () => {
-      // return-fetch 인터셉터가 JSON.parse를 먼저 실행하므로
-      // 잘못된 JSON 바디가 있는 에러 응답은 SyntaxError로 전파된다
-      const badResponse = new Response('not-json', { status: 500 });
-      mockFetch.mockResolvedValueOnce(badResponse);
+    it('JSON이 아닌 오류 응답(프록시 502 HTML 등)도 UnknownError로 바꾼다', async () => {
+      const htmlResponse = new Response('<html>502 Bad Gateway</html>', { status: 502 });
+      mockFetch.mockResolvedValueOnce(htmlResponse);
 
-      await expect(instance('/posts')).rejects.toBeInstanceOf(SyntaxError);
+      const error = await instance('/posts').catch((e: unknown) => e);
+
+      expect(error).toBeInstanceOf(UnknownError);
+      expect(error).toMatchObject({
+        code: 502,
+        options: { body: { error: { code: 'FailedJsonParsing' } } },
+      });
     });
   });
 
@@ -238,6 +242,15 @@ describe('instance', () => {
       mockFetch.mockResolvedValueOnce(makeErrorResponse(401));
 
       // errorHandler 가 AuthRequiredError 를 조용히 처리하므로 throw 가 설계된 동작이다
+      await expect(instance('/posts')).rejects.toBeInstanceOf(AuthRequiredError);
+      expect(window.location.replace).toHaveBeenCalledWith('/');
+    });
+
+    it('본문이 JSON 이 아닌 401 응답도 로그인 화면으로 보낸다', async () => {
+      mockFetch.mockResolvedValueOnce(
+        new Response('<html>401 Unauthorized</html>', { status: 401 }),
+      );
+
       await expect(instance('/posts')).rejects.toBeInstanceOf(AuthRequiredError);
       expect(window.location.replace).toHaveBeenCalledWith('/');
     });
