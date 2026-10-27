@@ -42,7 +42,7 @@ const fetch = returnFetch({
       if (!response.ok) {
         throw response;
       }
-      const body = JSON.parse(await response.clone().text());
+      const body = JSON.parse(await response.text());
       return { ...response, body };
     },
   },
