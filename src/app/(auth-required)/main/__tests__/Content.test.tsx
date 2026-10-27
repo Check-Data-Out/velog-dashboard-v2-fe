@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { postList, postSummary, refreshStats, totalStats } from '@/lib/apis/dashboard.request';
 import { me } from '@/lib/apis/user.request';
 import { StatsAlreadyRefreshedError } from '@/lib/errors/api.error';
+import { TimeoutError, UnknownError } from '@/lib/errors/fetch.error';
 import { Content } from '../Content';
 
 jest.mock('next/navigation', () => ({
@@ -43,6 +44,8 @@ const conflict = (lastUpdatedAt?: string) =>
     method: 'POST',
     body: { data: lastUpdatedAt ? { lastUpdatedAt } : null },
   });
+
+const serverError = () => new UnknownError({ url: '/api/stats-refresh', method: 'POST' }, 500);
 
 const renderContent = () => {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -132,5 +135,45 @@ describe('메인 Content 통계 새로고침', () => {
     await waitFor(() => expect(toast.success).toHaveBeenCalledWith('새로고침이 완료되었습니다!'));
     await waitFor(() => expect(postSummary).toHaveBeenCalledTimes(2));
     expect(screen.getByRole('button', { name: '새로고침' })).toBeEnabled();
+  });
+
+  it('첫 요청이 409 가 아닌 오류로 실패하면 오류만 알리고 확인을 시작하지 않는다', async () => {
+    mockRefreshStats.mockRejectedValue(serverError());
+    renderContent();
+
+    await clickRefresh();
+
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith('알 수 없는 오류가 발생했습니다. (500)'),
+    );
+    expect(toast.success).not.toHaveBeenCalled();
+    await waitNextCycle();
+    expect(mockRefreshStats).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['서버 오류', serverError],
+    ['타임아웃 오류', () => new TimeoutError()],
+  ])('확인 중 %s가 나면 알리지 않고 다음 주기에 다시 확인한다', async (_, makeError) => {
+    mockRefreshStats.mockResolvedValueOnce({}).mockRejectedValueOnce(makeError());
+    renderContent();
+
+    await clickRefresh();
+    await waitNextCycle();
+    await waitNextCycle();
+
+    expect(mockRefreshStats).toHaveBeenCalledTimes(3);
+    expect(toast.error).not.toHaveBeenCalled();
+  });
+
+  it('확인 중 200 이 오면 새 새로고침이 시작된 것이므로 계속 확인한다', async () => {
+    mockRefreshStats.mockResolvedValue({});
+    renderContent();
+
+    await clickRefresh();
+    await waitNextCycle();
+    await waitNextCycle();
+
+    expect(mockRefreshStats).toHaveBeenCalledTimes(3);
   });
 });

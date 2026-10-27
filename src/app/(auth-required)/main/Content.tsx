@@ -11,6 +11,7 @@ import { postList, postSummary, refreshStats, totalStats } from '@/lib/apis/dash
 import { me } from '@/lib/apis/user.request';
 import { queryKeys } from '@/lib/constants/queryKeys.constant';
 import { SORT_TYPE } from '@/lib/constants/searchParams.constant';
+import { StatsAlreadyRefreshedError } from '@/lib/errors/api.error';
 import { FetchError, FetchResponseError } from '@/lib/errors/fetch.error';
 import { SortKey, SortValue } from '@/lib/types/searchParams.type';
 import { convertDateToKST } from '@/lib/utils/datetime.util';
@@ -70,20 +71,19 @@ export const Content = () => {
   const { mutate: refresh } = useMutation({
     mutationFn: refreshStats,
     onSuccess: () => {
+      // 확인 중 200 은 서버가 새 새로고침을 받아들였다는 뜻이므로 계속 확인한다
       if (!status) {
         setStatus(true);
         toast.success('통계 새로고침이 시작되었습니다!');
-        refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
       }
+      refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
     },
     throwOnError: false,
     onError: (error: FetchResponseError | FetchError) => {
-      if (!(error instanceof FetchResponseError)) return;
-      const isLastUpdated = (error.options.body?.data as { lastUpdatedAt?: string })?.lastUpdatedAt;
-      if (!status && isLastUpdated) {
-        // lastUpdatedAt 값이 넘어온 경우 (이미 새로고침 완료)
-        toast.error(error.getToastMessage());
-      } else if (status && isLastUpdated) {
+      const isLastUpdated =
+        error instanceof StatsAlreadyRefreshedError &&
+        (error.options.body?.data as { lastUpdatedAt?: string })?.lastUpdatedAt;
+      if (status && isLastUpdated) {
         // 새로고침 실행 중이었고, lastUpdatedAt 값이 넘어온 경우 (새로고침 완료)
         toast.success('새로고침이 완료되었습니다!');
         queryClient.invalidateQueries({ queryKey: queryKeys.posts() });
@@ -91,13 +91,20 @@ export const Content = () => {
         queryClient.invalidateQueries({ queryKey: queryKeys.totalStats() });
         setStatus(false);
       } else if (status) {
-        // 새로고침 실행중인 경우 (업데이트중)
+        // 새로고침 실행중이거나 일시적인 오류(타임아웃·네트워크 포함)는 다음 주기에 다시 확인한다
         refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
-      } else {
+      } else if (!(error instanceof FetchResponseError)) {
+        return;
+      } else if (isLastUpdated) {
+        // lastUpdatedAt 값이 넘어온 경우 (이미 새로고침 완료)
+        toast.error(error.getToastMessage());
+      } else if (error instanceof StatsAlreadyRefreshedError) {
         // 페이지 리프레시 이후에도 새로고침 실행중인 경우
         toast.success('새로고침 실행 상태를 동기화하였습니다');
         setStatus(true);
         refreshTimerRef.current = setTimeout(() => refresh(), REFRESH_WAIT_TIME);
+      } else {
+        toast.error(error.getToastMessage());
       }
     },
   });
