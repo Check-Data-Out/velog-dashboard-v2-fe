@@ -195,13 +195,17 @@ describe('instance', () => {
       await expect(instance('/posts')).rejects.toMatchObject({ code: 502 });
     });
 
-    it('응답 body가 JSON이 아닐 때 SyntaxError가 전파된다', async () => {
-      // return-fetch 인터셉터가 JSON.parse를 먼저 실행하므로
-      // 잘못된 JSON 바디가 있는 에러 응답은 SyntaxError로 전파된다
-      const badResponse = new Response('not-json', { status: 500 });
-      mockFetch.mockResolvedValueOnce(badResponse);
+    it('JSON이 아닌 오류 응답(프록시 502 HTML 등)도 UnknownError로 바꾼다', async () => {
+      const htmlResponse = new Response('<html>502 Bad Gateway</html>', { status: 502 });
+      mockFetch.mockResolvedValueOnce(htmlResponse);
 
-      await expect(instance('/posts')).rejects.toBeInstanceOf(SyntaxError);
+      const error = await instance('/posts').catch((e: unknown) => e);
+
+      expect(error).toBeInstanceOf(UnknownError);
+      expect(error).toMatchObject({
+        code: 502,
+        options: { body: { error: { code: 'FailedJsonParsing' } } },
+      });
     });
   });
 

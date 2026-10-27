@@ -38,10 +38,11 @@ const fetch = returnFetch({
   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   interceptors: {
     response: async (response) => {
-      const body = JSON.parse(await response?.clone().text());
+      // 오류 응답은 본문을 읽지 않고 넘긴다. 본문이 JSON 이 아니어도 아래 catch 에서 대체 본문으로 처리된다
       if (!response.ok) {
         throw response;
       }
+      const body = JSON.parse(await response.clone().text());
       return { ...response, body };
     },
   },
