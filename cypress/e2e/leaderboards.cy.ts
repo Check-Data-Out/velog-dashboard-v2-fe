@@ -94,7 +94,7 @@ describe('리더보드 페이지', () => {
       cy.get('select').eq(3).should('have.value', '지난 30일');
     });
 
-    it('여러 필터를 동시에 변경해도 각 필터 값이 유지되어야 한다', () => {
+    it('여러 필터를 차례로 바꾸면 각 필터 값이 유지되어야 한다', () => {
       cy.get('select').eq(1).select('좋아요 증가순');
       cy.location('search').should('include', 'sort=likeCount');
       cy.get('select').eq(2).select('30위까지');
