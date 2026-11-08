@@ -13,6 +13,7 @@ interface IFetchResponseProp {
 }
 
 export class FetchResponseError extends BaseError {
+  name = 'FetchResponseError';
   options: fetchOptions;
   code: number;
 
@@ -33,6 +34,7 @@ interface IFetchProp {
 }
 
 export class FetchError extends BaseError {
+  name = 'FetchError';
   constructor({ message, shouldCaptureException = false }: IFetchProp) {
     super({ message, shouldCaptureException });
   }
@@ -43,30 +45,35 @@ export class FetchError extends BaseError {
 }
 
 export class NotFoundError extends FetchResponseError {
+  name = 'NotFoundError';
   constructor(message: string, options: fetchOptions) {
     super({ message, options, code: 404 });
   }
 }
 
 export class AuthRequiredError extends FetchResponseError {
+  name = 'AuthRequiredError';
   constructor(options: fetchOptions) {
     super({ message: '로그인이 필요합니다.', options, code: 401 });
   }
 }
 
 export class TimeoutError extends FetchError {
+  name = 'TimeoutError';
   constructor() {
     super({ message: '잠시 후 다시 시도해주세요.', shouldCaptureException: true });
   }
 }
 
 export class ExceededRateLimitError extends FetchResponseError {
+  name = 'ExceededRateLimitError';
   constructor(options: fetchOptions) {
     super({ message: '잠시 후 다시 시도해주세요.', options, code: 429 });
   }
 }
 
 export class UnknownError extends FetchResponseError {
+  name = 'UnknownError';
   constructor(options: fetchOptions, code: number) {
     super({ message: '알 수 없는 오류가 발생했습니다.', options, code });
   }

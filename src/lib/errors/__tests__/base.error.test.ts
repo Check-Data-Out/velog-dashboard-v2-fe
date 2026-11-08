@@ -1,4 +1,17 @@
+import { StatsAlreadyRefreshedError } from '../api.error';
 import { BaseError } from '../base.error';
+import { DevError, EnvNotFoundError, ParentNotFoundError } from '../dev.error';
+import {
+  AuthRequiredError,
+  ExceededRateLimitError,
+  FetchError,
+  FetchResponseError,
+  NotFoundError,
+  TimeoutError,
+  UnknownError,
+} from '../fetch.error';
+
+const options = { url: '/api/test', method: 'GET' };
 
 describe('BaseError', () => {
   it('Error를 상속해야 한다', () => {
@@ -31,14 +44,37 @@ describe('BaseError', () => {
     expect(error.shouldCaptureException).toBe(true);
   });
 
-  it('서브클래스의 name이 클래스명으로 설정되어야 한다', () => {
-    class MyCustomError extends BaseError {
-      constructor() {
-        super({ message: '커스텀 오류' });
+  // 운영 번들은 클래스를 이름 없이(`class extends ...`) 내보내 constructor.name 이 빈 문자열이 된다
+  it.each<[string, object, () => Error]>([
+    ['BaseError', BaseError, () => new BaseError({ message: '오류' })],
+    [
+      'FetchResponseError',
+      FetchResponseError,
+      () => new FetchResponseError({ message: '오류', options, code: 500 }),
+    ],
+    ['FetchError', FetchError, () => new FetchError({ message: '오류' })],
+    ['NotFoundError', NotFoundError, () => new NotFoundError('없음', options)],
+    ['AuthRequiredError', AuthRequiredError, () => new AuthRequiredError(options)],
+    ['TimeoutError', TimeoutError, () => new TimeoutError()],
+    ['ExceededRateLimitError', ExceededRateLimitError, () => new ExceededRateLimitError(options)],
+    ['UnknownError', UnknownError, () => new UnknownError(options, 502)],
+    [
+      'StatsAlreadyRefreshedError',
+      StatsAlreadyRefreshedError,
+      () => new StatsAlreadyRefreshedError(options),
+    ],
+    ['DevError', DevError, () => new DevError('오류')],
+    ['EnvNotFoundError', EnvNotFoundError, () => new EnvNotFoundError('KEY')],
+    ['ParentNotFoundError', ParentNotFoundError, () => new ParentNotFoundError()],
+  ])(
+    '클래스 이름이 지워진 운영 빌드에서도 %s 의 name 이 유지되어야 한다',
+    (expected, ErrorClass, create) => {
+      Object.defineProperty(ErrorClass, 'name', { value: '' });
+      try {
+        expect(create().name).toBe(expected);
+      } finally {
+        Object.defineProperty(ErrorClass, 'name', { value: expected });
       }
-    }
-    const error = new MyCustomError();
-    expect(error.name).toBe('MyCustomError');
-    expect(error.message).toBe('커스텀 오류');
-  });
+    },
+  );
 });
