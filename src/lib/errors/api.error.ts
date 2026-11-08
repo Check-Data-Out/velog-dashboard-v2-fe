@@ -7,6 +7,7 @@ export class StatsAlreadyRefreshedError extends FetchResponseError {
   }
 }
 
+// 로그인 전용 문구다. velog 를 부르는 다른 요청에 쓰려면 문구를 나눈다
 export class VelogUnavailableError extends FetchResponseError {
   name = 'VelogUnavailableError';
   constructor(options: fetchOptions) {
