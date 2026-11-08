@@ -13,7 +13,7 @@ export class VelogUnavailableError extends FetchResponseError {
   constructor(options: fetchOptions) {
     super({
       code: 503,
-      message: 'Velog 응답이 늦어 로그인하지 못했습니다. 잠시 후 다시 시도해주세요.',
+      message: 'Velog 쪽 문제로 로그인하지 못했습니다. 잠시 후 다시 시도해주세요.',
       options,
     });
   }
