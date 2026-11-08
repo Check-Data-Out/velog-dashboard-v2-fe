@@ -39,7 +39,7 @@ describe('BaseError', () => {
     expect(error.shouldCaptureException).toBe(true);
   });
 
-  // 운영 번들은 클래스를 이름 없이(`class extends ...`) 내보내 constructor.name 이 빈 문자열이 된다
+  // 운영 번들은 클래스 이름을 줄이거나 지운다. 가장 나쁜 경우인 빈 문자열로 덮어 재현한다
   it.each<[string, object, () => Error]>([
     ['BaseError', BaseError, () => new BaseError({ message: '오류' })],
     [
