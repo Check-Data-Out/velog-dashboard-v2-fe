@@ -17,11 +17,6 @@ describe('DevError', () => {
     const error = new DevError('개발 오류');
     expect(error.shouldCaptureException).toBe(false);
   });
-
-  it('name이 "DevError"여야 한다', () => {
-    const error = new DevError('오류');
-    expect(error.name).toBe('DevError');
-  });
 });
 
 describe('EnvNotFoundError', () => {
@@ -44,11 +39,6 @@ describe('EnvNotFoundError', () => {
     const error = new EnvNotFoundError('KEY');
     expect(error.shouldCaptureException).toBe(false);
   });
-
-  it('name이 "EnvNotFoundError"여야 한다', () => {
-    const error = new EnvNotFoundError('KEY');
-    expect(error.name).toBe('EnvNotFoundError');
-  });
 });
 
 describe('ParentNotFoundError', () => {
@@ -67,10 +57,5 @@ describe('ParentNotFoundError', () => {
   it('shouldCaptureException이 false여야 한다', () => {
     const error = new ParentNotFoundError();
     expect(error.shouldCaptureException).toBe(false);
-  });
-
-  it('name이 "ParentNotFoundError"여야 한다', () => {
-    const error = new ParentNotFoundError();
-    expect(error.name).toBe('ParentNotFoundError');
   });
 });

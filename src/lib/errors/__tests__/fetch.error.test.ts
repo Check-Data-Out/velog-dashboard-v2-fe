@@ -57,11 +57,6 @@ describe('FetchResponseError', () => {
     const error = new FetchResponseError({ message: '서버 오류', options: mockOptions, code: 500 });
     expect(error.getToastMessage()).toBe('서버 오류 (500)');
   });
-
-  it('name이 "FetchResponseError"여야 한다', () => {
-    const error = new FetchResponseError({ message: '오류', options: mockOptions, code: 400 });
-    expect(error.name).toBe('FetchResponseError');
-  });
 });
 
 describe('FetchError', () => {
@@ -134,11 +129,6 @@ describe('TimeoutError', () => {
     const error = new TimeoutError();
     expect(error.message).toBe('잠시 후 다시 시도해주세요.');
     expect(error.shouldCaptureException).toBe(true);
-  });
-
-  it('name이 "TimeoutError"여야 한다', () => {
-    const error = new TimeoutError();
-    expect(error.name).toBe('TimeoutError');
   });
 });
 

@@ -1,4 +1,5 @@
 import { PATHS } from '@/lib/constants/paths.constant';
+import { VelogUnavailableError } from '@/lib/errors/api.error';
 import { instance } from '../instance.request';
 import {
   login,
@@ -23,13 +24,17 @@ describe('user.request', () => {
   });
 
   describe('login', () => {
-    it('POST 메서드로 로그인 엔드포인트를 호출해야 한다', async () => {
+    it('POST 메서드로 로그인 엔드포인트를 호출하고 503 은 Velog 지연 오류로 받아야 한다', async () => {
       const body = { accessToken: 'access-abc', refreshToken: 'refresh-xyz' };
       mockInstance.mockResolvedValueOnce(undefined);
 
       await login(body);
 
-      expect(mockInstance).toHaveBeenCalledWith(PATHS.LOGIN, { method: 'POST', body });
+      expect(mockInstance).toHaveBeenCalledWith(
+        PATHS.LOGIN,
+        { method: 'POST', body },
+        { 503: VelogUnavailableError },
+      );
     });
 
     it('instance의 반환값을 그대로 반환해야 한다', async () => {
