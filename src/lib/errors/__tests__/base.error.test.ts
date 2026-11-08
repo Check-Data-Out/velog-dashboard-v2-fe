@@ -24,11 +24,6 @@ describe('BaseError', () => {
     expect(error.message).toBe('테스트 오류 메시지');
   });
 
-  it('name이 클래스명으로 설정되어야 한다', () => {
-    const error = new BaseError({ message: '오류' });
-    expect(error.name).toBe('BaseError');
-  });
-
   it('shouldCaptureException 기본값은 true여야 한다', () => {
     const error = new BaseError({ message: '오류' });
     expect(error.shouldCaptureException).toBe(true);

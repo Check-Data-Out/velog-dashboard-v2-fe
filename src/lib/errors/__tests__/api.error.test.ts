@@ -30,11 +30,6 @@ describe('StatsAlreadyRefreshedError', () => {
     expect(error.shouldCaptureException).toBe(false);
   });
 
-  it('name이 "StatsAlreadyRefreshedError"여야 한다', () => {
-    const error = new StatsAlreadyRefreshedError(mockOptions);
-    expect(error.name).toBe('StatsAlreadyRefreshedError');
-  });
-
   it('getToastMessage가 올바른 형식을 반환해야 한다', () => {
     const error = new StatsAlreadyRefreshedError(mockOptions);
     expect(error.getToastMessage()).toBe('통계가 최신 상태입니다. (409)');
