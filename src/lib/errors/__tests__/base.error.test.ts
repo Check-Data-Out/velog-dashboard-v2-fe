@@ -1,4 +1,4 @@
-import { StatsAlreadyRefreshedError } from '../api.error';
+import { StatsAlreadyRefreshedError, VelogUnavailableError } from '../api.error';
 import { BaseError } from '../base.error';
 import { DevError, EnvNotFoundError, ParentNotFoundError } from '../dev.error';
 import {
@@ -63,6 +63,7 @@ describe('BaseError', () => {
       StatsAlreadyRefreshedError,
       () => new StatsAlreadyRefreshedError(options),
     ],
+    ['VelogUnavailableError', VelogUnavailableError, () => new VelogUnavailableError(options)],
     ['DevError', DevError, () => new DevError('오류')],
     ['EnvNotFoundError', EnvNotFoundError, () => new EnvNotFoundError('KEY')],
     ['ParentNotFoundError', ParentNotFoundError, () => new ParentNotFoundError()],

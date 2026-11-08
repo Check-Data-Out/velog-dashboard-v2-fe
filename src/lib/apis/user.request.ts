@@ -1,8 +1,11 @@
 import { PATHS } from '@/lib/constants/paths.constant';
+import { VelogUnavailableError } from '@/lib/errors/api.error';
 import { BadgeDto, LoginVo, QRLoginStatusDto, UserDto } from '@/lib/types/user.type';
 import { instance } from './instance.request';
 
-export const login = async (body: LoginVo) => await instance(PATHS.LOGIN, { method: 'POST', body });
+// API 는 velog 가 응답하지 않으면 503 을 준다
+export const login = async (body: LoginVo) =>
+  await instance(PATHS.LOGIN, { method: 'POST', body }, { 503: VelogUnavailableError });
 
 export const me = async () => await instance<null, UserDto>(PATHS.ME);
 

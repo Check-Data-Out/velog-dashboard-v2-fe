@@ -1,4 +1,4 @@
-import { StatsAlreadyRefreshedError } from '../api.error';
+import { StatsAlreadyRefreshedError, VelogUnavailableError } from '../api.error';
 import { FetchResponseError } from '../fetch.error';
 
 const mockOptions = { url: '/api/stats-refresh', method: 'POST' };
@@ -38,5 +38,14 @@ describe('StatsAlreadyRefreshedError', () => {
   it('getToastMessage가 올바른 형식을 반환해야 한다', () => {
     const error = new StatsAlreadyRefreshedError(mockOptions);
     expect(error.getToastMessage()).toBe('통계가 최신 상태입니다. (409)');
+  });
+});
+
+describe('VelogUnavailableError', () => {
+  it('Velog 지연으로 로그인하지 못했다는 토스트 문구를 반환해야 한다', () => {
+    const error = new VelogUnavailableError({ url: '/api/login', method: 'POST' });
+    expect(error.getToastMessage()).toBe(
+      'Velog 응답이 늦어 로그인하지 못했습니다. 잠시 후 다시 시도해주세요. (503)',
+    );
   });
 });
